@@ -1,0 +1,956 @@
+\chapter{Processi stocastici}
+\label{cha:processi-stocastici}
+
+
+\section{Dai segnali determinati ai segnali aleatori}
+
+Già nel capitolo~\ref{cha:segnali} abbiamo introdotto due importanti classi distinte di segnali: \emph{determinati} e \emph{aleatori}. Alla prima classe appartengono segnali di cui è possibile conoscere \emph{a priori} l'andamento. L'unica maniera di conoscere l'andamento di un segnale aleatorio, invece, è quella di \emph{osservarlo} e \emph{registrarlo} sotto forma di grafico. Il segnale non è dunque determinato, cioè non è predicibile, ed è noto solo \emph{a posteriori}. Questa è la caratteristica fondamentale dei segnali aleatori: non sono noti a priori.
+
+In questo capitolo si vedrà come modellizzare un segnale aleatorio attraverso la \emph{teoria dei processi aleatori} (o \emph{stocastici}), utilizzando come strumento matematico basilare la \emph{teoria della probabilità}, i cui risultati fondamentali saranno riportati di volta in volta nel testo.
+
+
+\subsection{Definizione di processo aleatorio}
+
+Un%
+\margincomment{Il prof.~Berizzi ha dato questa semplice definizione di processo aleatorio, ignorando la definizione più precisa e rigorosa data al capoverso seguente, estratto dal~\citep{b:luise}.}
+\emph{segnale aleatorio}, detto anche \emph{processo stocastico}, può esser definito come una collezione o insieme di un numero finito, infinito numerabile o infinito di segnali deterministici, i quali rappresentano tutte le possibili \emph{osservazioni}, \emph{misure}, \emph{realizzazioni} o \emph{funzioni campione} del processo.
+Un segnale aleatorio si indica con $X(t)$, ma, come già anticipato, è noto solo dopo la sua misurazione, che consiste in tutte le possibili osservazioni dell'esperimento.
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{aleatori-01}
+\end{center}
+
+Volendo dare una definizione più precisa e matematicamente rigorosa di \emph{processo aleatorio}, è necessario innanzitutto considerare un \emph{esperimento aleatorio} o, meglio, uno \emph{spazio di probabilità} caratterizzato da uno spazio campione $\Omega=\{\omega_i\}$ (qui per semplicità discreto), da una classe degli eventi $S$ e dalla legge di probabilità $\Pr\{\cdot\}$ definita su $S$. Si deve poi individuare un insieme di \emph{funzioni del tempo} $x_i(t)$ (le \emph{funzioni campione}) in numero pari a quello dei risultati dell'esperimento $\omega_i$. Infine, si deve \emph{istituire} \emph{una corrispondenza} che associa a ciascun risultato $\omega_i$ dell'esperimento una delle possibili funzioni campione $x_i(t)$:
+%
+\begin{equation}\label{eq:processo-aleatorio}
+X(\omega_i;t) = x_i(t).
+\end{equation}
+%
+Questa corrispondenza costituisce appunto il \emph{processo aleatorio}, il quale si indica comunemente con $X(t)$ omettendo per semplicità la dipendenza dal risultato $\omega_i$ dello spazio campione $\Omega$. Tale dipendenza, in ogni caso, va sempre considerata implicita. Quando si effettua una \emph{prova} dell'esperimento (una misura di un elettrocardiogramma), si ha un \emph{risultato} dello spazio campione (un paziente) cui è associata una funzione campione (un elettrocardiogramma), cioè il segnale che effettivamente viene osservato, e che prende il nome di \emph{realizzazione} del processo.%
+\footnote{Normalmente, \emph{realizzazione} viene usata come sinonimo di \emph{funzione campione}. In realtà, le funzioni campione sono tutti i \emph{possibili} segnali del processo, mentre la realizzazione è quello tra i possibili segnali che viene effettivamente osservato in una data prova dell'esperimento.}
+
+Fissare nel processo aleatorio $X(\omega_i;t)$ il risultato dell'esperimento, ad esempio $\omega_i$, significa selezionare quella tra le varie funzioni campione che si è \emph{realizzata} in una data prova; non c'è più alcuna aleatorietà e il processo diventa \emph{a posteriori} il segnale \emph{determinato} $X(\omega_i;t)$, cioè la funzione campione $x_i(t)$.
+
+Viceversa, se fissiamo arbitrariamente un certo istante di tempo $\bar{t}$, il valore del processo $X(\omega_i;\bar{t})$ all'istante fissato è un insieme di valori ottenuti ``campionando'' le funzioni campione a quell'istante: in una parola, è una \emph{variabile aleatoria}, in accordo con il concetto elementare che segnale aleatorio è un segnale il cui valore a un dato istante non è esattamente determinabile. (I processi stocastici, d'altro canto, possono esser visti come variabili aleatorie che dipendono anche dal tempo.)
+
+
+\subsection{Caratterizzazione statistica di un processo aleatorio}
+
+È chiaro a questo punto che, contrariamente al caso di un segnale determinato, non ha senso parlare dell'\emph{andamento} di un processo. D'altronde, l'elencazione esaustiva di tutte le funzioni campione del processo è un procedimento impensabile nella grande maggioranza dei casi. Si pone quindi il problema della \emph{caratterizzazione} delle proprietà di un processo dal punto di vista \emph{statistico}.
+
+Fissato l'istante $t=t_1$, il valore del processo $X(t_1)$ a quell'istante è una variabile aleatoria, il cui comportamento statistico può essere descritto mediante la sua \emph{funzione distribuzione di probabilità}.%
+\footnote{La \emph{funzione distribuzione di probabilità} $F_X(x)$ di una \emph{variabile} aleatoria $X$ è definita come:
+\[F_X(x)\triangleq \Pr\{X\leq x\}\]
+dove con $\Pr\{\cdot\}$ si è indicata la \emph{legge di probabilità}, che associa a ogni evento una misura della sua probabilità di presentazione, e dove $x$ è un valore reale generico ma \emph{fissato} (una sorta di valore di ``sonda'') che identifica l'evento $\{X\leq x\}$ di cui si deve calcolare la probabilità.}
+%
+Si definisce perciò la \emph{funzione distribuzione di probabilità del I ordine del processo} mediante la relazione
+%
+\begin{align}
+F_X(x;t_1) &\triangleq \Pr\{X(t_1)\leq x\}
+\end{align}
+%
+dove la legge di probabilità $\Pr\{\cdot\}$ è per definizione uguale a sua volta al limite per $n\to\infty$ del rapporto tra il numero di osservazioni per cui $X(t_1)\leq x$ e il numero totale delle osservazioni:
+%
+\begin{align}
+F_X(x;t_1) &\triangleq \lim_{n\to\infty}\frac{n_{X(t_1)\leq x}}{n}.
+\end{align}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{aleatori-02}
+\caption{Funzione distribuzione di probabilità del primo ordine di un processo aleatorio. Essendo il numero totale degli esperimenti fatti $n=5$, la $F_X(x;t)$ valutata all'istante $t_1$ per $x=1.5$ vale $4/5=0.8$.}
+\end{figure}
+
+Da questa formulazione seguono direttamente alcune proprietà della distribuzione di probabilità $F_X(x;t)$:
+%
+\begin{enumerate}
+\item Il limite per $x\to+\infty$ è unitario:\label{p:limite-unitario}
+      \[F_X(+\infty)=1 \quad\text{ o meglio }\quad\lim_{x\to+\infty}F_X(x;t) = 1 \quad\text{per ogni }t.\]
+\item Il limite per $x\to-\infty$ è nullo:
+      \[F_X(-\infty)=0 \quad\text{ o meglio }\quad\lim_{x\to-\infty}F_X(x;t) = 0 \quad\text{per ogni }t.\]
+\item È compresa tra $0$ e $1$:
+      \[0\leq F_X(x;t)\leq 1 \quad\text{ per ogni }x,t.\]
+\item È una funzione monotona non decrescente, ovvero:
+      \[x_2>x_1 \quad\Longrightarrow\quad F_X(x_2;t)\geq F_X(x_1;t).\]
+\item La\margincomment{Proprietà riportata in~\citep[pag.~383]{b:luise} ma non citata dal professore.} probabilità dell'evento $\{x_1<X(t)\leq x_2\}$ può essere calcolata mediante la relazione:
+      \[\Pr\{x_1< X(t)\leq x_2\} = F_X(x_2;t)-F_X(x_1;t).\]
+\end{enumerate}
+
+Una descrizione completa del tutto equivalente (e anche più usata in pratica) si basa sulla \emph{funzione densità di probabilità del I ordine} del processo:
+%
+\begin{equation}
+f_X(x;t) \triangleq \frac{\partial F_X(x;t)}{\partial x}
+\end{equation}
+%
+da cui si ricava immediatamente la relazione inversa:
+%
+\[F_X(x;t) = \int_{-\infty}^{x} f_X(\alpha;t)\ud\alpha.\]
+
+La funzione densità di probabilità $f_X(x;t)$ gode delle seguenti proprietà:
+%
+\begin{enumerate}
+\item È non negativa, ovvero:
+      \[f_X(x;t)\geq 0\]
+      poiché la funzione distribuzione di probabilità è monotona non decrescente.
+\item L'integrale su tutto l'asse reale della funzione densità è unitario:
+      \[\int_{-\infty}^{+\infty}f_X(x;t)\ud x = 1\]
+      in quanto questo integrale rappresenta la probabilità dell'evento certo (deriva dalla proprietà \ref{p:limite-unitario} della distribuzione di probabilità).
+\item La probabilità dell'evento $\{x_1<X(t)\leq x_2\}$ può essere calcolata mediante la relazione:
+      \[\Pr\{x_1< X(t)\leq x_2\} = F_X(x_2;t)-F_X(x_1;t) = \int_{x_1}^{x_2}f_X(x;t)\ud x.\]
+\end{enumerate}
+
+La funzione $f_X(x;t)$ (o equivalentemente la $F_X(x;t)$) non è sufficiente a caratterizzare completamente le proprietà del processo. Consente di caratterizzare variabili aleatorie estratte dal processo purché considerate \emph{singolarmente}, ma da essa non si può ricavare una probabilità come \annotation[caption={Probabilità congiunta.}]{ad esempio}{Ma anche avendo la densità di ordine $n$-esimo, come si fa a calcolare questa probabilità?}
+%
+\[\Pr\{X(t_2)\geq X(t_1)\},\]
+%
+che richiede la considerazione \emph{congiunta} di \emph{due} variabili aleatorie estratte dallo stesso processo in \emph{istanti distinti}. Se c'è un'influenza reciproca tra i valori assunti dalle due variabili, le sole funzioni $F_X(x;t_1)$ e $F_X(x;t_2)$ non bastano, poiché non danno alcuna informazione sul comportamento congiunto delle due variabili aleatorie, ma riguardano \emph{solo} una grandezza senza minimamente tener conto anche dell'altra.
+
+Estraendo dal processo $X(t)$ le due variabili aleatorie $X(t_1)$ e $X(t_2)$, il comportamento statistico di questa coppia di variabili aleatorie è completamente descritto dalla loro \emph{funzione distribuzione di probabilità del II ordine del processo}:
+%
+\begin{equation}
+F_x(x_1,x_2;t_1,t_2) \triangleq \Pr\{(X(t_1)\leq x_1)\cap(X(t_2)\leq x_2)\}
+\end{equation}
+%
+(la quale, come vedremo, determina anche le proprietà statistiche \emph{marginali}, cioè relative a una sola variabile della coppia). Essa misura la probabilità che si verifichino congiuntamente i due eventi $X(t_1)\leq x_1$ e $X(t_2)\leq x_2$.
+
+La funzione distribuzione di probabilità del II ordine gode delle seguenti proprietà:
+\begin{enumerate}
+\item La funzione $F_{X}(x_1,x_2;t_1,t_2)$, comunque si scelga il valore $x_1$ è monotona non decrescente al variare di $x_2$; analogamente, comunque si scelga il valore $x_2$, è monotona non decrescente al variare di $x_1$.
+\item Soddisfa le uguaglianze:
+      \[F_{X}(-\infty, x_2) = 0 \quad\text{ e }\quad F_{X}(x_1, -\infty) = 0.\]
+\item Il limite per $x_1,x_2\to+\infty$ è unitario:
+      \[F_X(+\infty,+\infty) = 1\]
+\item È compresa tra $0$ e $1$:
+      \[0 \leq F_X(x_1,x_2) \leq 1.\]
+\item Le funzioni distribuzione \emph{marginali} delle variabili aleatorie $X(t_1)$ e $X(t_2)$ si ricavano dalla congiunta come segue:
+\begin{align}\label{eq:regole-marginali}
+\begin{split}
+F_X(x_1) &= F_{X}(x_1, +\infty)\\
+F_X(x_2) &= F_{X}(+\infty, x_2).
+\end{split}
+\end{align}
+\end{enumerate}
+
+La \emph{funzione densità di probabilità del II ordine} di un processo è espressa dalla:
+%
+\begin{equation}
+f_X(x_1,x_2;t_1,t_2) \triangleq \frac{\partial^2F_X(x_1,x_2;t_1,t_2)}{\partial x_1\partial x_2}
+\end{equation}
+%
+da cui la relazione inversa:
+%
+\begin{equation}
+F_X(x_1,x_2;t_1,t_2) = \int_{-\infty}^{x_1}\int_{-\infty}^{x_2} f_X(\alpha_1,\alpha_2;t_1,t_2)\ud\alpha_1\ud\alpha_2
+\end{equation}
+%
+e gode di proprietà simili a quelle già viste per la densità di probabilità del I ordine, ad esempio:
+%
+\begin{itemize}
+\item È non negativa:
+      \[f_X(x_1,x_2;t_1,t_2) \geq 0.\]
+\item L'integrale è unitario:
+      \[\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} f_X(\alpha_1,\alpha_2;t_1,t_2)\ud\alpha_1\ud\alpha_2 = 1.\]
+\end{itemize}
+
+Come è chiaro, il ragionamento che ha portato a estendere la descrizione dal primo al secondo ordine può essere iterato a piacere. La conclusione è che la descrizione statistica di un processo è \emph{completa} solo quando si è in grado di caratterizzare il comportamento statistico \emph{congiunto} di un numero $n$ arbitrario di variabili aleatorie $X(t_1)$, $X(t_2)$, \dots, $X(t_n)$ estratte da $X(t)$ a $n$ istanti diversi, comunque grande sia il numero intero $n$ e comunque si scelga la $n$-upla di istanti $(t_1, t_2, \dots, t_n)$. Ciò richiede, quindi, la conoscenza della \emph{funzione distribuzione di probabilità dell'\/$n$-esimo ordine}:
+%
+\begin{equation}
+F_X(\underline{x};\underline{t}) \triangleq \Pr\{(X(t_1)\leq x_1)\cap\dots\cap(X(t_n)\leq x_n)\}
+\end{equation}
+%
+o, equivalentemente, la \emph{funzione densità di probabilità di ordine $n$}:
+%
+\begin{equation}
+f_X(\underline{x};\underline{t}) \triangleq \frac{\partial^nF_X(\underline{x};\underline{t})}{\partial x_1\dots\partial x_n},
+\end{equation}
+%
+avendo definito i vettori $\underline{x}=(x_1,\dots,x_n)$ e $\underline{t}=(t_1,\dots,t_n)$.
+
+
+\subsection{Classi di variabili aleatorie}
+
+Classifichiamo ora le variabili aleatorie in alcune classi, a seconda del comportamento che presentano.
+%
+\begin{itemize}
+\item\emph{Variabili aleatorie uniformemente distribuite.} Una variabile aleatoria $X$ si dice \emph{uniforme} sull'intervallo $[a, b]$, e si scrive $X\in\mathcal{U}[a,b]$, se la sua densità di probabilità $f_X(x)$ è costante in tale intervallo e si annulla al di fuori di esso. Poiché l'integrale deve essere unitario, il valore della funzione su $[a,b]$ deve essere evidentemente pari a $1/(b-a)$:
+\[f_X(x) = \begin{cases}\frac{1}{b-a}& \text{se }x\in[a,b]\\0&\text{altrove.}\end{cases}\]
+Ogni evento del tipo $\{X \leq x\}$ ha sempre la medesima probabilità di verificarsi indipendentemente dalla posizione di $x$, purché $x\in[a,b]$.
+%
+\begin{figure}[t]
+\centering
+\subfloat{\framebox{\begin{pspicture*}(-1.5,-0.8)(4.3,2.2)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-1.3,-0.6)(4.1,2)
+  \psline[linewidth=1pt](-0.3,0)(0.5,0)
+  \psline[linewidth=0.5pt](0.5,0)(0.5,1)
+  \psline[linewidth=1pt](0.5,1)(2.4,1)
+  \psline[linewidth=0.5pt](2.4,0)(2.4,1)
+  \psline[linewidth=1pt](2.4,0)(3,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](-0.9,0)(-0.3,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](3,0)(3.8,0)
+  \uput[l](0,1.8){$f_X(x)$}
+  \uput[d](4,0){$x$}
+  \uput[d](0.5,-0.1){$a$}
+  \uput[d](2.4,0){$b$}
+  \uput[l](0,1){$\frac{1}{b-a}$}
+  \psline[linewidth=0.5pt](-0.05,1)(0.05,1)
+\end{pspicture*}}} \quad
+\subfloat{\framebox{\begin{pspicture*}(-1.5,-0.8)(4.3,2.2)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-1.3,-0.6)(4.1,2)
+  \psline[linewidth=1pt](-0.3,0)(0.5,0)
+  \psline[linewidth=1pt](0.5,0)(2.4,1)
+  \psline[linewidth=1pt](2.4,1)(3,1)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](-0.9,0)(-0.3,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](3,1)(3.8,1)
+  \uput[l](0,1.8){$F_X(x)$}
+  \uput[d](4,0){$x$}
+  \uput[d](0.5,-0.1){$a$}
+  \uput[d](2.4,0){$b$}
+  \psline[linewidth=0.5pt](2.4,-0.05)(2.4,0.05)
+  \uput[l](0,1){$\scriptstyle{1}$}
+  \psline[linewidth=0.5pt](-0.05,1)(0.05,1)
+\end{pspicture*}}}
+\caption{Densità e distribuzione di probabilità di una variabile aleatoria uniforme.}
+\end{figure}
+
+\item\emph{Variabile esponenziale unilatera.} Una variabile aleatoria $X$ è esponenziale unilatera se la sua densità di probabilità $f_X(x)$ è espressa dalla relazione
+\[f_X(x) = \frac{1}{\eta}\e^{-\frac{x}{\eta}}\u(x)\]
+ove $\eta$ è un parametro reale positivo. La funzione distribuzione $F_X(x)$ è allora:
+\begin{align*}
+F_X(x) &= \int_{-\infty}^{x}\frac{1}{\eta}\e^{-\frac{\alpha}{\eta}}\u(\alpha)\ud\alpha\\
+       &= \int_0^x \frac{1}{\eta}\e^{-\frac{\alpha}{\eta}}\ud\alpha\\
+       &= \left.-\e^{-\frac{\alpha}{\eta}}\right|_0^x = (1-\e^{-\frac{x}{\eta}})\u(x).
+\end{align*}
+Le variabili aleatorie appartenenti a questa classe si indicano con $\mathcal{E}[\eta]$.
+%
+\begin{figure}[!b]
+\centering
+\subfloat{\framebox{\begin{pspicture*}(-1.5,-0.7)(4.3,2.1)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-1.3,-0.1)(4,1.9)
+  \uput[d](3.9,0){$x$}
+  \uput[r](0,1.7){$f_X(x)$}
+  \uput[l](0,1.31){$\frac{1}{\eta}$}
+  \psline[linewidth=0.5pt](-0.05,1.31)(0.05,1.31)
+  \infixtoRPN{1.31*2.718^(-x/1.1)}
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](-0.9,0)(-0.3,0)
+  \psline[linewidth=1pt](-0.3,0)(0,0)
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{0}{3.2}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=50,linestyle=dashed,dash=2pt 2pt]{3.2}{3.6}{\RPN}
+\end{pspicture*}}} \quad
+\subfloat{\framebox{\begin{pspicture*}(-1.5,-0.7)(4.3,2.1)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-1.3,-0.1)(4,1.9)
+  \uput[d](3.9,0){$x$}
+  \uput[r](0,1.7){$F_X(x)$}
+  \uput[l](0,1){$1$}
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](-0.9,0)(-0.3,0)
+  \psline[linewidth=1pt](-0.3,0)(0,0)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](-0.05,1)(3.6,1)
+  \infixtoRPN{1-2.71^(-x/0.9)}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{0}{3.2}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=50,linestyle=dashed,dash=2pt 2pt]{3.2}{3.6}{\RPN}
+\end{pspicture*}}}
+\caption{Densità e distribuzione di probabilità di una variabile aleatoria esponenziale unilatera.}
+\end{figure}
+
+\item\emph{Variabile esponenziale bilatera.} Una variabile aleatoria $X$ è esponenziale unilatera se la sua densità di probabilità $f_X(x)$ è espressa dalla relazione
+\[f_X(x) = \frac{1}{2\eta}\e^{-\frac{\abs{x}}{\eta}}\u(x).\]
+Le variabili aleatorie appartenenti a questa classe si indicano con $\mathcal{E}_2[\eta]$.
+%
+\begin{figure}[t]
+\centering
+\framebox{\begin{pspicture*}(-4.7,-0.7)(5.3,2.1)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-4.5,-0.1)(5,1.9)
+  \uput[d](4.9,0){$x$}
+  \uput[r](0,1.7){$f_X(x)$}
+  \uput[l](-0.2,1.2){$\frac{1}{2\eta}$}
+  \infixtoRPN{1.2*2.718^(-abs(x)/1.1)}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=50,linestyle=dashed,dash=2pt 2pt]{-4.3}{-3.3}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{-3.3}{3.6}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=50,linestyle=dashed,dash=2pt 2pt]{3.6}{4.6}{\RPN}
+\end{pspicture*}}
+\caption{Funzione densità di probabilità di una variabile aleatoria esponenziale bilatera.}
+\end{figure}
+
+\item\emph{Variabili aleatorie gaussiane o normali.} 
+Si denotano con la scrittura $\mathcal{N}(\eta,\sigma^2)$ e sono caratterizzate da una densità di probabilità a forma di ``campana di Gauss'':
+\[f_X(x;t) = \frac{1}{\sqrt{2\pi}\sigma}\e^{-\frac{(x-\eta)^2}{2\sigma^2}}.\]
+%
+\begin{figure}[t]
+\centering
+\framebox{\begin{pspicture*}(-4.7,-0.7)(5.3,2.1)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-4.5,-0.1)(5,1.9)
+  \uput[d](4.9,0){$x$}
+  \uput[r](0,1.7){$f_X(x)$}
+  \uput[l](-0.2,1.2){$\frac{1}{\sqrt{2\pi}\sigma}$}
+  \psline[linewidth=0.5pt](-0.05,1.2)(0.05,1.2)
+  \infixtoRPN{1.2*2.718^(-((x-1)^2)/1.1)}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=50,linestyle=dashed,dash=2pt 2pt]{-4.3}{-3.3}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{-3.3}{3.6}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=50,linestyle=dashed,dash=2pt 2pt]{3.6}{4.6}{\RPN}
+  \psline[linewidth=0.5pt](1,-0.05)(1,0.05)
+  \uput[d](1,0){$\eta$}
+\end{pspicture*}}
+\caption{Funzione densità di probabilità di una variabile aleatoria gaussiana.}
+\end{figure}
+
+\end{itemize}
+
+
+
+\section{Indici statistici del I e II ordine di un processo aleatorio}
+
+È abbastanza chiaro che, assegnato un processo $X(t)$, è impresa disperata pervenire alla sua conoscenza statistica completa. In alcuni casi è sufficiente in realtà conoscere la distribuzione (o densità) di probabilità del primo ordine, raramente si cerca di misurare o calcolare quella del secondo. Molto più spesso ci si accontenta di \emph{parametri statistici semplificati}, discussi in questo paragrafo.
+
+\subsection{Indici del I ordine: valor medio, potenza, varianza}
+
+Una grandezza particolarmente significativa nella descrizione statistica semplificata di un processo aleatorio $X(t)$ è la sua funzione \emph{valor medio statistico} $\eta_X(t)$. Per definizione, il valore di questa funzione a un istante $t$ è il valor medio della variabile aleatoria $X(t)$, estratta dal processo all'istante stesso:%
+\footnote{Quando si ha a che fare con un problema di \emph{trasformazione} di una variabile aleatoria $Y = g(X)$ (o anche di un processo aleatorio), si introduce il cosiddetto \emph{operatore valor medio}:
+%
+\[\E\{g(X)\}\triangleq \int_{-\infty}^{+\infty} g(x)f_X(x)\ud x\]
+%
+che può esser visto come una \emph{somma} dei valori $g(x)$ \emph{pesata} dalla densità di probabilità di $X$. La lettera ``E'' è l'iniziale della parola inglese \emph{expectation}, traducibile in italiano con ``aspettativa''. Si noti che, essendo un integrale, gode della proprietà di linearità.}
+%
+\begin{equation}
+\eta_X(t) \triangleq \E\{X(t)\} = \int_{-\infty}^{+\infty} xf_X(x;t)\ud x.
+\end{equation}
+%
+Può esser vista come l'integrale di tutti i valori della $x$ che il processo può assumere pesato ciascuno con la relativa probabilità di presentazione: $\eta_X(t)$ rappresenta in certo senso un valore ``baricentrico'' attorno al quale si distribuiscono i valori della variabile aleatoria $X(t)$ stessa (perciò è un indice di \emph{posizione}).
+
+La funzione valor medio è una \emph{statistica del primo ordine} di $X(t)$ poiché il suo calcolo prevede la considerazione di una sola variabile aleatoria estratta dal processo, e quindi \emph{richiede la conoscenza della sola densità di probabilità del primo ordine}.
+
+Un'altra grandezza statistica del primo ordine utile per caratterizzare statisticamente il processo $X(t)$ è la funzione \emph{potenza media statistica istantanea $P_X(t)$} (detta brevemente, \emph{potenza media}):
+%
+\begin{equation}\label{eq:potenza-processo}
+P_X(t) \triangleq \E\{\abs{X(t)}^2\} = \int_{-\infty}^{+\infty} \abs{x}^2f_X(x;t)\ud x.
+\end{equation}
+
+Per i segnali aleatori si definisce anche la \emph{funzione varianza} del processo:
+%
+\begin{equation}\label{eq:varianza-processo}
+\sigma^2_X(t) \triangleq \E\{\abs{X(t)-\eta_X(t)}^2\} = \int_{-\infty}^{+\infty}\abs{x-\eta_X(t)}^2f_X(x;t)\ud x
+\end{equation}
+%
+cioè la varianza della variabile aleatoria ottenuta fissando l'istante $t$. Può anche essere espressa come la potenza media istantanea del \emph{processo di scarto}, definito come il processo di partenza a meno del valor medio:
+%
+\[L_X(t) = X(t)- \eta_X(t).\]
+
+Nelle~\eqref{eq:potenza-processo}%
+\margincomment{Questa relazione vale in generale anche per segnali complessi, scrivendo come ovvio: $\sigma_X^2(t) = P_X(t)-\abs{\eta_X(t)}^2$.}
+e~\eqref{eq:varianza-processo} spesso scompare il modulo, avendo a che fare con segnali reali. Proprio considerando segnali reali, sviluppando la~\eqref{eq:varianza-processo} si ricava facilmente la relazione tra potenza media e varianza:
+%
+\begin{equation}\label{eq:relazione-potenza-media-varianza}
+\sigma_X^2(t) = P_X(t)-\eta_X^2(t).
+\end{equation}
+%
+Infatti, tenendo conto che la $\eta_X(t)$ è una funzione deterministica, si ha:
+%
+\begin{align*}
+\sigma^2_X(t) &= \E\{\bigl(X(t)-\eta_X(t)\bigr)^2\}\\
+   &= \E\{X^2(t)\} - 2\E\{\eta_X(t)\cdot X(t)\} + \E\{\eta_X^2(t)\}\\
+   &= P_X(t) - 2\eta_X(t)\E\{X(t)\} + \eta_X^2(t)\\
+   &= P_X(t) - \eta^2_X(t).
+\end{align*}
+%
+Si può anche dire, in certi termini, che la varianza equivale alla differenza tra l'aspettazione del quadrato e il quadrato dell'aspettazione.
+
+La radice quadrata $\sigma_X(t)\geq 0$ della varianza è la \emph{deviazione standard}, che è un \emph{indice di dispersione}, poiché rappresenta di quanto ci si discosta dal valore medio.  A maggiore varianza corrispondono valori molto dispersi attorno al valor medio, e viceversa. Al limite, una variabile aleatoria con varianza nulla ha valori \emph{per niente} dispersi attorno al valor medio e la sua densità di probabilità diventa ``infinitamente appuntita'' (una delta di Dirac) attorno a $\eta_X$: in pratica la variabile aleatoria ``collassa'' in un valore \emph{certo}.
+
+\begin{figure}[t]
+\centering
+\framebox{\begin{pspicture*}(-4.7,-0.9)(5.3,2.1)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-4.5,-0.1)(5,1.9)
+  \uput[d](4.9,0){$x$}
+  \uput[l](2.7,1.5){$\scriptstyle{f_X(x;t_1)}$}
+  \uput[r](-2.6,1){$\scriptstyle{f_X(x;t_2)}$}
+  \psline[linewidth=0.5pt]{->}(-1.9,0.7)(-1.3,0.4)
+  \psline[linewidth=0.5pt]{->}(1.9,1.2)(1.3,1)
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]% 10*\e^(-abs(x/12)^2)
+         {-4.3}{4.6}{0.8 2.718281828459045235 x 0.5 sub 1.5 div abs 2 exp neg exp mul}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]% 10*\e^(-abs(x/12)^2)
+         {-4.3}{4.6}{1.4 2.718281828459045235 x 0.5 sub 0.8 div abs 2 exp neg exp mul}
+  \psline[linewidth=0.5pt](0.5,-0.05)(0.5,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](0.5,0.05)(0.5,1.4)
+  \uput[d](0.5,0){$\scriptscriptstyle{\eta_X(t_1)}$}
+  \uput[d](0.5,-0.28){$\scriptscriptstyle{\eta_X(t_2)}$}
+\end{pspicture*}}
+\caption{La varianza fornisce un indice di dispersione, che rappresenta quanto poco i valori sono concentrati attorno al valor medio.}
+\label{fig:dispersione-attorno-al-valor-medio}
+\end{figure}
+%
+Si consideri il grafico nella figura~\ref{fig:dispersione-attorno-al-valor-medio}. Si noti, innanzitutto, che si è supposto che il valor medio $\eta_X(t_2)$ della variabile aleatoria $X(t_2)$ coincida con $\eta_X(t_1)$. Si ha una situazione in cui $\sigma_X(t_2)>\sigma_X(t_1)$, ossia la densità di probabilità $f_X(x;t_2)$ ha una dispersione maggiore attorno al suo valor medio rispetto alla dispersione della $f_X(x;t_1)$ attorno a $\eta_X(t_1)$.
+
+
+\subsection{Indici del II ordine: autocorrelazione e autocovarianza}
+
+Introduciamo adesso due parametri statistici del \emph{secondo ordine} di fondamentale importanza per lo studio dei segnali aleatori.
+
+Fissiamo due istanti di tempo arbitrari $t_1$ e $t_2$ sul nostro processo, ottenendo le due variabili aleatorie $X(t_1)$ e $X(t_2)$. La \emph{funzione di autocorrelazione} del processo si calcola come correlazione%
+\footnote{La \emph{correlazione} tra due \emph{variabili} aleatorie $X$ e $Y$ si calcola come:
+\[r_{XY} \triangleq \E\{XY^*\} = \int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} xyf_{XY}(x,y)\ud x\ud y.\]}
+tra queste due variabili aleatorie:
+%
+\[R_X(t_1,t_2) \triangleq \E\{X(t_1)X^*(t_2)\} = \int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}x_1x_2f_X(x_1,x_2;t_1,t_2)\ud x_1 \ud x_2.\]
+%
+Naturalmente, il valore di questa correlazione risulterà \emph{funzione dei due istanti $t_1$ e $t_2$} ai quali le variabili sono state estratte, e potrà essere calcolata solo conoscendo la funzione densità di probabilità \emph{del secondo ordine} del processo. Inoltre, si chiama funzione di \emph{auto}correlazione perché le due variabili aleatorie di cui si calcola la correlazione sono estratte dallo \emph{stesso} processo aleatorio.
+
+\begin{definizione}
+Due variabili aleatorie si dicono \emph{ortogonali} quando la loro correlazione è nulla.
+\end{definizione}
+
+Se invece tra le due variabili aleatorie $X(t_1)$ e $X(t_2)$ calcoliamo la covarianza%
+\footnote{La \emph{covarianza} tra due \emph{variabili} aleatorie è definita come:
+\[c_{XY} \triangleq \E\{(X-\eta_X)(Y-\eta_Y)\} = \int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} (x-\eta_X)(y-\eta_Y)f_{XY}(x,y)\ud x\ud y.\]}
+otteniamo la \emph{funzione di autocovarianza} di $X(t)$:
+%
+\begin{align*}
+C_X(t_1,t_2) &\triangleq \E\big\{\big(X(t_1)-\eta_X(t_1)\big)\big(X(t_2)-\eta_X(t_2)\big)^*\big\}\\
+    &= \int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}
+       \big(x_1-\eta_X(t_1)\big)\big(x_2-\eta_X(t_2)\big) f_X(x_1,x_2;t_1,t_2)\ud x_1\ud x_2
+\end{align*}
+%
+che equivale alla funzione di autocorrelazione del processo di scarto:
+%
+\[C_X(t_1,t_2) = R_{L_X}(t_1,t_2) = \E\{L_X(t_1)L_X^*(t_2)\}.\]
+
+La%
+\margincomment{Da~\citep[pag.~412]{b:luise}.}
+covarianza è un parametro statistico molto importante che tende ad accertare se tra le due variabili $X(t_1)$ e $X(t_2)$ esiste una relazione di dipendenza di tipo \emph{lineare}, e che comunque misura la tendenza di variazione congiunta (perciò \emph{co}-varianza) delle due. Se la covarianza è grande e positiva, le due variabili aleatorie $X(t_1)$ e $X(t_2)$ tendono a discostarsi dal rispettivo valor medio nella stessa direzione, cioè le due quantità $(X(t_1)-\eta_X(t_1))$ e $(X(t_2)-\eta_X(t_2))$ tendono ad avere lo stesso segno.
+
+\begin{definizione}
+Due variabili aleatorie si dicono \emph{incorrelate} quando la loro covarianza è nulla.
+\end{definizione}
+
+È facile verificare che se due variabili aleatorie $X(t_1)$ e $X(t_2)$ sono ortogonali e inoltre $\eta_X(t)=0$, allora esse sono anche incorrelate.
+
+Le%
+\margincomment{Il professore preferisce scriverle quasi sempre in questa forma.}
+funzioni di autocorrelazione e autocovarianza possono essere espresse anche in una forma leggermente diversa. Ponendo $t_2=t$ e $t_1=t+\tau$, sono:
+%
+\begin{align}
+R_X(t+\tau,t) &= \E\{X(t+\tau)X^*(t)\}\\
+C_X(t+\tau,t) &= \E\big\{\big(X(t+\tau)-\eta_X(t+\tau)\big)\big(X(t)-\eta_X(t)\big)^*\big\}.
+\end{align}
+
+Da queste definizioni si ricava immediatamente la relazione:
+%
+\begin{equation}\label{eq:relazione-autocovarianza-autocorrelazione}
+C_X(t+\tau,t) = R_X(t+\tau,t) - \eta_X(t+\tau)\eta_X(t).
+\end{equation}
+%
+Infatti, se consideriamo segnali reali:
+%
+\begin{align*}
+C_X(t+\tau,t) &= \E\big\{\big(X(t+\tau)-\eta_X(t+\tau)\big)\big(X(t)-\eta_X(t)\big)^*\big\}\\
+    &= \E\{X(t+\tau)X(t)-X(t+\tau)\eta_X(t)\\
+    &\quad -\eta_X(t+\tau)X(t)+\eta_X(t+\tau)\eta_X(t)\}\\
+    &= \E\{X(t+\tau)X(t)\}-\eta_X(t)\E\{X(t+\tau)\}\\
+    &\quad -\eta_X(t+\tau)\E\{X(t)\}+\eta_X(t+\tau)\eta_X(t)\\
+    &= R_X(t+\tau,t) - \eta_X(t)\eta_X(t+\tau)
+\end{align*}
+
+Se fissiamo gli istanti $t_1=t_2=t$ (o equivalentemente $\tau=0$), la funzione di autocorrelazione fornisce la potenza media del processo:
+%
+\[R_X(t,t) = \left.R_X(\tau)\right|_{\tau=0} = \E\{X(t)X^*(t)\} = \E\{X^2(t)\} = P_X(t)\]
+%
+mentre la funzione di covarianza restituisce la varianza:
+%
+\[C_X(t,t) = \left.C_X(\tau)\right|_{\tau=0} = \E\{(X(t)-\eta_X(t))^2\} = \sigma^2_X(t).\]
+%
+cosicché la relazione~\eqref{eq:relazione-autocovarianza-autocorrelazione} diventa uguale alla~\eqref{eq:relazione-potenza-media-varianza}.
+
+
+
+\section{Processi aleatori stazionari}
+
+\subsection{Stazionarietà in senso stretto}
+
+Come già visto nei precedenti paragrafi, gli indici statistici di un processo, ad esempio la funzione valor medio o la funzione di autocorrelazione e, a maggior ragione, le funzioni densità di probabilità, dipendono in generale dalla scelta degli $n$ istanti di tempo $t_1,\dots,t_n$ in corrispondenza dei quali viene valutato il processo. Se \emph{spostiamo rigidamente} tutti gli istanti temporali, cioè consideriamo la nuova $n$-upla di istanti $t_1+\Delta t,\dots,t_n+\Delta t$, con $\Delta t$ arbitrario, in generale, otteniamo un diverso valore della funzione densità di probabilità di ordine $n$. Se, viceversa, il valore della funzione densità resta invariato \emph{qualunque sia $\Delta t$ e per ogni ordine $n$}, allora il processo si dice \acf{SSS}:
+%
+\begin{align}\label{eq:stazionarieta-in-senso-stretto-1}
+\begin{split}
+& f_X(x_1,x_2,\dots,x_n; t_1+\Delta t,t_2+\Delta t,\dots,t_n+\Delta t)\\
+&\quad = f_X(x_1,x_2,\dots,x_n; t_1,t_2,\dots,t_n) \quad\text{ per ogni }n, \Delta t.
+\end{split}
+\end{align}
+%
+La stazionarietà in senso stretto richiede dunque che le funzioni densità di probabilità del processo di qualunque ordine siano \emph{invarianti} rispetto a una traslazione rigida degli istanti temporali, e ciò significa che i processi $X(t)$ e $X(t + \Delta t)$ \emph{hanno le stesse statistiche} e quindi sono \emph{equivalenti} dal punto di vista statistico. Ma questo non significa che $X(t+\Delta t)$ sia \emph{uguale} a $X(t)$; infatti, le funzioni campione di $X(t+\Delta t)$ sono ottenute da quelle di $X(t)$ per traslazione temporale, e quindi i due processi sono differenti, benché indistinguibili con misure statistiche.
+
+Discutiamo ora le conseguenze di questa definizione. Se consideriamo la densità del primo ordine del processo, la definizione~\eqref{eq:stazionarieta-in-senso-stretto-1} ci dice che deve valere l'uguaglianza
+%
+\[f_X(x;t) = f_X(x;t+\Delta t), \quad \text{ per ogni } \Delta t.\]
+%
+Poiché $\Delta t$ è arbitrario, se ne conclude che la densità di probabilità del primo ordine $f_X(x;t)$ \emph{non} dipende dal tempo:
+%
+\begin{equation}\label{eq:stazionarieta-primo-ordine}
+f_X(x;t) \equiv f_X(x).
+\end{equation}
+%
+In tal caso il processo è detto \emph{stazionario del I ordine}, e tutte le grandezze statistiche del primo ordine del processo sono a loro volta indipendenti dal tempo:
+%
+\[\eta_X(t) \equiv \eta_X,\quad P_X(t)\equiv P_X,\quad \sigma_X^2(t)\equiv \sigma_X^2.\]
+
+Consideriamo ora le implicazioni della stazionarietà sulle statistiche del \emph{secondo} ordine. Immaginiamo, allora, di osservare il processo aleatorio $X(t)$ a due istanti arbitrari $t_1$ e $t_2$, estraendo da esso le variabili aleatorie $X(t_1)$ e $X(t_2)$: il comportamento statistico congiunto di tali variabili è descritto dalla funzione $f_X(x_1,x_2;t_1,t_2)$. Se consideriamo, poi, la coppia di variabili aleatorie $X(t_1+\Delta t)$ e $X(t_2+\Delta t)$ estratte agli istanti $t_1+\Delta t$ e $t_2+\Delta t$, deve essere
+%
+\[f_X(x_1,x_2;t_1,t_2) = f_X(x_1,x_2, t_1+\Delta t,t_2+\Delta t).\]
+%
+Considerando che anche in questo caso $\Delta t$ è arbitrario, è chiaro che la funzione $f_X(x_1,x_2;t_1,t_2)$ non può dipendere da $t_1$ e $t_2$ \emph{separatamente}, ma deve dipendere soltanto dalla \emph{differenza} $t_1-t_2=\tau$ tra gli istanti temporali, che resta appunto invariata in una traslazione rigida dei tempi. La condizione per la \emph{stazionarietà del II ordine} può cioè esser scritta come:
+%
+\begin{equation}\label{eq:stazionarieta-secondo-ordine}
+f_X(x_1,x_2;t+\tau,t) \equiv f_X(x_1,x_2;\tau).
+\end{equation}
+%
+Tutte le statistiche del \emph{secondo ordine}, e in particolare la funzione di autocorrelazione e la funzione di autocovarianza, godono evidentemente di questa stessa proprietà:
+%
+\[R_X(t+\tau,t) \equiv R_x(\tau),\quad C_X(t+\tau,t) \equiv C_X(\tau).\]
+
+Generalizzando, è chiaro che la densità di probabilità (e tutte le statistiche) di ordine $n$ di un processo \ac{SSS} dipendono soltanto dalle $(n-1)$ differenze (distanze) tra gli $n$ istanti. La relazione~\eqref{eq:stazionarieta-in-senso-stretto-1} può esser perciò riscritta proprio esplicitando le differenze tra gli istanti temporali:
+%
+\begin{align}\label{eq:stazionarieta-in-senso-stretto-2}
+\begin{split}
+& f_X(x_1,x_2,\dots,x_n; t,t+\tau_1,\dots,t+\tau_{n-1})\\
+&\quad = f_X(x_1,x_2,\dots,x_n; \tau_1,\tau_2,\dots,\tau_{n-1}) \quad\text{ per ogni }n.
+\end{split}
+\end{align}
+
+Attraverso le ``regole marginali'' (vedi le relazioni~\eqref{eq:regole-marginali} a pag.~\pageref{eq:regole-marginali}) non è difficile verificare che se un processo è stazionario di ordine $n$, allora è stazionario anche di ordine $k\leq n$, mentre se non è stazionario di ordine $k$, allora non sarà stazionario neanche per ogni $m\geq k$.
+
+
+\subsection{Stazionarietà in senso lato}
+
+La verifica della stazionarietà in senso stretto di un processo è, in generale, estremamente difficoltosa (salvo casi particolari come i \emph{processi gaussiani}, che studieremo nel paragrafo~\ref{sec:processi-gaussiani} a pag.~\pageref{sec:processi-gaussiani}). Di solito nelle applicazioni si considera una definizione di stazionarietà molto meno restrittiva e più facile da verificare della precedente: la \emph{stazionarietà in senso lato}.
+
+Un processo aleatorio $X(t)$ è \acf{SSL} se è stazionario in valor medio (ossia $\eta_X(t)$ è \emph{costante}) e se è stazionario in autocorrelazione (ovvero $R_X(t_1,t_2)$ non dipende separatamente dai due istanti ma solo dalla differenza $\tau$):
+%
+\begin{equation}\label{eq:stazionarieta-in-senso-lato}
+\begin{cases}\eta_X(t) = \eta_X\\
+R_X(t+\tau,t) = R_X(\tau).\end{cases}
+\end{equation}
+%
+La definizione di stazionarietà in senso lato coinvolge solo due \emph{particolari} statistiche semplificate, una del primo e l'altra del secondo ordine, e \emph{non} richiede alcuna proprietà di invarianza delle densità di probabilità. Infatti, un processo stazionario in senso stretto è anche stazionario in senso lato, mentre la stazionarietà in senso lato non implica quella in senso stretto.
+
+Inoltre, se un processo è stazionario del I ordine è anche stazionario in valor medio e analogamente se è stazionario del II ordine è anche stazionario in autocorrelazione, mentre non valgono le implicazioni inverse. Ancora, data la stazionarietà in autocorrelazione, nulla si può sapere sulla stazionarietà in valor medio, e viceversa (d'altronde se così non fosse le due condizioni~\eqref{eq:stazionarieta-in-senso-lato} si ridurrebbero a una sola).
+
+La stazionarietà in senso lato implica la stazionarietà in autocovarianza:
+%
+\begin{align*}
+C_X(t+\tau,t) &= R_X(t+\tau,t)-\eta_X(t+\tau)\eta_X(\tau)\\
+              &= R_X(\tau)-\eta_X^2 = C_X(\tau).
+\end{align*}
+
+
+\subsection{Proprietà della funzione di autocorrelazione di un processo stazionario in senso lato}
+\label{sec:proprieta-autocorrelazione-di-processi-ssl}
+
+Per quanto già detto, se il processo $X(t)$ è stazionario almeno in senso lato, la funzione di autocorrelazione dipende soltanto dalla \emph{differenza} $\tau$ tra i due istanti:
+%
+\[R_X(t+\tau,t) = R_X(\tau).\]
+
+La funzione di autocorrelazione $R_X(\tau)$ gode di alcune proprietà fondamentali, non specifiche, in realtà, dei processi, ma comuni alle funzioni di autocorrelazione dei segnali determinati e aleatori. Vediamo, ora, queste proprietà per una processo \ac{SSL}.
+%
+\begin{enumerate}
+\item La funzione di autocorrelazione $R_X(\tau)$ è pari:
+      \[R_X(\tau) = R_X(-\tau).\]
+      Per dimostrare questa relazione, basta osservare che, per la stazionarietà del processo, la correlazione tra le variabili aleatorie $X(t+\tau)$ e $X(t)$ assume il medesimo valore della correlazione tra le variabili $X(t)$ e $X(t-\tau)$ ottenute per traslazione rigida della quantità $-\tau$:
+      \[R_X(\tau) = \E\{X(t+\tau)X(t)\} = \E\{X(t)X(t-\tau)\} = R_X(-\tau).\]
+\item Il valore assunto nell'origine eguaglia la potenza media statistica del processo:
+      \[R_X(0) = \E\{X(t)^2\} = P_X \geq 0.\]
+\item È massima in modulo nell'origine:
+      \[R_X(0) \geq \abs{R_X(\tau)}.\]
+\item La funzione di autocorrelazione è semidefinita positiva, cioè:
+      \[\TCF[R_X(\tau)]\geq 0.\]
+\item Se%
+\margincomment{Il professore non ha citato questa proprietà\dots}
+$R_X(\tau)$ non contiene componenti periodiche, il valore limite di $R_X(\tau)$ per $\tau\to\infty$ è pari al quadrato del valore medio:
+      \[\lim_{\tau\to\infty} R_X(\tau) = \eta_X^2.\]
+      Per giustificare questa proprietà partiamo dalla relazione:
+      \[R_X(\tau) = C_X(\tau) + \eta_X^2\]
+      Al%
+      \margincomment{\dots che però è concettualmente significativa.}
+      crescere di $\tau$, la distanza tra gli istanti $t$ e $t-\tau$ aumenta e quindi le funzioni campione del processo hanno ``tempo'' per variare sensibilmente. Questo comporta che i valori delle variabili aleatorie $X(t)$ e $X(t-\tau)$ tendono a diventare \emph{incorrelati}, cioè la loro covarianza $C_X(\tau)$ si riduce. Al limite, quando $\tau\to\infty$ la covarianza si annulla e la funzione di autocorrelazione tende a coincidere con il quadrato del valor medio.
+\end{enumerate}
+
+Per%
+\margincomment{Questi argomenti non sono stati trattati dal prof., ma sono concettualmente significativi.}%
+\margincomment{Vedi~\citep{b:luise} a pagina~460 e seguenti.}
+chiarire qual è il significato della funzione di autocorrelazione di un processo \emph{stazionario}, consideriamo proprio due processi stazionari $X(t)$ e $Y(t)$. Supponiamo che abbiano \emph{stesse statistiche del primo ordine} (valor medio, potenza, densità del primo ordine), ma che differiscano nella rispettiva \emph{velocità media di variazione} delle funzioni campione: le prime più rapide e le seconde più lente. Se fissiamo sul processo $Y(t)$ due istanti $Y(\bar{t}+\tau)$ e $Y(\bar{t})$ alla distanza $\tau$, le funzioni campione, piuttosto lente, hanno avuto poco tempo per variare, e quindi le variabili aleatorie $Y(\bar{t}+\tau)$ e $Y(\bar{t})$ sono \emph{molto correlate}. Viceversa, nello stesso lasso di tempo $\tau$ le funzioni campione del processo $X(t)$, assai più veloci, sono variate considerevolmente, e i valori delle due variabili aleatorie $X(\bar{t}+\tau)$ e $X(\bar{t})$ sono molto meno correlati. In conclusione, la funzione $R_X(\tau)$ \emph{decresce velocemente} a zero quando $\tau$ aumenta (figura~\ref{fig:autocorrelazione-rapida}), mentre la funzione $R_Y(\tau)$ decresce più lentamente (figura~\ref{fig:autocorrelazione-lenta}).
+
+\begin{figure}[t]
+\centering
+\subfloat[][]{\framebox{\begin{pspicture*}(-1.5,-0.7)(1.9,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-1.3,-0.4)(1.6,1.7)
+  \psline[linewidth=1pt](-0.9,0)(0,1)
+  \psline[linewidth=1pt](0,1)(0.9,0)
+  \psline[linewidth=0.5pt](-0.9,-0.05)(-0.9,0.05)
+  \psline[linewidth=0.5pt](0.9,-0.05)(0.9,0.05)
+  \uput[d](-0.9,0){$-\tau_\mathrm{cor}$}
+  \uput[d](0.9,0){$+\tau_\mathrm{cor}$}
+  \uput[r](0,1.5){$R_X(\tau)$}
+  \uput[u](1.6,0){$\tau$}
+\end{pspicture*}}  \label{fig:autocorrelazione-rapida} } \quad
+\subfloat[][]{\framebox{\begin{pspicture*}(-2,-0.7)(2.4,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-1.8,-0.4)(2.1,1.7)
+  \psline[linewidth=1pt](-1.4,0)(0,1)
+  \psline[linewidth=1pt](0,1)(1.4,0)
+  \psline[linewidth=0.5pt](-1.4,-0.05)(-1.4,0.05)
+  \psline[linewidth=0.5pt](1.4,-0.05)(1.4,0.05)
+  \uput[d](-1.4,0){$-\tau_\mathrm{cor}$}
+  \uput[d](1.4,0){$+\tau_\mathrm{cor}$}
+  \uput[r](0,1.5){$R_Y(\tau)$}
+  \uput[u](2,0){$\tau$}
+\end{pspicture*}}  \label{fig:autocorrelazione-lenta} } \quad
+\subfloat[][]{\framebox{\begin{pspicture*}(-2,-0.7)(2,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-1.8,-0.4)(1.7,1.7)
+  \psline[linewidth=1pt](-1.3,1)(1.3,1)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-1.3,0)(-1.3,1)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](1.3,0)(1.3,1)
+  \uput[r](0,1.5){$R(\tau)$}
+  \uput[d](1.6,0){$\tau$}
+\end{pspicture*}}}
+\caption{Due esempi di funzione di autocorrelazione con i rispettivi tempi di correlazione sono rappresentati a sinistra e al centro. Il grafico a destra \emph{non} può essere quello di una funzione di autocorrelazione in quanto la sua \ac{TCF} assume valori negativi.}
+\end{figure}
+
+Dunque, considerando un processo aleatorio stazionario, la funzione di autocorrelazione ne misura la \emph{rapidità di variazione}.
+
+Per%
+\margincomment{Si veda il paragrafo~\ref{sec:processo-di-rumore-bianco}.}
+quantificare con un singolo parametro la ``velocità'' del segnale si introduce il \emph{tempo di correlazione} $\tau_\mathrm{cor}$ definito come la minima distanza che deve intercorrere tra due istanti di osservazione affinché le variabili aleatorie estratte dal processo siano incorrelate. Evidentemente, il tempo di correlazione è pari alla \emph{semidurata} della funzione di autocorrelazione, eventualmente definita in modo convenzionale se l'autocorrelazione non ha durata rigorosamente limitata. A tempo di correlazione grande corrispondono funzioni campione che variano lentamente, mentre a tempo di correlazione piccolo corrispondono funzioni campione aventi veloci variazioni.
+
+
+\subsection{Processi parametrici}
+
+Quanto l'andamento delle funzioni campione di un processo $X(t)$ dipende dal valore di un numero finito di \emph{variabili aleatorie} (parametri), allora si dice che $X(t)$ è un \emph{processo parametrico}, e si scrive:
+%
+\[X(t) = \mathcal{Z}(t;\underline{\Theta})\]
+%
+dove $\underline{\Theta}$ è il vettore dei parametri (variabili aleatorie).
+Queste variabili aleatorie servono in un certo senso da ``intermediario'' tra lo spazio campione e le funzioni campione: l'associazione tra i risultati dell'evento e la funzione campione non è diretta, bensì passa attraverso il particolare valore che la variabile aleatoria prende nella prova dell'esperimento.
+
+Quando $\underline{\Theta}$ si riduce a un unico parametro, il processo è detto \emph{monoparametrico}.
+
+
+\section{Filtraggio di un segnale aleatorio}
+\label{sec:filtraggio-segnali-aleatori}
+
+Un caso tipico dell'elaborazione dei segnali è quello in cui il processo osservato $X(t)$ è costituito da una componente determinata $s(t)$ (il segnale ``utile'') accompagnata da un \emph{disturbo} aleatorio a valor medio nullo $D(t)$ (chiamato anche \emph{rumore}):
+%
+\begin{equation}
+X(t) = s(t) + D(t).
+\end{equation}
+%
+Naturalmente, si cercherà di elaborare $X(t)$ in modo da preservare la componente utile $s(t)$ e reiettare il più possibile il disturbo $D(t)$, usando a tal scopo un \emph{filtro}, cioè un \ac{SLS}. Abbiamo già studiato il comportamento dei \ac{SLS} riguardo ai segnali determinati. In questo paragrafo studieremo il \emph{filtraggio di un segnale aleatorio}.
+
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(60,10)
+\put(10,5){\vector(1,0){10}}
+\put(40,5){\vector(1,0){10}}
+\put(20,1){\framebox(20,8){$h(t)$}}
+\put(2,4){$X(t)$}
+\put(52,4){$Y(t)$}
+\end{picture}}\end{center}
+
+\subsection{Relazione ingresso-uscita tra le statistiche semplificate}
+\label{sec:relazione-io-tra-le-statistiche}
+
+Inviamo dunque un processo aleatorio $X(t)$ in ingresso a un \ac{SLS}. L'uscita $Y(t)$ è un processo le cui funzioni campione vengono messe in corrispondenza con le funzioni campione di $X(t)$ tramite la già nota:
+%
+\[y_i(t) = x_i(t) \otimes h(t) = \int_{-\infty}^{+\infty}x_i(\alpha)\,h(t-\alpha)\ud\alpha\]
+%
+dove $h(t)$ è la risposta impulsiva del sistema in esame. Questo vale \emph{per qualunque realizzazione} $x_i(t)$ del processo $X(t)$, e quindi scriveremo per riassumere ciò:
+%
+\[Y(t) = X(t) \otimes h(t)\]
+%
+ricordando che non va intesa come convoluzione tra segnali aleatori, ma tra coppie di funzioni campione \emph{determinate} $x_i(t)$ e $y_i(t)$.
+In altri termini, filtrare un processo aleatorio $X(t)$, insieme di funzioni $\{x_1(t),\dots,x_n(t)\}$, significa filtrare le singole realizzazioni, ottenendo le realizzazioni $\{y_1(t),\dots,y_n(t)\}$ costituenti il processo $Y(t)$.
+
+Purtroppo il problema di ricavare le densità di probabilità del processo di uscita a partire da quelle del processo d'ingresso è, salvo casi particolari, \emph{insolubile}.
+Si possono però ricavare la funzione valor medio e la funzione di autocorrelazione del processo $Y(t)$ supponendo di conoscere le stesse statistiche di $X(t)$.
+Il valor medio di $Y(t)$ è:
+%
+\begin{align*}
+\eta_Y(t) &= \E\{Y(t)\}=\E\biggl\{\int_{-\infty}^{+\infty} h(\alpha)X(t-\alpha)\ud\alpha\biggr\}\\
+    &= \int_{-\infty}^{+\infty}\E\{h(\alpha)X(t-\alpha)\}\ud\alpha\\
+\intertext{in cui l'operazione di media statistica $\E\{\cdot\}$ agisce solo sul segnale \emph{aleatorio} $X(t)$ e non sul segnale \emph{determinato} $h(t)$, che perciò può essere estratto dall'operatore stesso:}
+    &= \int_{-\infty}^{+\infty}h(\alpha)\E\{X(t-\alpha)\}\ud\alpha\\
+    &= \int_{-\infty}^{+\infty}h(\alpha)\,\eta_X(t-\alpha)\ud\alpha =
+       \eta_X(t)\otimes h(t).
+\end{align*}
+
+Calcoliamo ora in modo analogo la \emph{funzione di autocorrelazione} $R_Y(t_1,t_2)$:
+%
+\begin{align*}
+R_Y(t_1,t_2) &= \E\{Y(t_1)Y(t_2)\} = \E\big\{\big(X(t_1)\otimes h(t_1)\big)\big(X(t_2)\otimes h(t_2)\big)\big\}\\
+      &= \E\biggl\{\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}
+          X(\alpha)\,X(\beta)\,h(t_1-\alpha)\,h(t_2-\beta)\ud\alpha\ud\beta\biggr\}\\
+      &= \int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}
+         \E\{X(\alpha)\,X(\beta)\}h(t_1-\alpha)\,h(t_2-\beta)\ud\alpha\ud\beta\\
+      &= \int_{-\infty}^{+\infty}\biggl[\int_{-\infty}^{+\infty}
+         R_X(\alpha,\beta)\,h(t_1-\alpha)\ud\alpha\biggr]h(t_2-\beta)\ud\beta\\
+      &= \int_{-\infty}^{+\infty} \bigl[R_X(t_1,\beta)\otimes h(t_1)\bigr]h(t_2-\beta)\ud\beta\\
+      &= R_X(t_1,t_2)\otimes h(t_1)\otimes h(t_2).
+\end{align*}
+%
+La funzione di autocorrelazione può essere cioè calcolata tramite una \emph{doppia convoluzione}:
+%
+\begin{equation}\label{eq:autocorrelazione-processo-uscita-sls}
+R_Y(t_1,t_2) = R_X(t_1,t_2)\otimes h(t_1)\otimes h(t_2).
+\end{equation}
+%
+La prima operazione di convoluzione coinvolge solo la variabile $t_1$ e, nello svolgimento di essa, la variabile $t_2$ viene considerata come una costante. Nello svolgimento del secondo prodotto di convoluzione, invece, i ruoli delle variabili $t_1$ e $t_2$ si scambiano.
+
+Consideriamo un processo d'ingresso al filtro che sia stazionario in valor medio. Con semplici calcoli si trova la funzione valor medio del processo in uscita:
+%
+\[\eta_Y = \eta_XH(0).\]
+%
+Il processo d'ingresso contiene, cioè, una ``componente continua'' che viene modificata in ragione del guadagno in continua del filtro $H(0)$.
+
+Supponiamo ora che il processo di ingresso sia stazionario in autocorrelazione:
+%
+\[R_X(t+\tau,t) = R_X(\tau).\]
+%
+Si%
+\margincomment{La dimostrazione, analoga a quella della~\eqref{eq:autocorrelazione-processo-uscita-sls}, è riportata in~\citep[pag.~44]{b:Dandrea}.}
+può dimostrare che anche il processo di uscita è stazionario in autocorrelazione:
+%
+\begin{equation}\label{eq:autocorrelazione-processo-stazionario-uscita-sls}
+R_Y(\tau) = R_X(\tau)\otimes h(\tau)\otimes h(-\tau).
+\end{equation}
+%
+Il calcolo della $R_Y(\tau)$ in questo modo è però spesso di non facile applicazione. È preferibile allora operare in frequenza:
+%
+\[S_Y(f) = S_X(f)\,H(f)\,H^*(f) = S_X(f)\,H(f)\,H(-f).\]
+
+Ricapitolando, un \ac{SLS} conserva sia la stazionarietà in valor medio che la stazionarietà in autocorrelazione. Se quindi in ingresso si pone un processo \ac{SSL}, anche in uscita si otterrà un processo \ac{SSL}.
+%
+\begin{figure}[b]
+\centering
+\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(90,10)
+\put(20,5){\vector(1,0){10}}
+\put(60,5){\vector(1,0){10}}
+\put(30,1){\framebox(30,8){$h(t)$ \textsc{sls}}}
+\put(2,4){$X(t)$ \textsc{ssl}}
+\put(72,4){$Y(t)$ \textsc{ssl}}
+\end{picture}}
+\caption{Un sistema lineare stazionario con in ingresso un processo \ac{SSL} fornisce anche in uscita un processo \ac{SSL}.}
+\end{figure}
+%
+Ancora, se in ingresso si pone un processo gaussiano, anche in uscita si avrà un processo gaussiano. Infine, se il processo in ingresso è \ac{SSS} anche il processo di uscita sarà \ac{SSS}.
+
+
+\section{Densità spettrale di potenza di un processo stazionario*}
+\label{sec:densita-spettrale-di-un-processo-ssl}
+
+Ci limiteremo qui ad alcuni cenni di analisi spettrale solo per processi aleatori \ac{SSL}.
+La caratterizzazione frequenziale dei processi aleatori stazionari in termini di spettri di ampiezza e fase è poco usuale. Dal punto di vista concettuale, anche un segnale aleatorio può essere scomposto in una sovrapposizione di oscillazioni armoniche, le cui ampiezze e fasi variano parimenti in maniera aleatoria al variare della frequenza. Tuttavia, è più comune è limitarsi alla descrizione dello \emph{spettro di potenza} di un processo aleatorio, sul quale ci concentreremo.
+
+Cominciamo con l'osservare che le funzioni campione di un processo
+stazionario \emph{non possono essere segnali a energia finita}. I segnali a energia finita, infatti, tendono necessariamente a zero quando $t\to\infty$. Se \emph{tutte} le funzioni campione del processo tendessero a zero, necessariamente tenderebbe a zero anche la funzione valor medio del processo, che quindi non potrebbe risultare in generale costante (eccetto che per processi a media nulla). Le funzioni campione di un processo stazionario sono segnali in generale a potenza finita, e perciò il segnale aleatorio stesso ammetterà densità spettrale di potenza.
+
+Si potrebbe ottenere come definizione di densità spettrale di potenza per processi aleatori la diretta estensione di quella per segnali determinati, ossia come media statistica della densità spettrale di potenza delle varie funzioni campione:
+%
+\begin{equation}\label{eq:dsp-segnali-aleatori-come-aspettazione}
+S_X(f) \triangleq \E\{S_X(\omega_i;f)\} = \lim_{T\to\infty}\frac{\E\{\abs{X_T(f)}^2\}}{T}
+\end{equation}
+%
+dove $X_T(f)$ è la trasformata di Fourier della generica funzione campione troncata. Sfortunatamente, questa definizione, utilizzabile in teoria anche per processi non stazionari, è quasi sempre di difficile applicazione pratica (perché richiede ovviamente la conoscenza di tutte le realizzazioni del processo). Per i processi \emph{stazionari}, si usa allora una diversa definizione: la%
+\margincomment{Questo risultato è noto come ``teorema di Wiener-Khintchine''.}
+densità spettrale di potenza per segnali (determinati e) aleatori stazionari è definita come la trasformata di Fourier della funzione di autocorrelazione $R_X(\tau)$\margincomment{In~\citep[pag.~33]{b:Dandrea} è riportata una definizione diversa.}:
+%
+\begin{equation}\label{eq:dsp-segnali-aleatori-secondo-WK}
+S_X(f) \triangleq \int_{-\infty}^{+\infty} R_X(\tau)\e^{-\j2\pi f\tau}\ud\tau.
+\end{equation}
+
+Comunque vanga definita, essa gode delle stesse proprietà elencate a suo tempo per i segnali determinati:
+\begin{itemize}
+\item È una funzione \emph{reale e pari}, in quanto trasformata di Fourier della funzione $R_X(\tau)$, anch'essa reale e pari.
+\item L'integrale su tutto l'asse delle frequenze fornisce la potenza media statistica:
+      \[P_X = \E\{X^2(t)\}.\]
+\item È una funzione \emph{non negativa}. Questa proprietà si ricava facilmente se si considera la definizione~\eqref{eq:dsp-segnali-aleatori-come-aspettazione}, mentre la dimostrazione è piuttosto complessa nel caso della definizione~\eqref{eq:dsp-segnali-aleatori-secondo-WK}.
+\end{itemize}
+
+
+\subsection{Filtraggio di un processo aleatorio e densità spettrale di potenza*}
+
+Cerchiamo di mettere in relazione le caratteristiche spettrali dei processi di ingresso $X(t)$ e di uscita $Y(t)$, entrambi \emph{stazionari in senso lato}. La densità spettrale di potenza $S_Y(f)$ di quest'ultimo è
+%
+\begin{align*}
+S_Y(f) &= \TCF[R_Y(\tau)]= \TCF\big[R_X(\tau)\otimes h(\tau)\otimes h(-\tau)\big]\\
+    &= S_X(f)H(f)H(-f).
+\end{align*}
+%
+Poiché la risposta impulsiva $h(t)$ del sistema è un segnale reale, la sua trasformata gode della proprietà di simmetria Hermitiana, e la relazione precedente diventa:
+%
+\begin{equation}\label{eq:densita-spettrale-ingresso-uscita}
+S_Y(f) = S_X(f)H(f)H^*(f) = S_X(f)\abs{H(f)}^2
+\end{equation}
+%
+esattamente come per i segnali determinati. Lo spettro di potenza del processo di uscita $Y(t)$ può essere ricavato da quello del processo d'ingresso note le caratteristiche di selettività in frequenza del sistema, che sono riassunte nella \emph{risposta in ampiezza} al quadrato $\abs{H(f)}^2$. Ancora una volta, la risposta in fase nel sistema non influenza il contenuto di potenza del processo di uscita. Osserviamo incidentalmente che la potenza media statistica $P_Y$ del processo di uscita $Y(t)$ può essere calcolata in ambito frequenziale come segue:
+%
+\begin{align*}
+P_Y &= R_Y(0) = \int_{-\infty}^{+\infty}S_Y(f)\ud f = \int_{-\infty}^{+\infty} S_X(f)\abs{H(f)}^2\ud f.
+\end{align*}
+%
+La relazione del filtraggio~\eqref{eq:densita-spettrale-ingresso-uscita} è importante perché permette di dimostrare che la densità spettrale di potenza di un processo stazionario è una funzione non negativa e, inoltre, che la funzione $S_X(f)$, definita come trasformata di Fourier della $R_X(\tau)$, descrive la distribuzione della potenza sulle varie componenti frequenziali nello spettro del segnale aleatorio $X(t)$.
+
+
+\subsection{Processo di rumore bianco}
+\label{sec:processo-di-rumore-bianco}
+
+Nel paragrafo~\ref{sec:proprieta-autocorrelazione-di-processi-ssl} abbiamo introdotto la nozione di \emph{tempo di correlazione} per misurare la rapidità media di variazione delle funzioni campione di un processo. La corrispondente grandezza in ambito frequenziale è naturalmente la \emph{banda} dello spettro di potenza del processo, che dà la stessa indicazione del tempo di correlazione. Se la funzione di autocorrelazione di un processo decresce rapidamente, cioè il tempo di correlazione è piccolo, la densità spettrale corrispondente ha una banda grande, viceversa se il tempo di correlazione è grande. Quindi, come era lecito aspettarsi, quanto maggiore è la rapidità di variazione delle realizzazioni di un processo, tanto più grande è la banda del suo spettro di potenza. Prese tre funzioni campione di tre processi aleatori $X_1(t)$, $X_2(t)$ e $X_3(t)$ con banda progressivamente crescente, cresce la rapidità di variazione, così come l'ampiezza delle escursioni del segnale (per effetto dell'incremento della potenza del segnale stesso).
+
+Se la banda dello spettro di potenza tende a crescere illimitatamente, mantenendo lo spettro sempre il medesimo valore per $f=0$, evidentemente la densità spettrale di potenza del processo $X(t)$ tende a diventare costante mentre il tempo di correlazione $\tau_\text{cor}$ tende a ridursi sempre più. Al limite, si arriva a una situazione in cui \emph{la funzione di autocorrelazione è impulsiva} e \emph{la densità è costante}.
+
+Un processo aleatorio stazionario (almeno) in senso lato che presenta queste caratteristiche statistiche viene chiamato \emph{processo di rumore bianco}.%
+\footnote{L'appellativo ``bianco'' deriva dall'analogia dello spettro di potenza di questo processo con quello della luce bianca: il rumore bianco contiene componenti a tutte le frequenze con la stessa intensità, così come la luce bianca ``contiene tutti i colori''.}
+
+Evidentemente, un processo bianco è solo un'astrazione matematica: lo spettro di potenza costante comporta che la potenza di questo segnale sia infinita, condizione impossibile per un segnale fisico. Deve intendersi come un ``caso-limite'', pensando di aumentarne ulteriormente (e illimitatamente) l'ampiezza e la velocità di variazione di un segnale.
+
+
+\section{Processi aleatori Gaussiani}
+\label{sec:processi-gaussiani}
+
+Tutti i disturbi reali nei sistemi di telecomunicazione sono modellabili come \emph{processi gaussiani}.
+Un processo $X(t)$ è gaussiano se la sua densità di ordine $n$ è un proporzionale a un esponenziale il cui argomento è una forma quadratica non positiva:
+%
+\[f_X(\underline{x};\underline{t}) = C\cdot\e^{-g(\underline{x})}\]
+%
+con $\underline{x}=(x_1,\dots,x_n)$, $\underline{t}=(t_1,\dots,t_n)$ vettori e $g(\underline{x})$ funzione non negativa \emph{del valor medio e dell'autocorrelazione}. Un processo aleatorio gaussiano $X(t)$, infatti, è completamente caratterizzato dal punto di vista statistico quando sono note la sua funzione valor medio e la sua funzione di autocorrelazione:
+%
+\[f_X(\underline{x};\underline{t}) = \mathcal{Z}\bigl(\underline{x};\eta_X(t);R_X(t_1,t_2)\bigr).\]
+
+La funzione densità di probabilità del primo ordine di un processo gaussiano $X(t)\in\mathcal{N}\bigl(\eta_X(t),\sigma^2_X(t)\bigr)$ vale:
+%
+\[f_X(x;t) = \frac{1}{\sqrt{2\pi}\sigma_X(t)}\e^{-\frac{(x-\eta_X(t))^2}{2\sigma^2_X(t)}}.\]
+
+Se il processo gaussiano è stazionario, allora la sua densità di probabilità di ordine $n$ si riduce a
+%
+\[f_X(\underline{x};\underline{t}) = \mathcal{Z}\bigl(\underline{x};\eta_X;R_X(\tau)\bigr)\]
+%
+e la densità di probabilità del I ordine non dipende dal tempo:
+%
+\[f_X(x;t) = \frac{1}{\sqrt{2\pi}\sigma_X}\e^{-\frac{(x-\eta_X)^2}{2\sigma^2_X}}.\]
+
+Proprietà dei processi gaussiani:
+\begin{itemize}
+\item Se un processo gaussiano è \ac{SSL}, allora è anche \ac{SSS}.
+\item La densità di probabilità di ordine $n$ del processo dipende soltanto dai due indici $\eta_X(t)$ e $R_X(t_1,t_2)$.
+\item La trasformazione lineare di processi gaussiani dà luogo a processi gaussiani.
+\end{itemize}
+
+Si noti che la funzione distribuzione di probabilità di un processo gaussiano:
+%
+\[F_X(x;t) = \int_{-\infty}^{x} f_X(\alpha;t)\ud\alpha\]
+%
+è un integrale non esprimibile in forma chiusa.
+
+
+\subsection{Filtraggio dei processi Gaussiani}
+
+Come abbiamo visto nel paragrafo~\ref{sec:filtraggio-segnali-aleatori}, il problema del filtraggio di un processo aleatorio non è completamente risolubile, nel senso che è in generale impossibile ottenere la descrizione completa del processo d'uscita $Y(t)$ nota quella del processo d'ingresso $X(t)$.
+I processi Gaussiani sono l'eccezione che conferma la regola, nel senso che per questi è possibile dare una descrizione statistica completa del processo all'uscita di un \ac{SLS}, quando siano note le caratteristiche del processo d'ingresso.
+
+La proprietà di ``conservazione della Gaussianità'' è valida per tutti i sistemi lineari (stazionari o no). Come è chiaro, se il processo (gaussiano) d'ingresso a un \ac{SLS} è \ac{SSL} (e quindi anche \ac{SSS}), allora il processo di uscita è anch'esso stazionario. Se il sistema lineare non è stazionario, il processo di uscita è ancora Gaussiano ma in generale perde la proprietà di stazionarietà.
+
+
+\subsection{Variabile gaussiana standard}
+
+La variabile aleatoria gaussiana \emph{standard} è una variabile aleatoria gaussiana avente valor medio nullo e varianza unitaria. Si indica con:
+%
+\[Z\in\mathcal{N}(0,1).\]
+%
+La sua funzione densità di probabilità è:
+%
+\begin{equation}\label{eq:densita-di-probabilita-di-gaussiana-standard}
+f_Z(z) = \frac{1}{\sqrt{2\pi}}\e^{-\frac{z^2}{2}}.
+\end{equation}
+%
+\begin{figure}[b]
+\centering
+\framebox{\begin{pspicture*}(-4.7,-0.7)(5.3,2.1)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-4.5,-0.1)(5,1.9)
+  \uput[d](4.9,0){$z$}
+  \uput[r](0,1.7){$f_Z(z)$}
+  \uput[l](-0.2,1.2){$\frac{1}{\sqrt{2\pi}}$}
+  \psline[linewidth=0.5pt](-0.05,1.2)(0.05,1.2)
+  \infixtoRPN{1.2*2.718^(-(x^2)/0.6)}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=50,linestyle=dashed,dash=2pt 2pt]{-4.3}{-3.3}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{-3.3}{3.6}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=50,linestyle=dashed,dash=2pt 2pt]{3.6}{4.6}{\RPN}
+\end{pspicture*}}
+\caption{Funzione densità di probabilità di una variabile gaussiana standard.}
+\end{figure}
+
+Per essa si indicano in modo particolare la funzione distribuzione di probabilità
+%
+\begin{equation}\label{eq:densita-di-probabilita-di-gaussiana-standard-Phi}
+\Phi(z) \equiv F_Z(z) = \int_{-\infty}^{z}f_Z(\alpha)\ud\alpha
+\end{equation}
+%
+e la cosiddetta funzione ``residuo di probabilità'', definita come:
+%
+\begin{equation}\label{eq:residuo-di-probabilita-di-gaussiana-standard}
+Q(z) \triangleq 1-\Phi(z) = \Pr[Z\geq z].
+\end{equation}
+
+\begin{center}\framebox{
+\begin{pspicture*}(-4.7,-0.7)(5.3,2.1)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-4.5,-0.1)(5,1.9)
+  \uput[r](0,1.5){$\scriptstyle{1}$}
+  \uput[d](4.9,0){$z$}
+  \uput[u](3,1.3){$\Phi(z)$}
+  \uput[u](-3,1.3){$Q(z)$}
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](-4,1.3)(4,1.3)
+  \psset{yunit=1.3cm}
+  \listplot[plotstyle=curve,linewidth=1pt]%
+  {-4.0 0.000032 -3.5 0.000234 -3.0 0.001355 -2.5 0.00622 -2.0 0.0228 -1.5 0.0668 -1.0 0.159 -0.5 0.31 0 0.5 %
+   0.5 0.69 1.0 0.841 1.5 0.9312 2.0 0.9772 2.5 0.99378 3.0 0.998645 3.5 0.999766 4.0 0.999968 4.3 1}
+  \listplot[plotstyle=curve,linewidth=1pt]%
+  {4.3 0 4.0 0.000032 3.5 0.000234 3.0 0.001355 2.5 0.00622 2.0 0.0228 1.5 0.0668 1.0 0.159 0.5 0.31 0 0.5 %
+   -0.5 0.69 -1.0 0.841 -1.5 0.9312 -2.0 0.9772 -2.5 0.99378 -3.0 0.998645 -3.5 0.999766 -4.0 0.999968}
+\end{pspicture*}}\end{center}
+
+Le due funzioni $\Phi(z)$ e $Q(z)$ sono caratterizzate dalle seguenti proprietà:
+\begin{itemize}
+\item In $0$ valgono $1/2$:
+      \[\Phi(0) = Q(0) = \frac{1}{2}.\]
+\item Godono di una sorta di parità dell'una rispetto all'altra:
+      \begin{gather*}
+      \Phi(-z) = 1-\Phi(z) = Q(z)\\
+      Q(-z) = 1-Q(z) = \Phi(z)
+      \end{gather*}
+\item Con $z$ sufficientemente grande, $\Phi(z)\simeq 1$ e $Q(z)\simeq 0$. In particolare, si può usare l'approssimazione
+      \[Q(z) \simeq \frac{1}{z\sqrt{2\pi}}\e^{-\frac{z^2}{2}}\]
+      commettendo un piccolo errore (per eccesso) inferiore al $9\%$ se $z>3$, oppure, se $z>>3$, può essere usata la formula
+      \[Q(z) \simeq \frac{1}{\sqrt{2\pi}}\e^{-\frac{z^2}{2}}.\]
+\end{itemize}
+
+L'analisi dei sistemi di comunicazioni comporta spesso la valutazione dell'integrale di una gaussiana, come ad esempio per gli errori o il rumore termico:
+%
+\begin{equation}\label{eq:integrale-di-gaussiana}
+F_X(x;t) = \frac{1}{\sqrt{2\pi}\sigma_X}\int_{-\infty}^{x}\e^{-(\alpha-\eta_X)^2/(2\sigma^2_X)}\ud\alpha.
+\end{equation}
+%
+Purtroppo si tratta di integrali che non possono essere espressi in forma chiusa e quindi, per calcolare queste distribuzioni di probabilità, è necessario fare ricorso a grafici o tabelle. Fortunatamente, si può esprimere la funzione distribuzione di probabilità di una qualsiasi variabile aleatoria gaussiana in funzione della distribuzione di probabilità della variabile gaussiana standard.
+
+A ben notare, neanche l'integrale~\eqref{eq:densita-di-probabilita-di-gaussiana-standard}, e quindi neppure la~\eqref{eq:densita-di-probabilita-di-gaussiana-standard-Phi} e la~\eqref{eq:residuo-di-probabilita-di-gaussiana-standard}, sono esprimibili in forma chiusa. Essi però, in particolare la $Q(z)$, si trovano spesso in forma tabulata.
+
+Mostriamo allora come per una qualsiasi variabile gaussiana $X\in\mathcal{N}(\eta_X,\sigma_X)$ si possa scrivere:
+%
+\[X = aZ+b\]
+%
+con $a$ e $b$ opportuni. Intanto, risulta immediatamente che $X$ è gaussiana perché trasformazione lineare di $Z$ che è gaussiana. Si calcola:
+%
+\begin{align*}
+\begin{cases}\eta_X = \E[X] = \E[aZ+b] = a\E[Z]+\E[b] = b\\
+\sigma_X^2 = \E[(X-\eta_X)^2] = \E[(aZ+b-b)^2] = a^2\E[Z^2] = a^2\end{cases}
+\end{align*}
+%
+ottenendo così
+%
+\[X = \sigma_XZ+\eta_X.\]
+
+La funzione distribuzione di un qualsiasi processo aleatorio gaussiano è esprimibile quindi in termini del processo gaussiano standard nella forma:
+%
+\begin{align*}
+F_X(x) &= \Pr[X\leq x] = \Pr[\sigma_XZ+\eta_X\leq x]\\
+       &= \Pr\biggl[Z\leq\frac{x-\eta_X}{\sigma_X}\biggr] = \Phi\biggl(\frac{x-\eta_X}{\sigma_X}\biggr).
+\end{align*}

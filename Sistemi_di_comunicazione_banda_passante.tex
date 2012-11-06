@@ -1,0 +1,83 @@
+\chapter[Sistemi di comunicazione in banda passante]{Sistemi di comunicazione\\in banda passante}
+
+\section{Introduzione}
+
+Un sistema di comunicazione in banda passante è sostanzialmente costituito da un trasmettitore, da un canale \emph{passa banda} di comunicazione e da un ricevitore. Il trasmettitore e il ricevitore, oltre alle funzioni già descritte in relazione ai sistemi in banda base, devono svolgere anche funzioni specifiche dei sistemi in banda passante: il trasmettitore deve provvedere a traslare il segnale, generato in banda base, alla frequenza del canale di trasmissione assegnato, mentre il ricevitore deve effettuare una conversione di frequenza per riportare il segnale dalla frequenza della portante alla banda base.
+
+
+\section{Rappresentazione in banda base di un segnale deterministico}
+
+Verrà ora descritta una rappresentazione complessa che consente di analizzare i sistemi di comunicazione in banda passante come se fossero in banda base, a tutto vantaggio della compattezza e della semplicità di notazione.
+
+
+\section{Inviluppo complesso di un segnale}
+
+Si consideri un segnale reale $x(t)$ non necessariamente a banda limitata, ma a media temporale nulla (in caso contrario è sempre possibile scomporre il segnale nella somma della sua componente continua e di un segnale a media temporale nulla).
+
+\[x(t) = \Re\{\tilde{x}(t)\e^{\,\j2\pi f_0t}\}\]
+
+La proprietà che caratterizza un inviluppo complesso riferito ad una certa frequenza $f_0$ è di avere \ac{TCF} nulla per le frequenze inferiori a $-f_0$:
+%
+\begin{equation}\label{eq:spettro-inviluppo-complesso-nullo}
+\tilde{X}(f) = \TCF[\tilde{x}(t)] = 0 \quad\text{per } f<-f_0.
+\end{equation}
+
+Dal punto di vista spettrale, il legame tra un segnale e il suo inviluppo complesso è espresso dalle relazioni
+%
+\begin{equation}\label{eq:spettro-inviluppo-complesso}
+\tilde{X}(f) = \begin{cases}2X(f+f_0)&\text{per }f\geq -f_0\\0&\text{per }f<-f_0\end{cases}
+\end{equation}
+\[X(f) = \frac{\tilde{X}(f-f_0)+\tilde{X}^*(-f-f_0)}{2}\]
+
+\paragraph{Componenti in fase e in quadratura di un segnale.} Definite con
+%
+\[x_c(t)=\Re\{\tilde{x}(t)\}, \quad x_s(t)=\Im\{\tilde{x}(t)\}\]
+%
+le \emph{componenti in fase e quadratura} del segnale $x(t)$, il suo inviluppo complesso può scriversi nella forma
+%
+\[\tilde{x}(t) = x_c(t) +\j x_s(t).\]
+%
+mentre il segnale $x(t)$ può essere ricostruito come
+%
+\[x(t) = x_c(t)\cos(2\pi f_0t)- x_s(t)\sin(2\pi f_0t)\]
+%
+Questa relazione giustifica la denominazione di \emph{componenti in fase e in quadratura} adottata per i segnali $x_c(t)$ e $x_s(t)$. Se il segnale è scritto in questa forma, è possibile determinare immediatamente le sue componenti in fase e in quadratura: tali componenti infatti sono individuabili nei segnali che moltiplicano, rispettivamente, le funzioni $\cos(2\pi f_0t)$ e $-\sin(2\pi f_0t)$, purché la \ac{TCF} del segnale $x_c(t)+\j x_s(t)$ sia nulla per $f<-f_0$.
+
+\[\tilde{X}(f) = X_c(f) + \j X_s(f)\]
+%
+avendo indicato con
+%
+\begin{gather}
+X_c(f) = \frac{\tilde{X}(f)+\tilde{X}^*(-f)}{2}   \label{eq:spettro-inviluppo-complesso-parte-reale}\\
+X_s(f) = \frac{\tilde{X}(f)-\tilde{X}^*(-f)}{\j2} \label{eq:spettro-inviluppo-complesso-parte-immaginaria}
+\end{gather}
+%
+le parti a simmetria hermitiana pari e a simmetria hermitiana dispari di $\tilde{X}(f)$. Si noti che le espressioni~\eqref{eq:spettro-inviluppo-complesso-parte-reale} e~\eqref{eq:spettro-inviluppo-complesso-parte-immaginaria} presentano simmetria hermitiana, in quanto \ac{TCF} di segnali reali. \annotation{Si osservi infine che, pur valendo per $\tilde{X}(f)$ la~\eqref{eq:spettro-inviluppo-complesso-nullo}, altrettanto non può dirsi per le $X_c(f)$ e $X_s(f)$.}{Questa non l'ho capita!}
+
+
+\subsection{Inviluppo complesso di un segnale passa banda}
+
+Come si è già accennato, i segnali utilizzati nei sistemi di comunicazione sono spesso ti tipo passa banda, intendendo dire che la loro \ac{TCF} è prevalentemente concentrata attorno ad una certa frequenza $f_0$. Più precisamente, si definisce \emph{passa banda rispetto alla frequenza $f_0$} ogni segnale reale $x(t)$ a media nulla che soddisfi la condizione
+%
+\begin{equation}\label{eq:condizione-segnale-passa-banda}
+X(f) = 0 \quad\text{per } \abs{f}>2f_0.
+\end{equation}
+%
+Per i segnali passa banda continua a valere ovviamente quanto detto riguardo l'inviluppo complesso di un generico segnale. L'unica caratteristica di rilievo consiste nel fatto che l'inviluppo complesso di un segnale, riferito alla stessa frequenza $f_0$ rispetto alla quale il segnale è passa banda, è un segnale passa basso di banda non superiore a $f_0$. Infatti, se vale la~\eqref{eq:condizione-segnale-passa-banda}, risulta $X(f+f_0)=0$ per $f>f_0$ e quindi la~\eqref{eq:spettro-inviluppo-complesso} diventa:
+%
+\begin{equation}\label{eq:spettro-inviluppo-complesso-di-passa-banda}
+\tilde{X}(f) = \begin{cases}2X(f+f_0)&\text{per }\abs{f} < f_0\\0&\text{altrove.}\end{cases}
+\end{equation}
+
+Facendo uso di questa relazione nelle~\eqref{eq:spettro-inviluppo-complesso-parte-reale}--\eqref{eq:spettro-inviluppo-complesso-parte-immaginaria}, si trova:
+%
+\begin{gather}
+X_c(f) = \begin{cases}X(f+f_0)+X(f-f_0)&\text{per }\abs{f} < f_0\\0&\text{altrove}\end{cases} \label{eq:spettro-inviluppo-complesso-di-passa-banda-parte-reale}\\
+\j X_s(f) = \begin{cases}X(f+f_0)-X(f-f_0)&\text{per }\abs{f} < f_0\\0&\text{altrove}\end{cases}
+\label{eq:spettro-inviluppo-complesso-di-passa-banda-parte-immaginaria}
+\end{gather}
+%
+ossia anche le componenti in fase e in quadratura sono segnali passa basso di banda non superiore a $f_0$.
+
+È interessante osservare che se $x(t)$ non è un segnale passa banda, la~\eqref{eq:spettro-inviluppo-complesso-di-passa-banda} e le~\eqref{eq:spettro-inviluppo-complesso-di-passa-banda-parte-reale}--\eqref{eq:spettro-inviluppo-complesso-di-passa-banda-parte-immaginaria} forniscono l'inviluppo complesso e le componenti in fase e in quadratura della \emph{porzione passa banda} di $x(t)$.
+

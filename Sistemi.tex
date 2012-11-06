@@ -1,0 +1,1283 @@
+\chapter[Sistemi lineari stazionari a tempo continuo]{Sistemi lineari stazionari\\a tempo continuo}
+\label{cha:sistemi-lineari}
+
+
+\section{Sistemi}
+Un sistema monodimensionale è rappresentabile con un blocco che applica una trasformazione sul segnale in ingresso
+$x(t)$ per dare in uscita un segnale $y(t)$.
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(80,16)
+\put(3,8){\vector(1,0){20}}
+\put(57,8){\vector(1,0){20}}
+\put(23,1){\framebox(34,14){trasformazione $\T$}}
+\put(10,10){$x(t)$}
+\put(63,10){$y(t)$}
+\put(7,4){\mbox{ingresso}}
+\put(61,4){\mbox{uscita}}
+\end{picture}}\end{center}
+Questa trasformazione la indichiamo con:
+\begin{equation*}y(t)=\T\left[x(t)\right].\end{equation*}
+
+Quello che faremo è caratterizzare questo tipo di sistemi e definire delle proprietà che ci torneranno utili per
+dire qualcosa sull'uscita del sistema noto l'ingresso.
+
+In generale, il valore del segnale di uscita $y$ all'istante $\bar{t}$ non dipende solo dall'ingresso $x$
+all'istante $\bar{t}$ ma da $x(t)$ per $-\infty<t<\infty$.
+Per poter calcolare $y(t)$ è necessario conoscere $x(t)$ su tutto l'asse del tempo, in istanti passati, presenti, futuri.
+
+\paragraph{Linearità.} Un sistema è lineare se è valida la sovrapposizione degli effetti. Affinché ciò sia
+verificato, a fronte di un ingresso $x(t)$ combinazione lineare di due segnali:
+\begin{equation}x(t)=ax_1(t)+bx_2(t)\end{equation}
+deve essere presentato in uscita il segnale:
+\begin{equation}y(t)=a\T[x_1(t)]+b\T[x_2(t)]=ay_1(t)+by_2(t).\end{equation}
+
+\paragraph{Stazionarietà.} Un sistema si dice stazionario se la sua trasformazione non cambia nel tempo (è \emph{tempo-invariante}) e applicando lo stesso ingresso a istanti diversi si ottiene esattamente la stessa uscita.
+
+Supponiamo di avere un segnale $x(t)$ con un'uscita $y(\bar{t})$ quando l'ingresso è $x(\bar{t})$:
+\[y(t) = \T[x(t)]\]
+allora il sistema è stazionario se:
+\begin{equation}y(t-t_0)=\T[x(t-t_0)].\end{equation}
+
+Se in ingresso si dà il segnale $x(t)$ traslato nel tempo di $t_0$ allora in uscita si avrà semplicemente il segnale $y(t)$ traslato nel tempo di $t_0$.
+
+\begin{figure}
+\centering
+\subfloat{\framebox{\begin{pspicture*}(-2.8,-1)(2.8,1.3)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-2.5,-0.8)(2.5,1.1)
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]% 0.5*sin(480*x)*\e^(-abs(x))
+         {-2.2}{2.2}{0.5 x 480 mul sin mul 2.718281828459045235 x abs neg exp mul}
+  \uput[l](0,0.9){$\scriptstyle{x(t)}$}
+  \uput[d](2.4,0){$\scriptstyle{t}$}
+\end{pspicture*}}} \quad
+\subfloat{\framebox{\begin{pspicture*}(-2.8,-1)(2.8,1.3)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-2.5,-0.8)(2.5,1.1)
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]% 0.8*sin(480*x)*\e^(-abs(x))
+         {-2.2}{2.2}{0.8 x 480 mul sin mul 2.718281828459045235 x abs neg exp mul}
+  \uput[l](0,0.9){$\scriptstyle{\T[x(t)]}$}
+  \uput[d](2.4,0){$\scriptstyle{t}$}
+\end{pspicture*}}}\\
+\subfloat{\framebox{\begin{pspicture*}(-2.8,-1)(2.8,1.3)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-2.5,-0.8)(2.5,1.1)
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]% 0.5*sin(480*(x-0.3))*\e^(-abs(x-0.3))
+         {-2.2}{2.2}{0.5 x 0.3 sub 480 mul sin mul 2.718281828459045235 x 0.3 sub abs neg exp mul}
+  \uput[l](0,0.9){$\scriptstyle{x(t-t_0)}$}
+  \uput[d](2.4,0){$\scriptstyle{t}$}
+\end{pspicture*}}} \quad
+\subfloat{\framebox{\begin{pspicture*}(-2.8,-1)(2.8,1.3)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.5,-0.8)(2.5,1.1)
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]% 0.8*sin(480*(x-0.3))*\e^(-abs(x-0.3))
+         {-2.2}{2.2}{0.8 x 0.3 sub 480 mul sin mul 2.718281828459045235 x 0.3 sub abs neg exp mul}
+  \uput[l](0,0.9){$\scriptstyle{\T[x(t-t_0)]}$}
+  \uput[d](2.4,0){$\scriptstyle{t}$}
+\end{pspicture*}}}
+\caption{Esemplificazione di un sistema stazionario.}
+\end{figure}
+
+
+\section{Sistemi lineari stazionari (\acs{SLS})}
+I \acf{SLS} hanno la caratteristica di poter essere rappresentati \emph{completamente}
+da una funzione $h(t)$. Il termine ``completamente'' significa che se si conosce $h(t)$ (è una funzione
+del tempo) allora è possibile calcolare l'uscita $y(t)$ per un qualsiasi ingresso $x(t)$.
+
+Per definizione:
+\begin{equation}h(t)\triangleq\T\left[\delta(t)\right].\end{equation}
+La funzione $h(t)$ coincide con l'uscita del sistema quando in ingresso c'è una delta di Dirac,
+e infatti viene detta \emph{risposta impulsiva}.
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(60,10)
+\put(10,5){\vector(1,0){10}}
+\put(40,5){\vector(1,0){10}}
+\put(20,1){\framebox(20,8){$\T[\;\cdot\;]$}}
+\put(2,4){$\delta(t)$}
+\put(52,4){$h(t)$}
+\end{picture}}\end{center}
+
+\begin{teorema}[uscita di un \ac{SLS}]
+Per un sistema lineare e stazionario si può scrivere:
+\[y(t)=x(t)\otimes h(t).\]
+\end{teorema}
+\begin{proof}
+Infatti, utilizzando la proprietà di neutralità della $\delta(t)$ nell'integrale di convoluzione, si scrive:
+\begin{align*}
+y(t) & = \T\left[x(t)\right]=\T\left[x(t)\otimes\delta(t)\right]\\
+     & = \T\left[\int_{-\infty}^{+\infty}x(\alpha)\delta(t-\alpha)\ud\alpha\right]\\
+\intertext{e siccome la trasformazione $\T[\,\cdot\,]$ e l'integrale sono entrambi operatori lineari, è possibile scambiarne l'ordine:}
+     & = \int_{-\infty}^{+\infty}\T\left[x(\alpha)\delta(t-\alpha)\right]\ud\alpha.
+\end{align*}
+
+Poiché la trasformazione $\T[\,\cdot\,]$ opera rispetto al tempo, $x(\alpha)$ è, per essa, una costante. Si ha così:
+\begin{align*}
+y(t) &= \int_{-\infty}^{+\infty}x(\alpha)\T\left[\delta(t-\alpha)\right]\ud\alpha
+\intertext{da cui, sfruttando l'ipotesi di stazionarietà per cui $h(t-\alpha)=\T[\delta(t-\alpha)]$, si giunge infine alla tesi:}
+     & = \int_{-\infty}^{+\infty}x(\alpha)\,h(t-\alpha)\ud\alpha=x(t)\otimes h(t). \qedhere
+\end{align*}
+\end{proof}
+
+
+\subsection{Proprietà dei \acs{SLS}}
+
+\vspace{-\bigskipamount}%revisione
+\paragraph{Causalità.} Questa proprietà è riferibile a tutti i sistemi, non solo ai \ac{SLS}. In
+generale, un sistema si dice causale quando l'uscita all'istante $\bar{t}$ dipende dal segnale
+in ingresso ma solo a istanti temporali precedenti o al più uguali a $\bar{t}$. L'uscita, in altri,
+termini deve soddisfare il principio di causa-effetto, e non può pertanto dipendere dall'ingresso
+a istanti futuri. Tutti i sistemi fisici in natura sono sistemi causali, e un sistema che non sia causale
+non è neanche fisicamente realizzabile.
+
+Per formalizzare questo concetto, quando un \ac{SLS} è anche causale, si scrive:
+\begin{equation}y(t)=\T\left[x(\alpha), \:\alpha\leq t\right].\end{equation}
+Per sistemi lineari stazionari, completamente rappresentati dalla loro risposta impulsiva, si può controllare se siano o meno causali semplicemente guardando $h(t)$.
+In particolare, un \ac{SLS} è causale se e solo se è causale sua $h(t)$, dove per $h(t)$ ``causale'' si intende nel senso di ``identicamente nulla per $t<0$'':
+\begin{subequations}
+\begin{align}
+h(t)=0 \quad\text{per }t<0  \label{eq:h-causale-1}
+\intertext{o anche:}
+h(t)=h(t)\u(t).        \label{eq:h-causale-2}
+\end{align}
+\end{subequations}
+L'impulso viene infatti applicato all'istante $t=0$ e la risposta non può partire prima che l'impulso sia applicato.
+
+Proviamo a vedere cosa significa questa condizione per un qualunque segnale in ingresso.
+Per quanto detto prima, l'uscita può essere scritta come:
+\begin{align*}
+y(t) &= x(t)\otimes h(t) = \int_{-\infty}^{+\infty}x(\alpha)h(t-\alpha)\ud\alpha
+\intertext{e applicando la condizione di eq.~\eqref{eq:h-causale-2}, risulta:}
+     &= \int_{-\infty}^{+\infty}x(\alpha)h(t-\alpha)\u(t-\alpha)\ud\alpha\\
+     &= \int_{-\infty}^{t}x(\alpha)h(t-\alpha)\ud\alpha.
+\end{align*}
+L'integrale (e quindi l'uscita) non è influenzato dai valori dell'ingresso posteriori a $t$. Si dimostra così che se la risposta impulsiva di un \ac{SLS} è causale, allora è causale il \ac{SLS} stesso.
+Non facciamo la dimostrazione dell'implicazione inversa, che pure potrebbe essere ottenuta ragionando per assurdo in modo analogo.
+
+Consideriamo invece cosa accade graficamente. Supponiamo di voler calcolare $y(\bar{t})$.
+%
+\begin{figure}
+\centering
+\subfloat{\framebox{\begin{pspicture*}(-1,-0.8)(4.6,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-0.7,-0.6)(4.3,1.7)
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]% \e^(-x)
+         {-0}{4}{2.718281828459045235 x neg exp}
+  \uput[l](0,1.5){$\scriptstyle{h(\alpha)}$}
+  \uput[d](4.2,0){$\scriptstyle{\alpha}$}
+  \psline(0,0)(-0.4,0)
+\end{pspicture*}}}  \quad
+\subfloat{\framebox{\begin{pspicture*}(-3.2,-1)(2.4,1.7)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.9,-0.8)(2.1,1.5)
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]% \e^(-(t-\alpha))
+         {-2.6}{0.4}{2.718281828459045235 0.4 x sub neg exp}
+  \uput[l](0,1.3){$\scriptstyle{h(\bar{t}-\alpha)}$}
+  \uput[d](2,0){$\scriptstyle{\alpha}$}
+  \uput[d](0.4,0){$\scriptstyle{\bar{t}}$}
+  \psline(0.4,0)(0.4,1)
+  \psline(0.4,0)(1.8,0)
+\end{pspicture*}}}\\
+\subfloat{\framebox{\begin{pspicture*}(-3.8,-1.4)(3,1.7)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-3.5,-1.2)(2.7,1.5)
+  \uput[d](2.6,0){$\scriptstyle{\alpha}$}
+  \uput[d](0.4,0){$\scriptstyle{\bar{t}}$}
+  \psline[linewidth=0.6pt](0.4,0)(0.4,1)
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]% \e^(-(t-\alpha))
+         {-3.1}{0.4}{2.718281828459045235 0.4 x sub neg exp}
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]% cos(200*x)
+         {-3.1}{2.4}{x 200 mul cos}
+  \pscustom[linewidth=1pt,fillstyle=solid,fillcolor=lightgray]{%
+    \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]%
+           {-3.1}{0.4}{x 200 mul cos 2.718281828459045235 0.4 x sub neg exp mul}
+    \psline[linewidth=0.5pt](0.4,0)(2.4,0)}
+  \uput[r](1.1,-0.7){$\scriptstyle{x(\alpha)}$}
+  \uput[r](0.25,1.15){$\scriptstyle{h(\bar{t}-\alpha)}$}
+  \uput[u](-1,1.05){$\scriptstyle{x(\alpha)\,h(\bar{t}-\alpha)}$}
+  \psline[linewidth=0.5pt]{->}(-0.9,1.1)(-0.9,-0.2)
+\end{pspicture*}}}
+\caption{Considerazioni grafiche per il calcolo dell'uscita di un sistema lineare stazionario: se $h()$ è nulla per $t<0$ allora il sistema è causale.}
+\end{figure}
+%
+La $h(t)$ vale certamente $0$ per $t<0$. Il prodotto $x(\alpha)h(\bar{t}-\alpha)$ pertanto è nullo per
+$\alpha>\bar{t}$, per cui $y(\bar{t})$, essendo l'integrale del prodotto, non può dipendere da
+valori dell'ingresso $x(t)$ posteriori a $\bar{t}$.
+
+Un sistema che produce il segnale di uscita contestualmente al segnale di ingresso è detto \emph{sistema in tempo reale}. Se invece l'uscita viene fornita dal sistema solo dopo l'acquisizione completa del segnale d'ingresso, allora si parla di \emph{sistema in tempo virtuale}. In quest'ultimo caso, si dice anche che il sistema è \emph{predittivo}.
+
+\paragraph{Stabilità.} Esistono diverse forme di stabilità, noi consideriamo in particolare
+quella cosiddetta \ac{BIBO}. Questo criterio afferma che a fronte di un
+segnale in ingresso finito (ad ampiezza limitata), ossia tale che:
+%
+\[\abs{x(t)}\leq \mathrm{M} \quad\forall t\]
+%
+si avrà un'uscita anch'essa ad ampiezza limitata:
+%
+\[\abs{y(t)}\leq \mathrm{K} \quad\forall t.\]
+
+Per sistemi lineari stazionari si può affermare se godano o meno della stabilità \ac{BIBO} guardando la risposta
+impulsiva.
+
+\begin{teorema}
+Un sistema lineare stazionario è stabile secondo il criterio \ac{BIBO} se e solo se la risposta impulsiva è assolutamente integrabile:
+\[\int_{-\infty}^{+\infty}\abs{h(t)}\ud t=\mathrm{H}<\infty
+\qquad\Leftrightarrow\qquad
+\abs{y(t)}\leq\mathrm{K} \quad\forall t.\]
+\end{teorema}
+\begin{proof}
+Consideriamo%
+\margincomment{Quest'anno il Martorella ha fatto solo la dimostrazione della parte sufficiente.}
+la condizione sufficiente, ossia se $h(t)$ è assolutamente integrabile allora per il sistema vale la stabilità \ac{BIBO}. Si calcola:
+\begin{align*}
+\abs{y(t)} & = \abs{\int_{-\infty}^{+\infty}x(\alpha)h(t-\alpha)\ud\alpha}
+               \leq\int_{-\infty}^{+\infty}\abs{x(\alpha)}\abs{h(t-\alpha)}\ud\alpha\\
+\intertext{ma poiché $\abs{x(t)}\leq \mathrm{M}$ per ogni $t$}
+           & \leq\mathrm{M}\int_{-\infty}^{+\infty}\abs{h(t-\alpha)}\ud\alpha=
+               \mathrm{M}\int_{-\infty}^{+\infty}\abs{h(\alpha')}\ud\alpha'=\mathrm{MH}
+\end{align*}
+di conseguenza, l'uscita è limitata:
+\begin{equation*}
+\abs{y(t)} \leq \mathrm{K}, \quad \text{con }\mathrm{K}=\mathrm{MH}.
+\end{equation*}
+
+Per dimostrare la condizione necessaria (se sistema è stabile \ac{BIBO} allora la $h(t)$ è assolutamente integrabile), si consideri per assurdo che la risposta impulsiva non sia assolutamente integrabile nonostante il sistema sia stabile. Poiché il sistema è stabile (per ipotesi), dando in ingresso al sistema un segnale limitato arbitrario, il segnale di uscita corrispondente deve avere ampiezza limitata, e questo deve accadere in particolare per il segnale di ingresso (ovviamente limitato) $x(t)=\sgn\bigl(h(-t)\bigr)$ (il cosiddetto \emph{segnale del caso peggiore}). L'uscita all'istante $t=0$ vale:
+\begin{align*}
+y(0) &= \left.\int_{-\infty}^{+\infty}h(\alpha)\,x(t-\alpha)\ud\alpha\right|_{t=0} =
+        \int_{-\infty}^{+\infty}h(\alpha)\,x(-\alpha)\ud\alpha\\
+     &= \int_{-\infty}^{+\infty}h(\alpha)\sgn\bigl(h(\alpha)\bigr)\ud\alpha =
+        \int_{-\infty}^{+\infty}\abs{h(\alpha)}\ud\alpha = +\infty
+\end{align*}
+che è un assurdo: avendo supposto per ipotesi che la risposta impulsiva del sistema non sia assolutamente integrabile, poiché il segnale di uscita non ha ampiezza limitata, il sistema in realtà non è stabile, in contraddizione con l'ipotesi fatta.
+\end{proof}
+\vspace{-\bigskipamount}%revisione perché altrimenti si sommano la spaziatura per la fine proof e per il nuovo paragrafo
+
+\paragraph{Memoria.} Nei sistemi senza memoria (detti anche istantanei), l'uscita $y(\bar{t})$ dipende solo dall'ingresso calcolato all'istante $\bar{t}$:
+\[y(t)=\T\left[x(\alpha),\:\alpha=t\right].\]
+
+I sistemi istantanei sono un caso particolare dei sistemi causali. Due segnali diversi ma coincidenti a un certo istante provocano, in quell'istante, esattamente la stessa uscita, indipendentemente dal loro andamento in tutti gli altri istanti.
+
+I sistemi con memoria sono tutti i sistemi che non soddisfano questa condizione. Non coincidono con i sistemi causali perché potrebbe aversi un'uscita che dipende anche dall'ingresso a istanti futuri (sistema con memoria ma non causale).
+
+\paragraph{Invertibilità.} Se $y(t)=\T\left[x(t)\right]$, allora il sistema si dice invertibile se
+esiste una trasformazione $\T^{-1}[\:\cdot\:]$ tale che:
+\[x(t)=\T^{-1}\left[y(t)\right].\]
+Ovviamente non tutti i sistemi sono invertibili, ad esempio perché esistono due ingressi che danno la
+stessa uscita (ma non è questa l'unica condizione).
+
+
+\section{La risposta in frequenza} D'ora in poi prenderemo in considerazione solamente i sistemi
+lineari stazionari.
+%
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(60,10)
+\put(10,5){\vector(1,0){10}}
+\put(40,5){\vector(1,0){10}}
+\put(20,1){\framebox(20,8){$h(t)$}}
+\put(2,4){$x(t)$}
+\put(52,4){$y(t)$}
+\end{picture}}\end{center}
+%
+La risposta impulsiva di un sistema potrebbe essere ricavata applicando in ingresso al sistema stesso un segnale che approssimi la funzione $\delta(t)$ e misurando l'uscita corrispondente. Il segnale $\delta(t)$ è un'astrazione matematica che può solo essere approssimata quando si effettua una misurazione nella pratica.
+Se però si ha un'idea dei tempi di risposta del sistema, una buona approssimazione della sollecitazione impulsiva è un impulso rettangolare di durata sufficientemente più piccola della costante di tempo intrinseca al sistema e di ampiezza sufficientemente elevata. Ciò che si ottiene in questo modo è la caratterizzazione del sistema nel tempo.
+
+Spesso però non è possibile applicare al sistema una sollecitazione impulsiva, per l'impossibilità di generare un segnale che sia una buona approssimazione di un impulso di Dirac, ma anche perché una sollecitazione di ampiezza elevata come l'impulso (o meglio, la sua approssimazione pratica) può danneggiare il sistema stesso. Cambiamo dunque tipo di eccitazione, e forniamo al sistema un segnale di ingresso sinusoidale o, meglio, per semplicità di calcolo, un segnale nella forma:
+%
+\[x(t) = \e^{\,\j2\pi ft}\]
+%
+ossia un'oscillazione sinusoidale complessa alla frequenza $f$ (che per ora consideriamo un parametro). L'uscita corrispondente sarà:
+%
+\begin{align}
+y(t) & = \int_{-\infty}^{+\infty}\e^{\,\j2\pi f\alpha}h(t-\alpha)\ud\alpha  \notag\\
+     & = \int_{-\infty}^{+\infty}\e^{\,\j2\pi f(t-\beta)}h(\beta)\ud\beta\\
+     & = \e^{\,\j2\pi ft}\int_{-\infty}^{+\infty}h(\beta)\e^{-\j2\pi f\beta}\ud\beta \notag\\
+     & = x(t)\,H(f) \label{eq:relazione-ingresso-uscita-sls}
+\end{align}
+%
+dove abbiamo posto $t-\alpha=\beta$ e definito:
+%
+\[H(f)\quad\xLeftrightarrow{\TCF}\quad h(t).\]
+
+La risposta a un'oscillazione di frequenza $f$ assegnata è a sua volta un'oscillazione alla stessa frequenza $f$, ma modificata in ampiezza e fase rispetto all'ingresso di un fattore a valori complessi dipendente dalla frequenza: $H(f)$. Chiamiamo la funzione $H(f)$ \emph{risposta in frequenza} (o \emph{risposta armonica}). Poiché c'è una corrispondenza biunivoca tra risposta impulsiva e risposta in frequenza, allora anche la risposta in frequenza di un sistema lo caratterizza completamente.
+
+Si può, in realtà, definire la risposta in frequenza $H(f)$ in tre modi.
+%
+\begin{center}\begin{tabular}{l>{$\displaystyle}l<{$}}
+\toprule
+Prima definizione:   & H(f)\triangleq\left.\frac{y(t)}{x(t)}\right|_{x(t)=\e^{\,\j2\pi ft}}\\
+\midrule
+Seconda definizione: & H(f)\triangleq\int_{-\infty}^{+\infty}h(t)\e^{-\j2\pi ft}\ud t\\
+\midrule
+Terza definizione:   & H(f)\triangleq\frac{Y(f)}{X(f)}\\
+\bottomrule
+\end{tabular}\end{center}
+
+La prima definizione deriva dall'equazione~\eqref{eq:relazione-ingresso-uscita-sls} e consente di misurare la risposta in frequenza attraverso segnali di prova (oscillazioni a frequenza variabile). La risposta in frequenza di un sistema lineare stazionario è, cioè, data dal rapporto $y(t)/x(t)$ quando in ingresso c'è un segnale del tipo $x(t)=\e^{\,\j2\pi ft}$.
+
+Anche la seconda definizione deriva dalla~\eqref{eq:relazione-ingresso-uscita-sls}, ed è utilizzabile quando si conosca l'andamento temporale della risposta impulsiva.
+
+Per la terza definizione si parte invece dalla $y(t)=x(t)\otimes h(t)$ e se ne considera la trasformata
+continua, ottenendo:
+%
+\[Y(f)=X(f)\cdot H(f)\quad\Rightarrow\quad H(f)=\frac{Y(f)}{X(f)}.\]
+%
+Tale relazione non può essere applicata a frequenze per cui si annulla lo spettro del segnale in ingresso, poiché a tali frequenze si annulla anche lo spettro dell'uscita e la risposta in frequenza risulta indeterminata. Pertanto, se la si vuole usare per determinare la $H(f)$ è necessario usare segnali in ingresso con estensione in frequenza infinita e che non si annullino mai. Se si considera $x(t)=\delta(t)$ (il cui spettro non si annulla mai: è sempre unitario), la risposta in frequenza è data proprio dallo spettro del segnale in uscita.
+
+I vantaggi nel definire tale funzione della frequenza (la risposta in frequenza) sono nel poter capire ``al volo'' come è fatta l'uscita, anche se in termini spettrali (ad esempio capire come è fatta la banda e per quali intervalli frequenziali esiste). Noto lo spettro del segnale di ingresso e nota la risposta in frequenza del sistema, l'uscita non è altro che il loro prodotto.
+
+\begin{esempio}
+\label{es:uscita-sls}
+Prendiamo in considerazione un segnale come quello rappresentato nella figura~\ref{fig:esempio-ingresso-sls}.
+%
+\begin{figure}[!b]
+\centering
+\subfloat[][Segnale di ingresso.]{\framebox{\begin{pspicture*}(-3.5,-0.6)(3.5,1.9)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-3.2,-0.4)(3.2,1.7)
+  \uput[d](3.1,0){$f$}
+  \uput[l](0,1.5){$X(f)$}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]% 1*\e^(-abs(x/1.5)^2) + cos(x*550)/15
+         {-2.35}{2.35}{1 2.718281828459045235 x 1.5 div abs 2 exp neg exp mul 550 x mul cos 15 div add 0.03 sub}
+\end{pspicture*}}  \label{fig:esempio-ingresso-sls}}\\
+\subfloat[][Risposta in frequenza.]{\framebox{\begin{pspicture*}(-3.2,-0.6)(3.2,1.9)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-3.0,-0.4)(2.9,1.7)
+  \uput[d](2.8,0){$f$}
+  \uput[l](0,1.5){$H(f)$}
+  \psline[linewidth=1pt](-2.4,0)(-1.3,0)
+  \psline[linewidth=0.5pt](-1.3,0)(-1.3,1)
+  \psline[linewidth=1pt](-1.3,1)(1.3,1)
+  \psline[linewidth=0.5pt](1.3,1)(1.3,0)
+  \psline[linewidth=1pt](1.3,0)(2.4,0)
+\end{pspicture*}}  \label{fig:esempio-risposta-sls}}  \quad
+\subfloat[][Segnale in uscita.]{\framebox{\begin{pspicture*}(-3.2,-0.6)(3.2,1.9)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-3.0,-0.4)(2.9,1.7)
+  \uput[d](2.8,0){$f$}
+  \uput[l](0,1.5){$Y(f)$}
+  \psline[linewidth=1pt](-2.4,0)(-1.3,0)
+  \psline[linewidth=0.5pt](-1.3,0)(-1.3,0.52)
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]% 1*\e^(-abs(x/1.5)^2) + cos(x*550)/15
+         {-1.3}{1.3}{1 2.718281828459045235 x 1.5 div abs 2 exp neg exp mul 550 x mul cos 15 div add 0.03 sub}
+  \psline[linewidth=0.5pt](1.3,0.52)(1.3,0)
+  \psline[linewidth=1pt](1.3,0)(2.4,0)
+\end{pspicture*}}  \label{fig:esempio-uscita-sls}}
+\caption{Esempio~\ref{es:uscita-sls}.}
+\end{figure}
+%
+Supponiamo di volerlo trasmettere attraverso un canale trasmissivo con una certa banda (ossia che fa passare solo una certa parte del segnale). Il canale potrebbe essere un sistema lineare stazionario: lineare perché vale il principio di sovrapposizione degli effetti (in un sistema elettrico vale sicuramente), stazionario se il canale rimane invariato (quantomeno in un certo intervallo di tempo). Se quindi il canale è lineare e stazionario allora è rappresentabile come un \ac{SLS} (figura~\ref{fig:esempio-risposta-sls}).
+
+Per sapere come è fatto il segnale in uscita, si potrebbe considerare la risposta impulsiva del canale e fare la convoluzione con il segnale. Oppure si considera lo spettro del segnale e notando come è fatto il canale si potrà scrivere direttamente un'uscita del tipo raffigurato nella~\ref{fig:esempio-uscita-sls}.
+\end{esempio}
+
+\paragraph{Risposta in ampiezza e risposta in fase.} La risposta in frequenza di un filtro, essendo la \ac{TCF} di una funzione temporale, sarà in generale una funzione complessa e si può pertanto distinguere tra \emph{risposta in ampiezza} (che è il modulo della $H(f)$) e \emph{risposta in fase} (la fase di $H(f)$):
+\begin{align*}
+H(f) = \begin{cases}A(f)=\abs{H(f)}\\ \Phi(f)=\angle H(f).\end{cases}
+\end{align*}
+
+Le denominazioni ``risposta in ampiezza'' e ``risposta in fase'' rivelano che effettivamente, noto lo spettro del segnale di ingresso, si può separare il calcolo del modulo e della fase dello spettro del segnale in uscita:
+\begin{align*}
+Y(f) = \begin{cases}\abs{Y(f)}=\abs{X(f)}\cdot\abs{H(f)}\\ \angle Y(f)=\angle X(f)+\angle H(f).\end{cases}
+\end{align*}
+\vspace{-\bigskipamount}%revisione perché altrimenti si sommano la spaziatura per la fine align e per il nuovo paragrafo
+
+\paragraph{Decibel.} Spesso la risposta in ampiezza di segnali fisici (esempio tipico sono quelli acustici) può variare di molti ordini di grandezza. Si preferisce perciò rappresentarla su scala logaritmica, in decibel ($\dB$):
+
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{pspicture*}(-3.5,-0.7)(3.5,2.1)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-3.2,-0.1)(3.2,1.9)
+  \uput[l](0,1.65){$\abs{X(f)}_{\dB}$}
+  \uput[d](3.1,0){$f$}
+  \infixtoRPN{1.1*2.718^(-(abs(x/1.2)^2))}
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{-2.8}{2.8}{\RPN}
+\end{pspicture*}}\end{center}
+La misura in decibel dello spettro viene calcolata come:
+\begin{equation}
+\abs{X(f)}_{(\dB)}=10\log_{10}\abs{X(f)}.   \label{eq:decibel}
+\end{equation}
+
+
+\section{Risposta al gradino}
+
+Se in ingresso a un sistema lineare stazionario si dà un gradino $\u(t)$ in uscita si ha una risposta, detta
+per l'appunto ``risposta al gradino'', che viene indicata con $g(t)$:
+%
+\begin{figure}[b]
+\centering
+\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(60,10)
+\put(10,5){\vector(1,0){10}}
+\put(40,5){\vector(1,0){10}}
+\put(20,1){\framebox(20,8){$h(t)$}}
+\put(2,4){$\u(t)$}
+\put(52,4){$g(t)$}
+\end{picture}}
+\caption{La risposta al gradino $g(t)$ di un sistema lineare stazionario.}
+\end{figure}
+%
+\begin{align*}
+g(t) & = \int_{-\infty}^{+\infty}\u(\alpha)\,h(t-\alpha)\ud\alpha\\
+     & = \int_{-\infty}^{+\infty}h(\beta)\u(t-\beta)\ud\beta=\int_{-\infty}^{t}h(\beta)\ud\beta.
+\end{align*}
+%
+E pertanto:
+%
+\[g(t) = \int_{-\infty}^{t}h(\beta)\ud\beta  \qquad\qquad  h(t) = \frac{\ud g(t)}{\ud t}\]
+
+Per capire l'importanza di questi risultati, consideriamo un caso pratico: torniamo al problema di misurare la risposta impulsiva di un sistema. Se ad esempio si tratta di un sistema elettrico allora bisognerebbe generare tra i due morsetti di ingresso un delta di Dirac e collegare i due morsetti di uscita a un oscilloscopio, e misurare così la risposta impulsiva.
+
+In realtà, come già detto, non è possibile realizzare una funzione, come la delta di Dirac, che va all'infinito, ma se anche si riuscisse a farla, sicuramente si brucerebbe tutto il circuito.
+Quello che si fa in pratica è mettere in ingresso un gradino o qualcosa che sale molto rapidamente (da $0$ a $1$ o da $0$ a una certa costante) e misurare quindi la risposta al gradino. Operare in tal modo è molto più fattibile dal punto di vista sperimentale.
+
+
+\section{Collegamenti tra sistemi}
+\subsection{Sistemi in cascata}
+Due sistemi si dicono in cascata quando l'uscita del primo è ingresso del secondo. Un collegamento di questo tipo è rappresentato nella figura~\ref{fig:sistemi-in-cascata}.
+%
+\begin{figure}[b]
+\centering
+\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(100,16)
+\put(3,8){\vector(1,0){18}}
+\put(41,8){\vector(1,0){18}}
+\put(79,8){\vector(1,0){18}}
+\put(21,2){\framebox(20,12){$h_1(t)$}}
+\put(59,2){\framebox(20,12){$h_2(t)$}}
+\multiput(82,15)(-2,0){33}{\line(-1,0){1}}
+\multiput(83,15)(0,-2){7}{\line(0,-1){1}}
+\multiput(18,1)(2,0){33}{\line(1,0){1}}
+\multiput(17,1)(0,2){7}{\line(0,1){1}}
+\put(5,10){$x(t)$}
+\put(47,10){$y(t)$}
+\put(90,10){$z(t)$}
+\put(84,3){$h(t)$}
+\end{picture}}
+\caption{Due sistemi lineari stazionari in cascata.}
+\label{fig:sistemi-in-cascata}
+\end{figure}
+%
+Si calcola:
+\begin{align*}
+z(t) & = y(t)\otimes h_2(t)=\left[x(t)\otimes h_1(t)\right]\otimes h_2(t)\\
+     & = x(t)\otimes\left[h_1(t)\otimes h_2(t)\right]=x(t)\otimes h(t)
+\end{align*}
+dove
+\begin{align*}
+h(t) & = h_1(t)\otimes h_2(t).
+\end{align*}
+Nel dominio della frequenza:
+\begin{align*}
+H(f) & = H_1(f)\cdot H_2(f).
+\end{align*}
+Due sistemi in cascata sono equivalenti a un unico sistema con risposta impulsiva data dalla convoluzione delle due
+risposte impulsive e (quindi) con risposta in frequenza pari al prodotto delle risposte in frequenza dei due
+sottosistemi.
+
+\subsection{Sistemi in parallelo}
+Due sistemi sono in parallelo se vengono alimentati dallo stesso ingresso e le uscite dei due vengono poi sommate.
+%
+\begin{figure}[t]
+\centering
+\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(60,30)
+\put(1,15){\line(1,0){10}}
+\put(11,22){\line(0,-1){14}}
+\put(11,8){\vector(1,0){4}}
+\put(11,22){\vector(1,0){4}}
+\put(35,8){\line(1,0){4}}
+\put(35,22){\line(1,0){4}}
+\put(39,8){\vector(0,1){5}}
+\put(39,22){\vector(0,-1){5}}
+\put(41,15){\vector(1,0){18}}
+\put(15,16){\framebox(20,12){$h_1(t)$}}
+\put(15,2){\framebox(20,12){$h_2(t)$}}
+\put(39,15){\circle{4}}
+\put(37.82,14.28){$\scriptstyle{+}$}
+\put(2,17){$x(t)$}
+\put(50,17){$y(t)$}
+\put(37,24){$y_1(t)$}
+\put(37,5){$y_2(t)$}
+\multiput(46,29)(-2,0){19}{\line(-1,0){1}}
+\multiput(47,29)(0,-2){14}{\line(0,-1){1}}
+\multiput(10,1)(2,0){19}{\line(1,0){1}}
+\multiput(9,1)(0,2){14}{\line(0,1){1}}
+\put(48,3){$h(t)$}
+\end{picture}}
+\caption{Due sistemi lineari stazionari in parallelo.}
+\end{figure}
+%
+L'uscita del sistema equivalente vale:
+\begin{align*}
+y(t) & = y_1(t)+y_2(t)=x(t)\otimes h_1(t)+x(t)\otimes h_2(t)\\
+     & = x(t)\otimes\left[h_1(t)+h_2(t)\right]=x(t)\otimes h(t)
+\end{align*}
+dove
+\begin{align*}
+h(t) & = h_1(t)+h_2(t)
+\end{align*}
+e similmente
+\begin{align*}
+H(f) & = H_1(f)+H_2(f).
+\end{align*}
+Due sistemi lineari stazionari in parallelo sono equivalenti a un unico sistema con risposta impulsiva data dalla
+somma delle due risposte impulsive e (quindi) con risposta in frequenza pari alla somma delle risposte in frequenza
+dei due sottosistemi.
+
+
+\section{Proprietà dei filtri lineari**}
+\paragraph{Integrazione.}
+\[w(t)=\int_{-\infty}^{t}x(\alpha)\ud\alpha\]
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(60,14)
+\put(2,7){\vector(1,0){18}}
+\put(40,7){\vector(1,0){18}}
+\put(20,1){\framebox(20,12){$h(t)$}}
+\put(8,9){$x(t)$}
+\put(46,9){$y(t)$}
+\put(8,3){$w(t)$}
+\put(46,3){$z(t)$}
+\end{picture}}\end{center}
+\begin{align*}
+w(t) & = x(t)\otimes \u(t)=\u(t)\otimes x(t)\\
+z(t) & = w(t)\otimes h(t)=\left[\u(t)\otimes x(t)\right]\otimes h(t)\\
+     & = \u(t)\otimes\left[x(t)\otimes h(t)\right]=\u(t)\otimes y(t)\\
+     & = y(t)\otimes \u(t)=\int_{-\infty}^t y(\alpha)\ud\alpha=z(t)
+\end{align*}
+
+\paragraph{Derivazione.} La proprietà di derivazione si può dedurre da quella di integrazione
+facendo un ragionamento inverso.
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(60,14)
+\put(2,7){\vector(1,0){18}}
+\put(40,7){\vector(1,0){18}}
+\put(20,1){\framebox(20,12){$h(t)$}}
+\put(8,9){$w(t)$}
+\put(46,9){$z(t)$}
+\put(8,3){$x(t)$}
+\put(46,3){$y(t)$}
+\end{picture}}\end{center}
+Se
+\begin{align*}w(t)=\int_{-\infty}^t x(\alpha)\ud\alpha\end{align*}
+allora
+\begin{align*}
+x(t)=\frac{\ud w(t)}{\ud t}\quad\Rightarrow\quad y(t)=\frac{\ud z(t)}{\ud t}.
+\end{align*}
+
+
+\section{Filtri ideali}
+\label{sec:filtri-ideali}
+La teoria sui sistemi lineari stazionari si applica direttamente al problema del filtraggio dei segnali. Filtrare un segnale $x(t)$ significa trasformarlo in un altro segnale $y(t)$ avente le stesse caratteristiche di $x(t)$ (se ad esempio l'ingresso è monodimensionale e a tempo continuo, anche l'uscita lo sarà). Il sistema che effettua il filtraggio viene detto \emph{filtro}.
+Ci soffermeremo in particolare sul filtraggio lineare (la trasformazione che viene fatta sul segnale è lineare), considerando sempre sistemi lineari stazionari. Un filtro quindi (per noi) non è altro che un sistema lineare stazionario, per il quale è definita una risposta impulsiva o, equivalentemente, una risposta in frequenza.
+
+Consideriamo un segnale costituito dalla sovrapposizione di altri due segnali
+\[x(t)=x_1(t)+x_2(t)\]
+dei quali il primo è un segnale \emph{utile} (in quanto contiene informazioni), mentre il secondo è solo un \emph{disturbo}. Operando nel dominio del tempo non è affatto semplice eliminare il disturbo separandolo dal segnale utile. Se però passiamo a considerare i loro spettri, può accadere che questi insistano su intervalli frequenziali disgiunti e che, di conseguenza, siano separabili con dei sistemi opportuni. Questi sistemi (che noi supponiamo lineari) sono per l'appunto i filtri, chiamati in questo modo proprio poiché presentano caratteristiche di \emph{selettività} nei confronti delle varie componenti frequenziali che compongono il segnale.
+
+Vediamo ora dei filtri che vengono tipicamente utilizzati nelle comunicazioni. Nello specifico, vedremo solo dei filtri ideali, per cui sono definite $h(t)$ e $H(f)$ in maniera ideale, senza considerare come possono essere effettivamente realizzati.
+
+\subsection{Passa basso}
+Un filtro passa basso ideale è caratterizzato da una risposta in frequenza
+\begin{align*}
+H\gp{LP}(f) & = \rect{f}{2B}
+\end{align*}
+o equivalentemente da una risposta impulsiva
+\begin{align*}
+h\gp{LP}(t) & = 2B\sinc(2Bt).
+\end{align*}
+(Il pedice ``LP'' sta per \emph{Low Pass}.) Graficamente viene rappresentato nella figura~\ref{fig:filtro-passa-basso}.
+
+\begin{figure}[b]
+\centering
+\framebox{\begin{pspicture*}(-4.3,-0.7)(4.3,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-4.1,-0.4)(4,1.7)
+  \psline[linewidth=1pt](-1,0.8)(1,0.8)
+  \psline[linewidth=0.5pt](1,0.8)(1,0)
+  \psline[linewidth=0.5pt](-1,0.8)(-1,0)
+  \psline[linewidth=1pt](-1,0)(-2.5,0)
+  \psline[linewidth=1pt](1,0)(2.5,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](-2.5,0)(-3.5,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](2.5,0)(3.5,0)
+  \uput[l](0,1.5){$H\gp{LP}(f)$}
+  \uput[d](3.9,0){$f$}
+  \uput[u](0.4,0.8){$1$}
+  \uput[d](-1,0){$-B$}
+  \uput[d](1,0){$+B$}
+\end{pspicture*}}
+\caption{Risposta in frequenza di un filtro passa passo ideale.}
+\label{fig:filtro-passa-basso}
+\end{figure}
+
+Un filtro passa basso ideale lascia passare inalterate le componenti frequenziali all'interno di una certa banda (cioè intervallo di frequenze) vicino alla frequenza nulla (quindi basse frequenze). Questa zona infatti viene chiamata \emph{banda passante}, in contrapposizione alla cosiddetta \emph{banda oscura}, dove le componenti frequenziali vengono completamente eliminate. La frequenza $B$ rappresenta il cosiddetto \emph{limite di banda}. Per convenzione, $B$ è anche la \emph{banda} del filtro passa basso (pur essendo in effetti l'ampiezza della banda passante considerata solamente sul semiasse positivo delle frequenze).
+
+\subsection{Passa banda}
+La risposta in frequenza e la risposta impulsiva di un filtro passa banda sono rispettivamente:
+\begin{align*}
+H\gp{BP}(f) & = \rect{f-f_0}{B}+\rect{f+f_0}{B}\\
+h\gp{BP}(t) & = B\sinc(Bt)\e^{\,\j2\pi f_0t}+B\sinc(Bt)\e^{-\j2\pi f_0t}\\
+          & = 2B\sinc(Bt)\cos(2\pi f_0t).
+\end{align*}
+(Il pedice ``BP'' sta per \emph{Band Pass}.) Graficamente è rappresentato nella figura~\ref{fig:filtro-passa-banda}.
+%
+\begin{figure}[b]
+\centering
+\framebox{\begin{pspicture*}(-5.3,-0.8)(5.5,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-5.1,-0.4)(5.2,1.7)
+  \psline[linewidth=1pt](-3,0.8)(-1,0.8)
+  \psline[linewidth=1pt](-1,0)(1,0)
+  \psline[linewidth=1pt](1,0.8)(3,0.8)
+  \psline[linewidth=0.5pt](-3,0.8)(-3,0)
+  \psline[linewidth=0.5pt](-1,0.8)(-1,0)
+  \psline[linewidth=0.5pt](1,0.8)(1,0)
+  \psline[linewidth=0.5pt](3,0.8)(3,0)
+  \psline[linewidth=1pt](-3,0)(-4,0)
+  \psline[linewidth=1pt](3,0)(4,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](-4,0)(-4.8,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](4,0)(4.8,0)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-1,0.8)(1,0.8)
+  \uput[l](0,1.5){$H\gp{BP}(f)$}
+  \uput[d](5.1,0){$f$}
+  \uput[u](0.4,0.8){$1$}
+  \psline[linewidth=0.5pt](-2,-0.05)(-2,0.05)
+  \psline[linewidth=0.5pt](2,-0.05)(2,0.05)
+  \uput[d](-2,0){$\scriptstyle{-f_0}$}
+  \uput[d](2,0){$\scriptstyle{f_0}$}
+  \uput[d](-3,0){$\scriptstyle{-f_0-\frac{B}{2}}$}
+  \uput[d](-1,0){$\scriptstyle{-f_0+\frac{B}{2}}$}
+  \uput[d](1,0){$\scriptstyle{f_0-\frac{B}{2}}$}
+  \uput[d](3,0){$\scriptstyle{f_0+\frac{B}{2}}$}
+\end{pspicture*}}
+\caption{Risposta in frequenza di un filtro passa banda ideale.}
+\label{fig:filtro-passa-banda}
+\end{figure}
+
+La frequenza $f_0$ è detta \emph{frequenza di centro banda}. La banda $B$ è definita come l'intervallo di frequenze positive dove lo spettro è non nullo. Da notare che nel filtro bassa basso l'intervallo in cui esiste la \textop{rect} è $2B$ mentre la banda è $B$, e pertanto in banda base, ovvero intorno all'origine, un filtro passa basso è di banda $B$ se la \textop{rect} va tra $-B$ e $B$. Per un passa banda, la banda è invece tutto l'intervallo della \textop{rect}.
+
+Questi filtri sono quelli tipicamente usati per i segnali modulati emessi dalle stazioni di radiodiffusione. I vari segnali hanno infatti spettri non sovrapposti in ambito frequenziale e posti a cavallo delle cosiddette frequenze portanti su cui i radioricevitori vengono poi sintonizzati.
+
+Per i filtri passa banda si definisce il fattore di qualità:
+\[Q\triangleq\frac{f_0}{B}.\]
+Valori di $Q$ molto alti sono propri di filtri più \emph{selettivi}, tecnologicamente avanzati e più costosi. Filtri di alta qualità hanno bande relativamente strette rispetto alla frequenza cui sono centrati. Questo rispecchia le difficoltà tecnologiche nella realizzazione di questi filtri (che possono essere pensati come un passa-basso seguito da un passa alto): un filtro di banda $B$ è più semplice realizzarlo a una frequenza $f_0$ piuttosto che a una frequenza (ad esempio) $10f_0$. Aumentando la frequenza $f_0$ diventa sempre più difficile fare filtri a banda stretta.
+
+\subsection{Passa alto}
+Il filtro passa alto (indicato con il pedice ``HP'', \emph{High Pass}) è caratterizzato dalle
+seguenti relazioni:
+\begin{align*}
+H\gp{HP}(f) & = 1-\rect{f}{2B}\\
+h\gp{HP}(t) & = \delta(t)-2B\sinc(2Bt)
+\end{align*}
+
+\begin{figure}
+\centering
+\framebox{\begin{pspicture*}(-5.3,-0.7)(5.5,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-5.1,-0.4)(5.2,1.7)
+  \psline[linewidth=1pt](-4,0.8)(-1.5,0.8)
+  \psline[linewidth=1pt](-1.5,0)(1.5,0)
+  \psline[linewidth=1pt](1.5,0.8)(4,0.8)
+  \psline[linewidth=0.5pt](-1.5,0.8)(-1.5,0)
+  \psline[linewidth=0.5pt](1.5,0.8)(1.5,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](-4,0.8)(-4.8,0.8)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](4,0.8)(4.8,0.8)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-1.5,0.8)(1.5,0.8)
+  \uput[l](0,1.5){$H\gp{HP}(f)$}
+  \uput[d](5.1,0){$f$}
+  \uput[u](0.4,0.8){$1$}
+  \uput[d](-1.5,0){$-B$}
+  \uput[d](1.5,0){$B$}
+\end{pspicture*}}
+\caption{Risposta in frequenza di un filtro passa alto ideale.}
+\label{fig:filtro-passa-alto}
+\end{figure}
+
+La banda passante di un filtro passa alto è quella ``al di là'' dell'intervallo $[-B,B]$ e la banda di un filtro passa alto, di conseguenza, è in realtà infinita. Comunque, si dice ``di banda $B$'' o ``di frequenza di taglio $B$'' per indicare il limite di banda (dove il filtro va a zero).
+
+\subsection{Considerazioni sull'utilizzo dei filtri}
+I tre filtri visti sono in effetti irrealizzabili. Consideriamo ad esempio un filtro passa basso: poiché la sua risposta impulsiva è $h\gp{LP}(t)\neq0$ per $t<0$, il filtro è non causale. Ciò significa che non è fisicamente realizzabile, e lo stesso vale per i filtri passa banda e passa alto.
+
+Essi permettono di fare semplici operazioni sui segnali. Ad esempio, è importante avere un filtro passa banda all'uscita di un sistema di trasmissione. Infatti, il segnale da noi generato (ad esempio con la voce o musica) ha uno spettro le cui frequenze dipenderanno dalle frequenze audio della modulazione della voce o della musica. Questo spettro non è noto a priori (dipende dalla persona che parla o dalla musica che si ascolta). Al momento della trasmissione viene allocato un canale di trasmissione che potrebbe essere una banda o un intervallo di frequenze (assegnato ad esempio a una emittente radio). Questo canale ha delle caratteristiche ben precise: sarà centrato a una certa frequenza $f_0$ e avrà una certa banda. In trasmissione bisogna evitare assolutamente di trasmettere segnali con spettri che andrebbero a invadere i canali adiacenti. Per evitare questo, appena prima di arrivare all'antenna, il segnale deve passare attraverso un filtro di questo tipo che ci assicura che il segnale non fuoriesca dalla banda allocata.
+
+Ovviamente bisogna già all'inizio fare in modo che il segnale stia nella banda stessa, perché altrimenti quando lo si taglia si distrugge informazione (e modificare lo spettro del segnale significa modificare automaticamente anche il segnale stesso).
+
+In ogni caso i filtri devono essere presenti, per non violare il sistema globale di telecomunicazione.
+
+
+\section{Durata e banda}
+Mentre per i filtri ideali visti nel paragrafo~\ref{sec:filtri-ideali} si è potuto definire in maniera precisa la banda, per i filtri realizzabili in pratica la differenza tra banda passante e banda oscura non è così netta. Per essi, come vedremo, è necessario definire la banda in maniera convenzionale.
+
+Inoltre, il concetto di banda è estendibile anche a segnali. Dato un generico segnale $x(t)$, si definisce sullo stesso un parametro $T$ detto \emph{durata} del segnale e sul suo spettro $X(f)$ un altro parametro duale $B$ detto \emph{banda} del segnale. La durata di un segnale $x(t)$ è l'ampiezza dell'intervallo temporale all'interno del quale $x(t)$ assume valori non nulli. La banda di un segnale è l'ampiezza dell'intervallo positivo di frequenze all'interno del quale il suo spettro (di ampiezza) assume valori non nulli.
+
+Analogamente alla banda dei filtri ``reali'' (nel senso di ``fisicamente realizzabili''), definire in maniera pratica banda e durata per i segnali non è così ovvio. Bisognerà trovare delle definizioni precise cui attenersi per quantificare $T$ e $B$. Diamo per ora due definizioni.
+
+\begin{definizione}[segnale di durata rigorosamente limitata]
+Si dice che un segnale $x(t)$ ha durata $T$ rigorosamente limitata se $x(t)$ ha valore arbitrario all'interno
+dell'intervallo $\left[-T/2, +T/2\right]$ e identicamente nullo altrove, ossia:
+\[x(t)=0 \quad\text{per } \abs{t}>T/2.\]
+\end{definizione}
+
+\begin{figure}[b!]
+\centering
+\subfloat{\framebox{\begin{pspicture*}(-4.3,-0.8)(4.3,2.1)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-4.1,-0.1)(4,1.9)
+  \uput[l](0,1.65){$x(t)$}
+  \uput[d](3.9,0){$t$}
+  \infixtoRPN{0.4*sin(400*x)+0.33*cos(711*x)+0.32}
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{-2.24}{2.25}{\RPN}
+  \psline[linewidth=0.5pt](-2.24,-0.05)(-2.24,0.05)
+  \psline[linewidth=0.5pt](2.25,-0.05)(2.25,0.05)
+  \uput[d](-2.24,0){$-T/2$}
+  \uput[d](2.25,0){$T/2$}
+\end{pspicture*}}}\\
+\subfloat{\framebox{\begin{pspicture*}(-4.3,-0.6)(4.3,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-4.1,-0.4)(4,1.7)
+  \psline[linewidth=1pt](-1.5,1)(1.5,1)
+  \psline[linewidth=0.5pt](1.5,1)(1.5,0)
+  \psline[linewidth=0.5pt](-1.5,1)(-1.5,0)
+  \psline[linewidth=1pt](-1.5,0)(-2.5,0)
+  \psline[linewidth=1pt](1.5,0)(2.5,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](-2.5,0)(-3.5,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](2.5,0)(3.5,0)
+  \uput[l](0,1.5){$X(f)$}
+  \uput[d](3.9,0){$f$}
+  \uput[d](-1.5,0){$-B$}
+  \uput[d](1.5,0){$B$}
+\end{pspicture*}}}
+\caption{Un segnale a durata rigorosamente limitata (sopra), e un segnale a banda rigorosamente limitata (sotto).}
+\end{figure}
+
+\begin{definizione}[segnale a banda rigorosamente limitata]
+Un segnale $x(t)$ si dice a banda $B$ rigorosamente limitata se ha spettro arbitrario all'interno dell'intervallo
+$[-B, +B]$ e identicamente nullo altrove, ossia:
+\[X(f)=0 \quad\text{per } \abs{f}>B.\]
+\end{definizione}
+
+\subsection{Relazioni tra durata e banda}
+Seguono due proprietà che caratterizzano la relazione tra durata e banda di un segnale: in particolare, si può pensare che tra di esse sussista come una proporzionalità inversa. Non è possibile, infatti, ridurre arbitrariamente la banda di un segnale senza aumentarne in proporzione la durata: il prodotto di queste due grandezze è \emph{limitato inferiormente}.
+
+\begin{teorema}
+Se il segnale $x(t)$ ha durata $T$ rigorosamente limitata allora il suo spettro $X(f)$ ha banda infinita.
+\end{teorema}
+\begin{proof}
+Moltiplicando un segnale a durata rigorosamente limitata per una \textop{rect} centrata
+nell'intervallo del segnale e con la stessa durata del segnale, ottengo il segnale stesso. Perciò:
+\begin{align*}
+X(f) & = \TCF[x(t)]=\TCF\left[x(t)\rect{t}{T}\right]\\
+     & = X(f)\otimes T\sinc(Tf).
+\end{align*}
+Facciamo l'ipotesi (per assurdo) che $X(f)$ abbia banda rigorosamente limitata. Facendone la convoluzione con una
+\textop{sinc} nel dominio della frequenza, si ottiene come risultato un segnale che ha una banda che è la somma
+di quelle dei segnali originari (può essere intuito in modo molto semplice facendo considerazioni geometriche sul
+prodotto di convoluzione). Siccome la \textop{sinc} ha componenti frequenziali fino all'infinito e quindi banda
+infinita, si ottiene un segnale a banda infinita. Si arriva pertanto a dire che $X(f)$ ha banda infinita,
+contraddicendo l'ipotesi iniziale.
+\end{proof}
+
+I segnali generati a partire da una voce o da una canzone hanno una certa durata. Secondo quanto appena visto,
+questi segnali hanno banda infinita, e in realtà tutti i segnali che generiamo avrebbero banda infinita,
+utilizzando questa definizione.
+Il meccanismo usato nei sistemi di telecomunicazione di suddividere lo spettro in bande non potrebbe funzionare
+(a patto di modificare il segnale stesso, con un filtro).
+Dovremo definire quindi la banda in un modo più pratico per poter caratterizzare i vari segnali proprio in termini
+di banda. È intuitivo che un segnale audio e un segnale video hanno banda diversa (e quello video ha banda molto
+maggiore di quello audio), ma secondo questa definizione hanno entrambi ugualmente banda infinita.
+
+\begin{teorema}
+Se $X(f)$ è lo spettro a banda rigorosamente limitata $B$ di un segnale $x(t)$, allora $x(t)$ ha durata infinita.
+\end{teorema}
+\begin{proof}
+La dimostrazione è analoga a quella vista nella proprietà precedente:
+\begin{align*}
+x(t) & = \ATCF[X(f)]=\ATCF\left[X(f)\rect{f}{2B}\right]\\
+     & = x(t)\otimes 2B\sinc(2Bt).
+\end{align*}
+La convoluzione nel dominio del tempo tra due segnali restituisce un segnale di durata pari alla somma delle
+durate dei segnali originari. Dato che la \textop{sinc} ha durata infinita anche $x(t)$ deve avere durata
+infinita.
+\end{proof}
+
+Anche questa definizione, per quanto semplice, non è poi pratica.
+Infatti, se si genera un segnale (a durata limitata) e lo si fa passare attraverso un filtro passa banda
+ideale, si ottiene un segnale che (secondo questa definizione) ha durata infinita.
+
+
+\subsection{Altre definizioni di durata e banda}
+Come già specificato, le definizioni di durata e banda date precedentemente non sono utili in pratica.
+È necessario definire una misura della durata e della banda in modo da ottenere valori finiti di entrambe.
+Così facendo, un segnale a banda limitata potrà avere durata limitata e sarà possibile fare confronti
+quantitativi tra queste grandezze di due segnali.
+\begin{center}\begin{tabular}{cc}\framebox{\setlength{\unitlength}{1mm}
+\begin{pspicture*}(-3,-0.8)(3,2.1)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.8,-0.1)(2.7,1.9)
+  \uput[l](0,1.65){$x(t)$}
+  \uput[d](2.6,0){$t$}
+  \psline[linewidth=0.5pt](-1.5,0)(-1.5,0.5)
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]% 10*\e^(-abs(x/12)^2)
+         {-2.3}{2.3}{1 2.718281828459045235 x 1.1 div abs 2 exp neg exp mul}
+  \psline[linewidth=0.5pt](1.5,0)(1.5,0.5)
+  \psline[linewidth=0.5pt]{<->}(-1.5,-0.2)(1.5,-0.2)
+  \uput[d](0,-0.2){$D$}
+\end{pspicture*}}&
+\framebox{\setlength{\unitlength}{1mm}
+\begin{pspicture*}(-3,-0.8)(3,2.1)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.8,-0.1)(2.7,1.9)
+  \uput[l](0,1.65){$X(f)$}
+  \uput[d](2.6,0){$f$}
+  \psline[linewidth=0.5pt](-1,0)(-1,0.5)
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]% 10*\e^(-abs(x/12)^2)
+         {-2.1}{2.1}{1.1 2.718281828459045235 x 0.7 div abs 2 exp neg exp mul}
+  \psline[linewidth=0.5pt](1,0)(1,0.5)
+  \psline[linewidth=0.5pt]{<->}(-1,-0.2)(1,-0.2)
+  \uput[d](0,-0.2){$B$}
+\end{pspicture*}}\end{tabular}\end{center}
+
+\paragraph{Durata al $99$\% dell'energia.} La durata al $99$\% dell'energia viene indicata con $D_{99}$ ed è definita come l'ampiezza di quell'intervallo temporale tale che l'energia del segnale all'interno dello stesso è pari al $99\%$ dell'energia totale:
+\begin{equation}
+\int_{-D_{99}/2}^{+D_{99}/2}\abs{x(t)}^2\ud t=0.99 E_x
+\end{equation}
+Ciò equivale, in altri termini, a definire la $D_{99}$ come la durata del segnale troncato la cui energia è pari
+al $99$\% dell'energia del segnale originario.
+
+
+\begin{figure}[b]
+\centering
+\subfloat{\framebox{\begin{pspicture*}(-3.2,-0.8)(3.2,2.1)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.9,-0.1)(2.9,1.9)
+  \uput[l](0,1.65){$\abs{x(t)}^2$}
+  \uput[d](2.8,0){$t$}
+  \infixtoRPN{1.1*2.718^(-(abs(x/1.5)^2))}
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{-2.6}{-2}{\RPN}
+  \pscustom[linewidth=1pt,fillstyle=solid,fillcolor=lightgray]{%
+    \psline[linewidth=0.5pt](-2,0)(-2,0.2)
+    \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{-2}{2}{\RPN}
+    \psline[linewidth=0.5pt](2,0.2)(2,0)}
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{2}{2.6}{\RPN}
+  \uput[r](1.1,1.4){$\scriptstyle{99\% \text{ dell'area}}$}
+  \psline[linewidth=0.5pt]{->}(1.2,1.2)(0.6,0.4)
+  \psline[linewidth=0.5pt]{<->}(-2,-0.2)(2,-0.2)
+  \uput[d](0,-0.2){$D_{99}$}
+\end{pspicture*}}} \quad
+\subfloat{\framebox{\begin{pspicture*}(-3.2,-0.8)(3.2,2.1)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.9,-0.1)(2.9,1.9)
+  \uput[l](0,1.65){$\abs{X(f)}^2$}
+  \uput[d](2.8,0){$f$}
+  \infixtoRPN{1.1*2.718^(-(abs(x)^2))}
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{-2.6}{-1.5}{\RPN}
+  \pscustom[linewidth=1pt,fillstyle=solid,fillcolor=lightgray]{%
+    \psline[linewidth=0.5pt](-1.5,0)(-1.5,0.13)
+    \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{-1.5}{1.5}{\RPN}
+    \psline[linewidth=0.5pt](1.5,0.13)(1.5,0)}
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{1.5}{2.6}{\RPN}
+  \uput[r](1,1.3){$\scriptstyle{99\% \text{ dell'area}}$}
+  \psline[linewidth=0.5pt]{->}(1.1,1.1)(0.6,0.4)
+  \psline[linewidth=0.5pt]{<->}(0,-0.2)(1.5,-0.2)
+  \uput[d](0.75,-0.2){$B_{99}$}
+\end{pspicture*}}}
+\caption{Durata e banda al $99$\% dell'energia.}
+\end{figure}
+
+\paragraph{Banda al $99$\% dell'energia.} La definizione di banda al $99\%$ dell'energia viene data sfruttando il teorema di Parseval. È quel valore $B_{99}$ tale che:
+\begin{equation}
+\int_{-B_{99}}^{+B_{99}}\abs{X(f)}^2\ud f=0.99 E_x
+\end{equation}
+
+\paragraph{Durata a $-3\dB$ e banda a $-3\dB$.} Queste definizioni di durata e banda sono più utilizzate rispetto alle definizioni basate sull'energia viste precedentemente. Hanno senso però solo per determinate tipologie di segnali. Nello specifico, si considerano trascurabili i contributi inferiori alla metà del valore massimo, ovvero quelli di $3\dB$ al di sotto del massimo su scala logaritmica.
+
+\begin{figure}
+\centering
+\subfloat{\framebox{\begin{pspicture*}(-3.2,-1.2)(3.2,2.1)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.9,-0.1)(2.9,1.9)
+  \uput[l](0,1.65){$\abs{x(t)}$}
+  \uput[d](2.8,0){$t$}
+  \infixtoRPN{1.1*2.718^(-(abs(x/1.5)^2))}
+  \psline[linewidth=0.5pt](-1.25,0)(-1.25,0.55)
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{-2.5}{2.5}{\RPN}
+  \psline[linewidth=0.5pt](1.25,0.55)(1.25,0)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-0.5,1.1)(0.5,1.1)
+  \uput[r](0.5,1.1){$\scriptstyle{x\gp{MAX}}$}
+  \uput[r](1.25,0.55){$\scriptstyle{\frac{x\gp{MAX}}{2}}$}
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-1.25,0.55)(1.25,0.55)
+  \psline[linewidth=0.5pt]{<->}(-1.6,0.55)(-1.6,1.1)
+  \uput[l](-1.6,0.825){$\scriptstyle{3\dB}$}
+  \uput[d](-1.25,0){$\scriptstyle{t_{\mathrm{min}}}$}
+  \uput[d](1.25,0){$\scriptstyle{t_{\mathrm{max}}}$}
+  \psline[linewidth=0.5pt]{<->}(-1.25,-0.6)(1.25,-0.6)
+  \uput[d](0,-0.6){$D_{-3\dB}$}
+\end{pspicture*}}}  \quad
+\subfloat{\framebox{\begin{pspicture*}(-2.7,-0.9)(3,2.4)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.4,-0.1)(2.7,1.9)
+  \uput[l](0,1.65){$\abs{X(f)}$}
+  \uput[d](2.6,0){$f$}
+  \infixtoRPN{1.1*2.718^(-(abs(x)^2))}
+  \psline[linewidth=0.5pt](-0.83,0)(-0.83,0.55)
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{-2.1}{2.4}{\RPN}
+  \psline[linewidth=0.5pt](0.83,0.55)(0.83,0)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-0.5,1.1)(0.5,1.1)
+  \uput[r](0.5,1.1){$\scriptstyle{X\gp{MAX}}$}
+  \uput[r](1.25,0.55){$\scriptstyle{\frac{X\gp{MAX}}{2}}$}
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-0.83,0.55)(0.83,0.55)
+  \uput[d](-0.83,0){$-B_{-3\dB}$}
+  \uput[d](0.83,0){$B_{-3\dB}$}
+\end{pspicture*}}}
+\caption{Durata e banda a $-3\dB$.}
+\end{figure}
+
+La durata a $-3\dB$ (spesso detta anche ``durata a metà ampiezza'') è definita come la differenza:
+\begin{equation*}
+D_{-3\dB}=t_\mathrm{max}-t_\mathrm{min}
+\end{equation*}
+dove $t_\mathrm{min}$ e $t_\mathrm{max}$ (con $t_\mathrm{min}<t_\mathrm{max}$) sono gli istanti in cui il segnale assume in valore assoluto la metà del valore massimo $\abs{x(0)}$ e nell'intervallo $[t_\mathrm{min},t_\mathrm{max}]$ si ha $\abs{x(t)}\geq x\gp{MAX}/2$.
+
+Se consideriamo segnali reali, per i quali la risposta in ampiezza $\abs{X(f)}$ è una funzione pari (confronta proprietà~\ref{prp:simmetria-hermitiana} a pag.~\pageref{prp:simmetria-hermitiana}), la banda a $-3\dB$ è l'ampiezza dell'intervallo di frequenze positive entro il quale lo spettro $\abs{X(f)}_{(\dB)}$ non scende di oltre $3\dB$ rispetto al suo massimo (il valore di \emph{picco}).
+
+Considerando che
+\[X(0) = X\gp{MAX} \quad\text{e}\quad X(B_{-3\dB}) = \frac{X(0)}{2} = \frac{X\gp{MAX}}{2}\]
+e ragionando in termini di decibel (applicando l'eq.~\eqref{eq:decibel} a pag.~\pageref{eq:decibel}), si può
+scrivere:
+\begin{align*}
+\abs{\frac{X\gp{MAX}}{2}}_{(\dB)} &= 10\log_{10}\biggl(\frac{X\gp{MAX}}{2}\biggr)\\
+  &= 10\log_{10}(X\gp{MAX}) - 10\log_{10}(2)
+\intertext{e poiché $10\log_{10}(2) = 3.0103\dB$, allora:}
+    & \simeq \abs{X\gp{MAX}}_{(\dB)} - 3\dB.
+\end{align*}
+%
+In definitiva:
+%
+\[\abs{X(B_{-3\dB})}_{(\dB)} \simeq \abs{X(0)}_{(\dB)} - 3\dB\]
+ed ecco il motivo per cui la differenza tra $X\gp{MAX}$ e $X\gp{MAX}/2$ è effettivamente $3\dB$.
+
+Come anticipato, queste definizioni non sono però applicabili a segnali qualsiasi. Il motivo è semplice. Per un segnale con lo spettro oscillante possono essere diversi i punti in cui si incontrano i $3\dB$ al di sotto del massimo, e pertanto sarebbe un po' problematico definire la banda in questo modo. Durata e banda a $-3\dB$ hanno quindi senso solo se si hanno segnali o spettri che decrescono monotonicamente. Nella pratica, queste definizioni sono difficilmente applicabili agli usuali segnali nel tempo. Un segnale vocale, ad esempio, oscilla nel tempo molto velocemente (dipende dall'intensità della voce, che si alza e si abbassa\dots). Sono invece generalmente applicabili purché si ragioni in termini di banda (notare che gli spettri tipici che vengono generati dai segnali utilizzati di solito nelle telecomunicazioni sono spettri con il modulo simmetrico, perché ottenuti da segnali reali).
+
+Si noti che non è essenziale che intensità del segnale o spettro decrescano monotonicamente allontanandosi dall'origine, bensì è essenziale che decrescano monotonicamente allontanandosi da una frequenza $f_0$ (per la banda) o da un istante $t_0$ (per la durata). Nell'esempio, per semplicità, abbiamo considerato $t_0=0$ e $f_0=0$, ossia segnali e spettri cosiddetti ``passa basso''.%
+\footnote{Uno spettro si dice passa-basso se la sua ampiezza assume il valore massimo per $f_0=0$. Se lo spettro è passa-alto allora $f_0=+\infty$, altrimenti lo spettro è di tipo passa-banda e $f_0$ è finita e diversa da zero.}
+Per i segnali e spettri ``passa banda'', d'altronde, valgono discorsi simili, con la differenza che ad esempio lo spettro sarà centrato intorno a una certa frequenza $f_0$ e non più nell'origine. In tal caso, come per i filtri, il valore della banda è l'ampiezza di tutto l'intervallo (delle frequenze positive) e non la metà.
+
+\paragraph{Banda di un \ac{SLS}.} Le definizioni date di banda valgono anche per i \ac{SLS} dove si può definire la $H(f)$. Ad esempio, per un filtro reale (per i quali il modulo della risposta in frequenza è una funzione pari), la banda a $-3\dB$ è l'ampiezza dell'intervallo di frequenze positive entro il quale la risposta in frequenza $\abs{H(f)}_{(\dB)}$ non scende di oltre $3\dB$ rispetto al suo massimo.
+
+
+\section{Distorsioni lineari}
+Trasmettere un segnale analogico senza alterarne il contenuto informativo significa ottenere
+all'altro capo del sistema di comunicazione una \emph{replica fedele} del segnale originario.
+
+\begin{definizione}[replica fedele]
+Si dice che il segnale $y(t)$ è una replica fedele del segnale $x(t)$ se
+\begin{equation}\label{eq:replica-fedele-nel-tempo}
+y(t) = kx(t-t_0)
+\end{equation}
+o equivalentemente:
+\begin{equation}\label{eq:replica-fedele-in-frequenza}
+Y(f) = kX(f)\e^{-\j2\pi ft_0}
+\end{equation}
+dove $k, t_0\in\R$ e $X(f)$ e $Y(f)$ sono le traformate rispettivamente di $x(t)$ e $y(t)$.
+\end{definizione}
+
+Ciò significa che un segnale è una replica fedele di un altro se e solo se è ne una versione attenuata o
+amplificata (di un valore $k$) e ritardata o anticipata (di $t_0$). La forma del segnale deve invece rimanere
+la stessa.
+
+Quando un trasmettitore invia un segnale, questo giungerà al ricevitore con un certo ritardo, dovuto alla
+distanza fisica tra i due, e indebolito, perché ovviamente non tutta la potenza trasmessa giunge al ricevitore
+(anzi se ciò accadesse il ricevitore si brucerebbe subito, in quanto la potenza trasmessa è molto più grande di
+quella che un ricevitore può sopportare).
+
+
+\subsection{Filtro fedele}
+Analizziamo ora quali sono le condizioni per un \ac{SLS} affinché l'uscita sia una replica fedele
+dell'ingresso. Queste condizioni saranno relative alla risposta impulsiva o alla risposta in frequenza.
+
+Quando si parla di fedeltà dell'uscita, si parla anche \emph{indifferentemente} di sistemi che non introducono
+distorsioni lineari. (Esistono distorsioni lineari e non lineari, ma facendo riferimento a sistemi lineari
+ci si riferisce sempre alle prime, in quanto un \ac{SLS} non può introdurre distorsioni non lineari.)
+
+\pagebreak%revisione
+Per un sistema lineare stazionario:
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(60,10)
+\put(10,5){\vector(1,0){10}}
+\put(40,5){\vector(1,0){10}}
+\put(20,1){\framebox(20,8){$h(t)$}}
+\put(2,4){$x(t)$}
+\put(52,4){$y(t)$}
+\end{picture}}\end{center}
+il segnale di uscita $y(t)$ è una versione non distorta dell'ingresso $x(t)$ se ne differisce solo per una costante moltiplicativa e un ritardo:
+\begin{equation}\label{eq:y-non-distorta}
+y(t) = k\,x(t-t_0).
+\end{equation}
+
+Nel caso più generale, affinché ciò si verifichi la risposta impulsiva $h(t)$ deve essere nella forma:
+\begin{equation}\label{eq:h-non-distorcente}
+h(t)=k\delta(t-t_0)
+\end{equation}
+Infatti, facendone la convoluzione con l'ingresso $x(t)$ si ottiene esattamente il segnale di eq.~\eqref{eq:y-non-distorta}. Questa condizione si traduce nel dominio della frequenza nella:
+\begin{equation}\label{eq:H-non-distorcente}
+H(f)=k\e^{-\j2\pi ft_0}
+\end{equation}
+come ci si poteva aspettare facendo il rapporto tra ingresso e uscita nella eq.~\eqref{eq:replica-fedele-in-frequenza}.
+In termini di ampiezza di spettro e di fase risulta:
+\begin{equation*}
+\abs{H(f)} = \abs{k}  \quad\text{e}\quad  \angle H(f) = -2\pi ft_0 + \angle k
+\end{equation*}
+(dove si tiene conto di modulo e fase di $k$ in quanto in generale $k$ può essere un reale sia positivo che negativo: $\angle k=0$ se $k\in\R^+_0$, e $\angle k=\pi$ se $k\in\R^-$).
+Per un filtro fedele, il modulo della risposta in frequenza deve essere costante su tutto l'asse delle frequenze (un filtro con una risposta in ampiezza di questo tipo passa tutto), mentre la risposta in fase deve essere lineare con la frequenza (in termini temporali corrisponde a un ritardo). Se non è rispettata la condizione sulla risposta in ampiezza, si dice che il segnale in ingresso subisce \emph{distorsione di ampiezza}; se invece non è rispettata la condizione sulla risposta in fase, si dice che il segnale subisce \emph{distorsione di fase}.
+
+I sistemi lineari che soddisfano la condizione di eq.~\eqref{eq:h-non-distorcente} o la \eqref{eq:H-non-distorcente} non introducono mai distorsioni lineari. Ciò non significa che i sistemi che non le soddisfano introducano sempre distorsioni lineari: è sufficiente che siano soddisfatte solo alle frequenze in cui è presente lo spettro del segnale in ingresso. Ad esempio, i filtri tipici già visti (passa alto, passa basso e passa banda) non sono, in generale, filtri fedeli, ma in generale non lo è nessun filtro fisico, non potendo garantire una risposta in ampiezza costante su tutto l'asse delle frequenze. In realtà, per sapere se un filtro introduce effettivamente distorsioni bisogna conoscere il segnale di ingresso, e nulla si può dire a priori.
+
+\begin{esempio}
+\label{es:esempio-distorsioni-lineari}
+Consideriamo il segnale rappresentato nella figura~\ref{fig:esempio-distorsioni-lineari}.
+%
+\begin{figure}
+\centering
+\subfloat[Segnale dell'esempio~\ref{es:esempio-distorsioni-lineari}.]{\framebox{\begin{pspicture*}(-4,-0.7)(4,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-3.7,-0.4)(3.7,1.7)
+  \psline[linewidth=1pt](-1.8,0)(0,1)
+  \psline[linewidth=1pt](1.8,0)(0,1)
+  \uput[d](-1.8,0){$-B$}
+  \uput[d](1.8,0){$+B$}
+  \uput[l](0,1.5){$X(f)$}
+  \uput[d](3.6,0){$f$}
+\end{pspicture*}}  \label{fig:esempio-distorsioni-lineari}}\\
+\subfloat{\framebox{\begin{pspicture*}(-2.7,-0.7)(3.3,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-2.5,-0.4)(3,1.7)
+  \psline[linewidth=1pt](-1.8,0.8)(1.8,0.8)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-1.8,0)(-1.8,0.8)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](1.8,0)(1.8,0.8)
+  \uput[d](-1.8,0){$-B$}
+  \uput[d](1.8,0){$+B$}
+  \uput[r](0,1.5){$\abs{H_1(f)}$}
+  \uput[d](2.9,0){$f$}
+\end{pspicture*}}} \quad
+\subfloat{\framebox{\begin{pspicture*}(-2.7,-1.2)(3.3,1.4)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-2.5,-0.9)(3,1.2)
+  \psline[linewidth=1pt](-1.8,0.8)(1.8,-0.8)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-1.8,0)(-1.8,0.8)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](1.8,0)(1.8,-0.8)
+  \uput[d](-1.8,0){$-B$}
+  \uput[u](1.8,0){$+B$}
+  \uput[r](0,1){$\angle H_1(f)$}
+  \uput[d](2.9,0){$f$}
+\end{pspicture*}}}\\
+\subfloat{\framebox{\begin{pspicture*}(-2.7,-0.7)(3.3,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-2.5,-0.4)(3,1.7)
+  \psline[linewidth=1pt](-0.9,0.8)(0.9,0.8)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-0.9,0)(-0.9,0.8)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](0.9,0)(0.9,0.8)
+  \uput[d](-0.9,0){$-B/2$}
+  \uput[d](0.9,0){$+B/2$}
+  \uput[r](0,1.5){$\abs{H_2(f)}$}
+  \uput[d](2.9,0){$f$}
+\end{pspicture*}}} \quad
+\subfloat{\framebox{\begin{pspicture*}(-2.7,-1.2)(3.3,1.4)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-2.5,-0.9)(3,1.2)
+  \psline[linewidth=1pt](-1.8,-0.8)(1.8,0.8)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-1.8,0)(-1.8,-0.8)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](1.8,0)(1.8,0.8)
+  \uput[u](-1.8,0){$-B$}
+  \uput[d](1.8,0){$+B$}
+  \uput[r](0,1.0){$\angle H_2(f)$}
+  \uput[d](2.9,0){$f$}
+\end{pspicture*}}}\\
+\subfloat{\framebox{\begin{pspicture*}(-2.7,-0.7)(3.3,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-2.5,-0.4)(3,1.7)
+  \psline[linewidth=1pt](-1.8,0.8)(1.8,0.8)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-1.8,0)(-1.8,0.8)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](1.8,0)(1.8,0.8)
+  \uput[d](-1.8,0){$-B$}
+  \uput[d](1.8,0){$+B$}
+  \uput[r](0,1.5){$\abs{H_3(f)}$}
+  \uput[d](2.9,0){$f$}
+\end{pspicture*}}}  \quad
+\subfloat{\framebox{\begin{pspicture*}(-2.7,-1.2)(3.3,1.4)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-2.5,-0.9)(3,1.2)
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]%
+        {-1.8}{1.8}{0.5 x 100 mul sin mul}
+  \uput[u](-1.8,0){$-B$}
+  \uput[d](1.8,0){$+B$}
+  \uput[r](0,1.0){$\angle H_3(f)$}
+  \uput[d](2.9,0){$f$}
+\end{pspicture*}}}\\
+\subfloat{\framebox{\begin{pspicture*}(-2.7,-0.7)(3.3,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-2.5,-0.4)(3,1.7)
+  \psline[linewidth=1pt](-1.8,1)(0,0)
+  \psline[linewidth=1pt](0,0)(1.8,1)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-1.8,0)(-1.8,1)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](1.8,0)(1.8,1)
+  \uput[d](-1.8,0){$-B$}
+  \uput[d](1.8,0){$+B$}
+  \uput[r](0,1.5){$\abs{H_4(f)}$}
+  \uput[d](2.9,0){$f$}
+\end{pspicture*}}} \quad
+\subfloat{\framebox{\begin{pspicture*}(-2.7,-1.2)(3.3,1.4)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-2.5,-0.9)(3,1.2)
+  \psline[linewidth=1pt](-1.8,0.8)(0,-0.6)
+  \psline[linewidth=1pt](0,0.6)(1.8,-0.8)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-1.8,0)(-1.8,0.8)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](1.8,0)(1.8,-0.8)
+  \uput[d](-1.8,0){$-B$}
+  \uput[u](1.8,0){$+B$}
+  \uput[r](0,1.0){$\angle H_4(f)$}
+  \uput[d](2.9,0){$f$}
+\end{pspicture*}}}
+\caption{Esempio~\ref{es:esempio-distorsioni-lineari}.}
+\end{figure}
+\end{esempio}
+
+Un filtro come $H_1(f)$ non distorce il segnale~\ref{fig:esempio-distorsioni-lineari}, in quanto l'ampiezza è costante nell'intervallo frequenziale all'interno del quale esiste il segnale di ingresso e la fase è lineare con la frequenza ($t_0>0$).
+Il filtro $H_2(f)$ introduce invece distorsioni di ampiezza, in quanto la sua risposta in ampiezza non è costante
+su tutto l'intervallo in cui il segnale in ingresso possiede componenti frequenziali.
+Al contrario si comporta il filtro $H_3(f)$, che introduce invece distorsioni di fase, ma non distorsioni di ampiezza.
+L'ultimo filtro, $H_4(f)$, introduce distorsioni sia di ampiezza che di fase.
+
+
+\section{Filtraggio di segnali periodici}
+
+Come già dimostrato (vedi teorema~\ref{th:tcf-di-segnali-periodici} a pagina~\pageref{th:tcf-di-segnali-periodici}), la trasformata continua di un segnale periodico è costituita da una successione di impulsi di area pari ai coefficienti della serie di Fourier. Facendo riferimento alla seguente figura
+%
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(60,10)
+\put(10,5){\vector(1,0){10}}
+\put(40,5){\vector(1,0){10}}
+\put(20,1){\framebox(20,8){$h(t)$}}
+\put(2,4){$x(t)$}
+\put(52,4){$y(t)$}
+\end{picture}}\end{center}
+%
+supponiamo che $x(t)$ sia un segnale periodico. Allora l'uscita è:
+%
+\[Y(f) = X(f)H(f)=\sum_{k=-\infty}^{+\infty} X_k\delta\biggl(f-\frac{k}{T_0}\biggr)H(f).\]
+%
+Se $H(f)$ è (per esempio) un filtro passa basso ideale, allora in uscita saranno riportati solamente alcuni degli impulsi presenti nell'ingresso.
+
+\begin{figure}[b!]
+\centering
+\subfloat{\framebox{\setlength{\unitlength}{1mm}
+ \begin{picture}(60,25)(-27,-5)
+ \put(0,-1){\vector(0,1){18}}
+ \put(-25,0){\vector(1,0){52}}
+ \put(2,16){$X(f)$}
+ \put(28,-1){$f$}
+ \put(-25,-4){$\scriptstyle{-\frac{3}{T_0}}$}
+ \put(-17,-4){$\scriptstyle{-\frac{2}{T_0}}$}
+ \put(-9,-4){$\scriptstyle{-\frac{1}{T_0}}$}
+ \put(4,-4){$\scriptstyle{+\frac{1}{T_0}}$}
+ \put(12,-4){$\scriptstyle{+\frac{2}{T_0}}$}
+ \put(20,-4){$\scriptstyle{+\frac{3}{T_0}}$}
+ \thicklines
+ \put(-21,0){\vector(0,1){3}}
+ \put(-14,0){\vector(0,1){5}}
+ \put(-7,0){\vector(0,1){8}}
+ \put(0,0){\vector(0,1){12}}
+ \put(7,0){\vector(0,1){8}}
+ \put(14,0){\vector(0,1){5}}
+ \put(21,0){\vector(0,1){3}}
+ \end{picture}}} \quad
+\subfloat{\framebox{\setlength{\unitlength}{1mm}
+ \begin{picture}(50,25)(-22,-5)
+ \put(0,-1){\vector(0,1){14}}
+ \put(-20,0){\vector(1,0){42}}
+ \put(-5,16){$H(f)$}
+ \put(23,-1){$f$}
+ \put(2,10){$1$}
+ \put(-16,-4){$-\frac{3}{2T_0}$}
+ \put(10,-4){$+\frac{3}{2T_0}$}
+ \put(-13,0){\line(0,1){8}}
+ \put(13,0){\line(0,1){8}}
+ \thicklines
+ \put(-13,8){\line(1,0){26}}
+ \end{picture}}}  \\ 
+\subfloat{\framebox{\setlength{\unitlength}{1mm}
+ \begin{picture}(60,25)(-27,-5)
+ \put(0,-1){\vector(0,1){18}}
+ \put(-25,0){\vector(1,0){52}}
+ \put(2,16){$Y(f)$}
+ \put(28,-1){$f$}
+ \put(-13,-4){$-\frac{1}{T_0}$}
+ \put(8,-4){$+\frac{1}{T_0}$}
+ \thicklines
+ \put(-10,0){\vector(0,1){8}}
+ \put(0,0){\vector(0,1){12}}
+ \put(10,0){\vector(0,1){8}}
+\end{picture}}}
+\caption{Il filtraggio di un segnale periodico fornisce in uscita un segnale anch'esso periodico.}
+\end{figure}
+%
+Si può dimostrare che il segnale in uscita a un filtro lineare quando in ingresso è presente un segnale periodico è ancora un segnale periodico.
+
+Uno
+\annotation{}{Queste sono considerazioni mie.}%
+spettro continuo $X(f)$ costituito da sole delta di Dirac corrisponde nel tempo a una somma di oscillazioni esponenziali complesse. Se tutte queste oscillazioni hanno frequenze multiple di una frequenza fondamentale, allora il segnale risultante è periodico. Infatti, una somma di due segnali periodici è ancora un segnale periodico solamente se il rapporto $f_1/f_2$ tra le frequenze dei due segnali di partenza è un numero razionale. Poiché un filtro lineare può solamente modificare in ampiezza o tagliare impulsi in ingresso, ma non aggiungerne, se in ingresso si ha un segnale periodico allora certamente le delta sono posizionate in frequenze multiple di una frequenza fondamentale $f_0$, quindi anche gli impulsi riportati in uscita lo sono. Di conseguenza il segnale in uscita è periodico.
+
+
+\section{Filtri e analisi energetica}
+
+Vogliamo, ora, trovare dei metodi che consentano di fare valutazioni energetiche sul segnale in uscita senza dover calcolare il segnale di uscita stesso (in funzione del tempo o della frequenza).
+Due importanti parametri energetici sono la funzione di autocorrelazione e la densità spettrale di energia.
+%
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(60,10)
+\put(10,5){\vector(1,0){10}}
+\put(40,5){\vector(1,0){10}}
+\put(20,1){\framebox(20,8){$h(t)$}}
+\put(2,4){$x(t)$}
+\put(52,4){$y(t)$}
+\end{picture}}\end{center}
+%
+Ad esempio, noto il segnale in ingresso anche solo tramite la sua funzione di autocorrelazione o la sua densità spettrale di energia, è possibile ottenere informazioni sul segnale di uscita quali la sua funzione di autocorrelazione e la sua densità di energia.
+
+
+\subsection{Segnali aperiodici}
+\label{sec:filtraggio-segnali-aperiodici}
+
+Richiamiamo brevemente alcuni concetti relativi agli aspetti energetici di segnali aperiodici.
+Dati due segnali a energia finita $x(t)$ e $y(t)$, sono definite le rispettive \emph{funzioni di autocorrelazione}, ciascuna scrivibile come convoluzione tra il segnale stesso e il suo complesso coniugato con l'asse delle ascisse invertito:
+\begin{align*}
+R_x(\tau) &= x(\tau)\otimes x^*(-\tau)\\
+R_y(\tau) &= y(\tau)\otimes y^*(-\tau).
+\end{align*}
+%
+Inoltre, la \ac{TCF} della funzione di autocorrelazione è la \emph{densità spettrale di energia}:
+%
+\begin{align*}
+\TCF[R_x(\tau)] &= X(f)\,X^*(f) = \abs{X(f)}^2 = S_x(f).
+\end{align*}
+
+Giungiamo ora a dimostrare un risultato molto importante, che ci consente di fare valutazioni energetiche
+relativamente al segnale di uscita senza conoscere il segnale di uscita stesso.
+
+\begin{teorema}
+La funzione di autocorrelazione del segnale in uscita vale:
+\[R_y(\tau)=R_x(\tau)\otimes h(\tau)\otimes h^*(-\tau).\]
+\end{teorema}
+\begin{proof}
+La dimostrazione, anziché farla nel dominio del tempo (bisognerebbe trattare tre integrali di convoluzione), la si fa sfruttando la \ac{TCF}. Si considera inizialmente la densità spettrale di energia del segnale in uscita, che è:
+\begin{align*}
+S_y(f) & = \abs{Y(f)}^2 = \abs{X(f)}^2\cdot\abs{H(f)}^2=S_x(f)\,H(f)\,H^*(f)
+\end{align*}
+e antitrasformando si ottiene la tesi.
+\end{proof}
+
+\subsection{Segnali periodici**}
+I segnali aperiodici che abbiamo considerato hanno energia finita e potenza nulla. I segnali periodici, invece, hanno energia infinita e potenza finita. Per questo motivo, essi vanno caratterizzati sulla base della potenza e non più dell'energia.
+
+Come già visto, se si pone in ingresso a un \ac{SLS} un segnale periodico, anche in uscita ci sarà un segnale periodico (questo è garantito, in particolare, dall'ipotesi di stazionarietà del sistema, non di linearità). Per tale motivo la definizione della funzione di autocorrelazione si applica sia al segnale in ingresso che a quello in uscita:
+\begin{equation}
+ R_x(\tau)\triangleq\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\,x^*(t-\tau)\ud t
+\end{equation}
+\begin{equation}
+ R_y(\tau)\triangleq\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}y(t)\,y^*(t-\tau)\ud t.
+\end{equation}
+
+Per segnali periodici, la funzione di autocorrelazione calcolata in $\tau=0$ restituisce la potenza media del
+segnale:
+\begin{align*}
+\left.R_x(\tau)\right|_{\tau=0}=R_x(0)=\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\,x^*(t)\ud t=P_x
+\end{align*}
+
+\begin{teorema}
+La funzione di autocorrelazione del segnale in uscita vale:
+\[R_y(\tau)=R_x(\tau)\otimes h(\tau)\otimes h(-\tau).\]
+\end{teorema}
+\begin{proof}
+La \annotation[caption={Autocorrelazione di segnali periodici.}]{dimostrazione}{Vedere sul libro il paragrafo 4.4 e il sommario a pagina 212-213. Che senso ha usare la \ac{TCF} se ho definito $R_x(\tau)$ e $R_y(\tau)$ per segnali periodici come integrali sul periodo?} è analoga a quella fatta per i segnali aperiodici.
+\begin{align*}
+S_y(f) & = \abs{X(f)}^2\cdot\abs{H(f)}^2=
+           \sum_{k=-\infty}^{+\infty}\abs{X_k}^2\delta\left(f-\frac{k}{T_0}\right)\abs{H(f)}^2\\
+       & = S_x(f)H(f)H^*(f)
+\end{align*}
+Antitrasformando, otteniamo la tesi.
+\end{proof}
+
+
+\subsection{Segnali aperiodici a potenza finita*}
+\begin{align*}
+R_x(\tau) & = \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}x(t)x^*(t-\tau)\ud t & \\
+S_x(f) & = \lim_{T\to\infty}\frac{1}{T}\abs{X_T(f)}^2\\
+ & X_T(f)=\TCF\big[x_T(t)\big] \qquad\qquad x_T(t) = x(t)\rect{t}{T}
+\end{align*}
+\[R_y(\tau)=R_x(\tau)\otimes h(\tau)\otimes h(-\tau)\]
+

@@ -1,0 +1,461 @@
+\chapter{Analisi di segnali periodici}
+\label{cha:segnali-periodici}
+
+
+\section{Concetti generali}
+
+Un segnale $x(t)$ si dice periodico se esiste un $T_0$ tale che sia soddisfatta la relazione:
+%
+\begin{equation}
+x(t)=x(t-kT_0)
+\end{equation}
+%
+per ogni $k$ intero. Il valore $T_0$ è detto \emph{periodo} del segnale ed è l'inverso della frequenza $f_0\triangleq 1/T_0$.
+
+È facile verificare che l'energia $E_x$ di un segnale periodico (così come definita nel capitolo precedente) è in generale infinita:
+%
+\begin{align*}
+E_x & = \int_{-\infty}^{+\infty}|x(t)|^2\ud t=
+        \sum_{k=-\infty}^{+\infty}\int_{-\frac{T_0}{2}+kT_0}^{+\frac{T_0}{2}+kT_0}|x(t)|^2\ud t=
+        \sum_{k=-\infty}^{+\infty}E_{x_k}=\infty.
+\end{align*}
+
+In generale, invece, la potenza media è finita, e potrebbe essere calcolata usando l'eq.~\eqref{eq:potenza-media-segnale}. Si dimostra che eseguendo il limite si giunge a un risultato più semplice:
+%
+\begin{align}
+P_x & = \lim_{T\to\infty}\frac{E_{x_T}}{T}=
+        \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}|x(t)|^2\ud t \notag
+\intertext{e discretizzando la variabile $T=kT_0$, si ottiene:}
+    & = \lim_{k\to\infty}\frac{1}{kT_0}\int_{-\frac{kT_0}{2}}^{+\frac{kT_0}{2}}|x(t)|^2\ud t  \notag
+\intertext{che equivale calcolare l'integrale su $k$ periodi:}
+    & = \lim_{k\to\infty}\frac{1}{kT_0}k\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}|x(t)|^2\ud t \notag\\
+    & = \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}|x(t)|^2\ud t.
+\end{align}
+
+Anche l'espressione del valor medio di un segnale periodico si semplifica:
+%
+\begin{align}\label{eq:valor-medio-periodico}
+x_m\triangleq\lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}x(t)\ud t=\frac{1}{T_0}
+     \int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\ud t.
+\end{align}
+
+
+\section{Analisi di Fourier}
+
+L'analisi fasoriale consente di analizzare circuiti lineari (ossia circuiti per i quali è valida la sovrapposizione degli effetti) quando il segnale applicato è una somma finita di componenti sinusoidali.
+L'analisi di Fourier consente di studiare circuiti ai quali sia applicato un generico segnale periodico (con andamento arbitrario, anche non sinusoidale).
+
+Ciascun segnale periodico di periodo $T_0$ che soddisfi il ``criterio di Dirichlet'' (il criterio~\ref{thm:criterio-dirichelet-sulla-TSF} definito più avanti) può essere scritto come la somma di infinite sinusoidi a frequenze multiple di $1/T_0$.
+%
+\begin{align}
+x(t) & = \sum_{n=0}^{\infty}A_n\cos(2\pi nf_0t+\varphi_n)\\
+     & = A_0 + \sum_{n=1}^{\infty}A_n\cos(2\pi nf_0t+\varphi_n)  \label{eq:ssf-forma-polare}
+\end{align}
+%
+dove $f_0=1/T_0$ è la \emph{frequenza fondamentale}.
+La relazione~\eqref{eq:ssf-forma-polare} costituisce l'\emph{espressione in forma polare dello sviluppo in serie di Fourier}, nella quale un segnale periodico reale $x(t)$ è rappresentato come somma di un termine costante $A_0$ (\emph{componente continua}) e di una serie di termini sinusoidali, le \emph{oscillazioni armoniche} (o semplicemente \emph{armoniche}). L'$n$-esima armonica ha ampiezza $A_n>0$, frequenza $nf_0$ e fase $\varphi_n$. La componente in continua coincide con il valor medio del segnale:
+%
+\begin{align*}
+x_m &= \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\ud t\\
+    &= \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}A_0\ud t +
+       \underbrace{\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}A_1\cos(2\pi f_0t+\varphi_1)\ud t}_{0}\\
+    &\phantom{=\;} +\underbrace{\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}
+                   A_2\cos(4\pi f_0t+\varphi_2)\ud t}_{0}+\dots=
+       \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}A_0\ud t = A_0
+\end{align*}
+
+
+\subsection{Il Criterio di Dirichelet}
+
+Dato un segnale periodico, affinché la serie di eq.~\eqref{eq:ssf-forma-polare} converga uniformemente e il segnale stesso sia rappresentabile secondo la forma polare di Fourier, devono essere soddisfatte determinate condizioni, racchiuse nel ``Criterio di Dirichelet''. Si tratta di un criterio sufficiente costituito da un insieme di tre condizioni.
+
+\begin{criterio}[di Dirichelet]
+\label{thm:criterio-dirichelet-sulla-TSF}
+Se
+\begin{enumerate}
+\item $x(t)$ è assolutamente integrabile sul periodo $T_0$, ossia
+      \[\int_{-T_0/2}^{+T_0/2}\abs{x(t)}\ud t<\infty,\]
+\item $x(t)$ è continua o presenta un numero finito di discontinuità di prima
+      specie\footnote{Limite destro e sinistro devono cioè essere (diversi ma) finiti.} nel periodo $T_0$,
+\item $x(t)$ è derivabile su tutto il periodo escluso al più un numero finito di punti nei quali esistono
+      finite le derivate destra e sinistra
+\end{enumerate}
+oppure
+\begin{enumerate}
+\item[3.] $x(t)$ ha un numero finito di massimi e minimi nel periodo,
+\end{enumerate}
+allora la serie di Fourier converge al valore assunto dalla funzione $x(t)$ nei punti in cui questa è continua e alla semisomma dei limiti destro e sinistro nei punti in cui $x(t)$ presenta le eventuali discontinuità di prima specie.
+\end{criterio}
+
+Si noti che i segnali fisici verificano sempre questo criterio. Inoltre, anche segnali a dente di sega (o simili, con discontinuità) possono esser sviluppati in serie di Fourier.
+
+
+\subsection{Sviluppo in serie di Fourier in forma complessa}
+Usando%
+\margincomment{Non è necessario conoscere questi calcoli per l'esame orale.}
+le formule di Eulero%
+\footnote{Le formule di Eulero consentono di esprimere seno e coseno nella forma:
+\[\cos(x) = \frac{\e^{\,\j x}+\e^{-\j x}}{2},\quad\sin(x) = \frac{\e^{\,\j x}-\e^{-\j x}}{2\j}.\]}
+%
+si può riscrivere l'equazione~\eqref{eq:ssf-forma-polare} nella forma:
+%
+\begin{align*}
+x(t) &= A_0+\sum_{n=1}^{\infty}A_n \frac{\e^{\,\j(2\pi nf_0t+\varphi_n)}+\e^{-\j(2\pi nf_0t+\varphi_n)}}{2}\\
+     &= A_0+\sum_{n=1}^{\infty}\frac{A_n}{2}\e^{\,\j\varphi_n}\e^{\,\j 2\pi nf_0t}+
+            \sum_{n=1}^{\infty}\frac{A_n}{2}\e^{-\j\varphi_n}\e^{-\j 2\pi nf_0t}\\
+     &= A_0+\sum_{n=1}^{\infty}\frac{A_n}{2}\e^{\,\j\varphi_n}\e^{\,\j 2\pi nf_0t}+
+            \sum_{n=-1}^{-\infty}\frac{A_{-n}}{2}\e^{-\j\varphi_{-n}}\e^{\,\j 2\pi nf_0t}
+\end{align*}
+%
+e definendo:
+%
+\begin{align*}
+\begin{cases}X_0\triangleq A_0, &\\
+ X_n\triangleq A_n\e^{\,\j\varphi_n}/2 & \text{per }n=1,2,\dots,\\
+ X_n\triangleq A_{-n}\e^{-\j\varphi_{-n}}/2 & \text{per }n=-1,-2,\dots,
+\end{cases}
+\end{align*}
+%
+si ottiene:
+%
+\begin{align}
+x(t) &= X_0 + \sum_{n=1}^{+\infty}X_n\e^{\,\j2\pi nf_0t}+\sum_{n=-1}^{-\infty}X_n\e^{\,\j2\pi nf_0t} \notag\\
+     &= \sum_{n=-\infty}^{+\infty}X_n\e^{\,\j2\pi nf_0t}  \label{eq:ssf-forma-complessa}
+\end{align}
+%
+che rappresenta l'\emph{espressione in forma complessa della serie di Fourier}. (Notare che abbiamo continuato a considerare $x(t)$ come segnale reale, ma la rappresentazione potrebbe essere estesa anche a segnali complessi.) Questa relazione viene anche detta \ac{ATSF}:
+
+\begin{center}\begin{tabular}{lm{5cm}}
+ \framebox[.50\linewidth]{$\displaystyle{x(t)=\sum_{n=-\infty}^{+\infty}X_n\e^{\,\j2\pi nf_0t}}$} &
+ \begin{flushleft}\textsc{Antitrasformata Serie di Fourier\\(equazione di sintesi)}\end{flushleft}
+\end{tabular}\end{center}
+
+\begin{teorema}
+Se $x(t)$ è un segnale periodico esprimibile mediante serie di Fourier, allora i coefficienti $X_n$ della serie possono essere ottenuti mediante la cosiddetta \emph{equazione di analisi}:
+%
+\begin{center}\begin{tabular}{lm{5cm}}
+ \framebox[.50\linewidth]{$\displaystyle{X_n=\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\e^{-\j2\pi nf_0t}\ud t}$} &
+ \begin{flushleft}\textsc{Trasformata Serie di Fourier\\(equazione di analisi)}\end{flushleft}
+\end{tabular}\end{center}
+\end{teorema}
+\begin{proof}
+Infatti, sostituendo nella trasformata serie di Fourier il segnale $x(t)$ espresso mediante l'equazione di sintesi, si ottengono esattamente i termini $X_n$:
+\begin{align*}
+\TSF[x(t)] &= \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\sum_{m=-\infty}^{+\infty}
+              X_m\e^{\,\j2\pi mf_0t}\e^{-\j2\pi nf_0t}\ud t\\
+ &= \frac{1}{T_0}\sum_{m=-\infty}^{+\infty}X_m\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}
+    \e^{\,\j2\pi(m-n)f_0t}\ud t\\
+ &= \frac{1}{T_0}\sum_{m=-\infty}^{+\infty}X_m
+    \Bigg[\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\cos\bigl(2\pi(m-n)f_0t\bigr)\ud t\\
+ &\phantom{=\;}+\j\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\sin\bigl(2\pi(m-n)f_0t\bigr)\ud t\Bigg]\\
+ &= \frac{1}{T_0}\cdot X_n\cdot T_0=X_n
+\end{align*}
+dove le ultime uguaglianze si hanno in quanto:
+\begin{align}
+ & \int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\cos\bigl(2\pi(m-n)f_0t\bigr)\ud t = \begin{cases}T_0 & \text{se }m=n\\0 & \text{se }m\neq n\end{cases}   \label{eq:integrale-coseno}\\
+ & \int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\sin\bigl(2\pi(m-n)f_0t\bigr)\ud t = \begin{cases}0 & \text{se }m=n\\0 & \text{se }m\neq n.\end{cases}   \label{eq:integrale-seno}
+\end{align}
+ossia l'integrale sul periodo di seno e coseno è sempre nullo. L'eq.~\eqref{eq:integrale-seno} per $m=n$ si riduce all'integrale (nullo) di una funzione identicamente nulla, mentre l'unico termine non nullo è quello di eq.~\eqref{eq:integrale-coseno} per $m=n$, che si riduce all'integrale di una funzione che vale costantemente $1$.
+\end{proof}
+
+La \ac{TSF} è biunivoca, in quanto al segnale analogico $x(t)$ corrisponde univocamente la sequenza complessa $X_n$ e a questa corrisponde esattamente $x(t)$. In breve si indicherà questa corrispondenza con la scrittura:
+%
+\[x(t)\quad\xLeftrightarrow{\TSF}\quad X_n.\]
+%
+Ciò comporta che le informazioni contenute nel segnale originario nel dominio del tempo $x(t)$ sono contenute in modo equivalente anche nella sequenza di valori complessi $X_n$.
+
+Si noti inoltre che, come già mostrato precedentemente, il termine $X_0=A_0$ nella trasformata serie di Fourier è l'espressione del valor medio per un segnale periodico così come calcolato nell'equazione~\eqref{eq:valor-medio-periodico}.
+
+
+\section{Spettro di un segnale periodico}
+
+Lo \emph{spettro}%
+\footnote{Il termine ``spettro'' si intende nel generico senso di ``rappresentazione'', ``visione'', e nasce nel campo della spettroscopia, in cui si analizza la composizione dei materiali attraverso le righe di emissione caratteristiche dei diversi elementi chimici. È usato in questo caso in analogia con le ``righe'' delle rappresentazioni di ampiezza o di fase delle componenti armoniche.}
+di un segnale periodico $x(t)$ è una rappresentazione del contenuto frequenziale del segnale stesso. Essendo la $X_n$ una sequenza complessa, per raffigurarla sono necessari in generale due grafici, uno per lo \emph{spettro di ampiezza} ($\abs{X_n}$) e l'altro per lo \emph{spettro di fase} ($\angle X_n$).
+
+Dall'espressione complessa~\eqref{eq:ssf-forma-complessa} dello sviluppo in serie di Fourier risulta chiaramente che una condizione necessaria affinché la serie di Fourier converga è che l'ampiezza $\abs{X_n}$ delle armoniche tenda a zero per $n\to\infty$, e in virtù di ciò le componenti più significative dello spettro sono quelle per $n$ piccolo in modulo. Tipicamente, perciò, lo spettro di ampiezza decresce allontanandosi dall'asse delle ordinate, come rappresentato nella figura~\ref{fig:spettro-di-ampiezza-e-fase-tsf}.
+
+\begin{figure}
+\centering
+\subfloat{\framebox{\begin{pspicture*}(-3,-0.6)(3,2)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.8,-0.2)(2.7,1.8)
+  \uput[l](0,1.5){$\abs{X_n}$}
+  \uput[d](2.6,0){$n$}
+  \psline(-2,-0.05)(-2,0.1)\pscircle*(-2,0.1){1pt}
+  \psline(-1.6,-0.05)(-1.6,0.2)\pscircle*(-1.6,0.2){1pt}
+  \psline(-1.2,-0.05)(-1.2,0.4)\pscircle*(-1.2,0.4){1pt}
+  \psline(-0.8,-0.05)(-0.8,0.8)\pscircle*(-0.8,0.8){1pt}
+  \psline(-0.4,-0.05)(-0.4,1.0)\pscircle*(-0.4,1.0){1pt}
+  \psline(0,-0.05)(0,1.1)\pscircle*(0,1.1){1pt}
+  \psline(0.4,-0.05)(0.4,1.0)\pscircle*(0.4,1.0){1pt}
+  \psline(0.8,-0.05)(0.8,0.8)\pscircle*(0.8,0.8){1pt}
+  \psline(1.2,-0.05)(1.2,0.4)\pscircle*(1.2,0.4){1pt}
+  \psline(1.6,-0.05)(1.6,0.2)\pscircle*(1.6,0.2){1pt}
+  \psline(2,-0.05)(2,0.1)\pscircle*(2,0.1){1pt}
+\end{pspicture*}}}  \quad
+\subfloat{\framebox{\begin{pspicture*}(-3,-1.2)(3,1.4)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.8,-1.0)(2.7,1.2)
+  \uput[l](0,0.9){$\angle X_n$}
+  \uput[d](2.6,0){$n$}
+  \psline(-2,0.05)(-2,-0.8)\pscircle*(-2,-0.8){1pt}
+  \psline(-1.6,0.05)(-1.6,-0.8)\pscircle*(-1.6,-0.8){1pt}
+  \psline(-1.2,0.05)(-1.2,-0.8)\pscircle*(-1.2,-0.8){1pt}
+  \psline(-0.8,0.05)(-0.8,-0.8)\pscircle*(-0.8,-0.8){1pt}
+  \psline(-0.4,0.05)(-0.4,-0.8)\pscircle*(-0.4,-0.8){1pt}
+  \pscircle*(0,0){1pt}
+  \psline(0.4,-0.05)(0.4,0.8)\pscircle*(0.4,0.8){1pt}
+  \psline(0.8,-0.05)(0.8,0.8)\pscircle*(0.8,0.8){1pt}
+  \psline(1.2,-0.05)(1.2,0.8)\pscircle*(1.2,0.8){1pt}
+  \psline(1.6,-0.05)(1.6,0.8)\pscircle*(1.6,0.8){1pt}
+  \psline(2,-0.05)(2,0.8)\pscircle*(2,0.8){1pt}
+\end{pspicture*}}}
+\caption{Spettro di ampiezza e fase di un segnale periodico.}
+\label{fig:spettro-di-ampiezza-e-fase-tsf}
+\end{figure}
+
+\begin{esempio}[spettro di un coseno]
+Si consideri un segnale cosinusoidale:
+\[x(t) = A\cos(2\pi f_0t).\]
+La componente in continua è nulla, essendo coincidente col valor medio:
+\begin{align*}
+X_0  & = \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}A\cos(2\pi f_0t)\e^{-\j2\pi\cdot 0\cdot f_0t}\ud t=
+         \frac{A}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\cos(2\pi f_0t)\ud t=0.
+\end{align*}
+La generica armonica di ordine $n$ vale:
+\begin{align*}
+X_n    & = \frac{A}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\cos(2\pi f_0t)\e^{-\j2\pi nf_0t}\ud t\\
+       & = \frac{A}{2T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\e^{\,\j2\pi f_0t}\e^{-\j2\pi nf_0t}\ud t
+            +\frac{A}{2T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\e^{-\j2\pi f_0t}\e^{-\j2\pi nf_0t}\ud t\\
+       & = \frac{A}{2T_0}\underbrace{\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\e^{-\j2\pi(n-1)f_0t}\ud t}_{
+                   \begin{cases}T_0&n=1\\0&\text{altrove}\end{cases}}
+            +\frac{A}{2T_0}\underbrace{\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\e^{-\j2\pi(n+1)f_0t}\ud t}_{
+                   \begin{cases}T_0&n=-1\\0&\text{altrove}\end{cases}}
+\end{align*}
+dove sono state applicate le relazioni~\eqref{eq:integrale-coseno} e~\eqref{eq:integrale-seno}. Quindi $X_n\neq 0$ solo per $n=\pm 1$. Calcolando le armoniche per $n=-1$ e $n=1$, troviamo:
+\pagebreak%revisione
+\[\begin{cases}X_{-1} = \dfrac{A}{2T_0} \cdot 0 + \dfrac{A}{2T_0} \cdot T_0 = \dfrac{A}{2}\\
+  X_1 = \dfrac{A}{2T_0} \cdot T_0 + \dfrac{A}{2T_0} \cdot 0 = \dfrac{A}{2}.\end{cases}\]
+
+In conclusione, sono presenti solo le armoniche $n=\pm 1$ e valgono $X_{1,-1}=A/2$ (hanno fase nulla). Si poteva anche semplicemente confrontare l'equazione di sintesi con la formula di Eulero di un coseno:
+%
+\begin{align*}
+x(t) & = A\cos(2\pi f_0t)=\frac{A}{2}\left[\e^{\,\j2\pi f_0t}+\e^{-\j2\pi f_0t}\right]=
+         \sum_{n=-\infty}^{+\infty}X_n\e^{\,\j2\pi nf_0t}.
+\end{align*}
+\end{esempio}
+
+\begin{figure}
+\centering
+\subfloat{\framebox{\begin{pspicture*}(-3,-0.6)(3,2)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.8,-0.2)(2.7,1.8)
+  \uput[l](0,1.55){$\abs{X_n}$}
+  \uput[d](2.6,0){$n$}
+  \pscircle*(-2.4,0){1pt}
+  \pscircle*(-1.6,0){1pt}
+  \psline(-0.8,-0.05)(-0.8,0.8)\pscircle*(-0.8,0.8){1pt}
+  \pscircle*(0,0){1pt}
+  \psline(0.8,-0.05)(0.8,0.8)\pscircle*(0.8,0.8){1pt}
+  \pscircle*(1.6,0){1pt}
+  \pscircle*(2.4,0){1pt}
+  \uput[u](-0.8,0.7){$\scriptstyle{A/2}$}
+  \uput[u](0.8,0.7){$\scriptstyle{A/2}$}
+  \uput[d](-1.6,0){$\scriptstyle{-2}$}
+  \uput[d](-0.8,0){$\scriptstyle{-1}$}
+  \uput[d](0.8,0){$\scriptstyle{1}$}
+  \uput[d](1.6,0){$\scriptstyle{2}$}
+\end{pspicture*}}} \quad
+\subfloat{\framebox{\begin{pspicture*}(-3,-1.2)(3,1.4)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.8,-1.0)(2.7,1.2)
+  \uput[l](0,0.9){$\angle X_n$}
+  \uput[d](2.6,0){$n$}
+  \pscircle*(-2.4,0){1pt}
+  \pscircle*(-1.6,0){1pt}
+  \pscircle*(-0.8,0){1pt}
+  \pscircle*(0,0){1pt}
+  \pscircle*(0.8,0){1pt}
+  \pscircle*(1.6,0){1pt}
+  \pscircle*(2.4,0){1pt}
+\end{pspicture*}}}\\
+\subfloat{\framebox{\begin{pspicture*}(-3,-0.6)(3,2)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.8,-0.2)(2.7,1.8)
+  \uput[l](0,1.55){$\abs{X_n}$}
+  \uput[d](2.6,0){$n$}
+  \pscircle*(-2.4,0){1pt}
+  \pscircle*(-1.6,0){1pt}
+  \psline(-0.8,-0.05)(-0.8,0.8)\pscircle*(-0.8,0.8){1pt}
+  \psline(0.8,-0.05)(0.8,0.8)\pscircle*(0.8,0.8){1pt}
+  \pscircle*(1.6,0){1pt}
+  \pscircle*(0,0){1pt}
+  \pscircle*(2.4,0){1pt}
+  \uput[u](-0.8,0.7){$\scriptstyle{A/2}$}
+  \uput[u](0.8,0.7){$\scriptstyle{A/2}$}
+  \uput[d](-1.6,0){$\scriptstyle{-2}$}
+  \uput[d](-0.8,0){$\scriptstyle{-1}$}
+  \uput[d](0.8,0){$\scriptstyle{1}$}
+  \uput[d](1.6,0){$\scriptstyle{2}$}
+\end{pspicture*}}} \quad
+\subfloat{\framebox{\begin{pspicture*}(-3,-1.2)(3,1.4)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.8,-1.0)(2.7,1.2)
+  \uput[r](0,0.95){$\angle X_n$}
+  \uput[d](2.6,0){$n$}
+  \pscircle*(-2.4,0){1pt}
+  \pscircle*(-1.6,0){1pt}
+  \psline(-0.8,-0.05)(-0.8,0.7)\pscircle*(-0.8,0.7){1pt}
+  \pscircle*(0,0){1pt}
+  \psline(0.8,0.05)(0.8,-0.7)\pscircle*(0.8,-0.7){1pt}
+  \pscircle*(1.6,0){1pt}
+  \pscircle*(2.4,0){1pt}
+  \uput[u](-0.8,0.6){$\scriptstyle{\pi/2}$}
+  \uput[d](0.8,-0.6){$\scriptstyle{-\pi/2}$}
+  \uput[d](-1.6,0){$\scriptstyle{-2}$}
+  \uput[d](-0.8,0){$\scriptstyle{-1}$}
+  \uput[u](0.8,0){$\scriptstyle{1}$}
+  \uput[u](1.6,0){$\scriptstyle{2}$}
+\end{pspicture*}}}
+\caption{Spettri di ampiezza e fase rispettivamente del coseno e del seno.}
+\end{figure}
+
+\begin{esempio}[spettro di un seno]
+Consideriamo ora un segnale nella forma
+\[x(t) = A\sin(2\pi f_0t).\]
+La generica armonica vale:
+\begin{align*}
+X_n  & = \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}A\sin(2\pi f_0t)\e^{-\j2\pi nf_0t}\ud t\\
+     & = \frac{A}{\j2T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\e^{\,\j2\pi f_0t}\e^{-\j2\pi nf_0t}\ud t
+          - \frac{A}{\j2T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\e^{-\j2\pi f_0t}\e^{-\j2\pi nf_0t}\ud t\\
+     & = \frac{A}{\j2T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\e^{-\j2\pi(n-1)f_0t}\ud t
+          - \frac{A}{\j2T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\e^{-\j2\pi(n+1)f_0t}\ud t.
+\end{align*}
+I due integrali sono unitari rispettivamente per $n=1$ e $n=-1$, mentre per tutti gli altri valori di $n$ sono entrambi nulli. Pertanto esistono solo le armoniche per $n=\pm 1$. Entrambe hanno ampiezza uguale ai corrispondenti termini dello spettro del coseno, ma hanno fase uguale rispettivamente a $\mp\pi/2$. Infatti, poiché $\j=\e^{\,\j\pi/2}$ e $-\j=\e^{-\j\pi/2}$, esse valgono:
+\[\begin{cases}X_1 = \dfrac{A}{\j2}=\dfrac{A}{2}\e^{-\j\pi/2}\\
+ X_{-1} = -\dfrac{A}{\j2}=\dfrac{A}{2}\e^{\,\j\pi/2}.\end{cases}\]
+\end{esempio}
+
+\subsection{Proprietà dello spettro di segnali periodici}
+\begin{proprieta}[Simmetria Hermitiana]
+Se $x(t)$ è un segnale periodico reale, allora
+\[X_{-n}=X_n^*\]
+\end{proprieta}
+\begin{proof}
+Si ha:
+\begin{align*}
+X_{-n} & = \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\e^{-\j2\pi(-n)f_0t}\ud t=
+           \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\e^{\,\j2\pi nf_0t}\ud t
+\intertext{e, poiché $x(t)=x^*(t)$ essendo il segnale reale, facendo il complesso coniugato all'interno e all'esterno dell'integrale otteniamo:}
+       & = \frac{1}{T_0}\left[\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x^*(t)\e^{-\j2\pi nf_0t}\ud t\right]^*=
+           \left[\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\e^{-\j2\pi nf_0t}\ud t\right]^*=X_n^*
+       \qedhere
+\end{align*}
+\end{proof}
+
+\begin{proprieta}[Linearità]
+Si considerino due segnali periodici $x(t)$ e $y(t)$ \emph{entrambi} di periodo $T_0$ aventi come spettro $X_n$ e $Y_n$. Allora:
+\[z(t)=ax(t)+by(t) \quad\xLeftrightarrow{\TSF}\quad Z_n=aX_n+bY_n.\]
+\end{proprieta}
+\begin{proof}
+La proprietà di linearità della \ac{TSF} (valida solamente per segnali aventi lo stesso periodo $T_0$) discende direttamente dalla proprietà di linearità dell'integrale. Infatti, anche il segnale $z(t)$ avrà periodo $T_0$ e perciò si ha:
+\begin{align*}
+Z_n & =\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}z(t)\e^{-\j2\pi nf_0t}\ud t=
+       \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}[ax(t)+by(t)]\e^{-\j2\pi nf_0t}\ud t\\
+    & = a\underbrace{\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\e^{-\j2\pi nf_0t}\ud t}_{X_n} +
+        b\underbrace{\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}y(t)\e^{-\j2\pi nf_0t}\ud t}_{Y_n}.
+        \qedhere
+\end{align*}
+\end{proof}
+
+Dal teorema della linearità segue che lo sviluppo in serie di $z(t)$ è una somma di oscillazioni aventi le stesse frequenze di quelle che compongono i segnali $x(t)$ e $y(t)$, senza l'introduzione di nuove armoniche.
+
+
+\subsection{Segnali periodici pari, dispari e alternativi}
+\begin{proprieta}[Spettro di segnali pari]
+Se $x(t)$ è un segnale periodico pari, ossia $x(t)=x(-t)$, allora anche il suo spettro è una sequenza pari:
+\[X_{-n}=X_{n}.\]
+\end{proprieta}
+\begin{proof}
+Si considera:
+\begin{align*}
+X_{-n} & = \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\e^{-\j2\pi(-n)f_0t}\ud t=
+           \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\e^{\,\j2\pi nf_0t}\ud t\\
+\intertext{ed effettuando il cambio di variabile $\alpha=-t$:}
+       & = \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(-\alpha)\e^{-\j2\pi nf_0\alpha}\ud\alpha=
+           \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(\alpha)\e^{-\j2\pi nf_0\alpha}\ud\alpha=X_n
+           \qedhere
+\end{align*}
+\end{proof}
+%
+Notare che se $x(t)$ è una funzione reale, per la simmetria Hermitiana vale anche:
+%
+\[X_n = X_{-n} = X_n^*\]
+%
+ossia segnali periodici reali e pari hanno \ac{TSF} reale e pari.
+
+\begin{proprieta}[Spettro di segnali dispari]
+Un segnale periodico dispari, ossia per cui $x(t)=-x(-t)$, ha spettro dispari:
+\[X_{-n}=-X_{n}.\]
+\end{proprieta}
+\begin{proof}
+Si ha:\begin{align*}
+X_{-n} & = \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\e^{\,\j2\pi nf_0t}\ud t=
+           \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(-\alpha)\e^{-\j2\pi nf_0\alpha}\ud\alpha\\
+       & = -\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(\alpha)\e^{-\j2\pi nf_0\alpha}\ud\alpha=-X_n
+       \qedhere
+\end{align*}
+\end{proof}
+Se è anche valida la simmetria Hermitiana
+\[X_{-n}=-X_n=X_n^*\]
+allora la $X_n$ è una sequenza dispari immaginaria pura. Di conseguenza $X_0=0$.
+
+\paragraph{Spettro di segnali alternativi.}
+Un segnale periodico $x(t)$ si dice alternativo se verifica la relazione
+%
+\[x(t)=-x\biggl(t-\frac{T_0}{2}\biggr)\]
+%
+ossia se l'andamento del segnale in un qualsiasi semiperiodo è uguale all'opposto dell'andamento del segnale nel semiperiodo precedente.
+
+\begin{proprieta}
+Se $x(t)$ è un segnale periodico alternativo, allora
+\begin{align*}
+X_n=\begin{cases}\displaystyle{\frac{2}{T_0}\int_{0}^{+\frac{T_0}{2}}
+          x(t)\e^{-\j2\pi nf_0t}\ud t} &\text{per $n$ dispari}\\
+        0 &\text{per $n$ pari.}\end{cases}
+\end{align*}
+\end{proprieta}
+\begin{proof}
+Lo spettro del segnale è:
+\begin{align*}
+X_n & = \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\e^{-\j2\pi nf_0t}\ud t\\
+    & = \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{0}x(t)\e^{-\j2\pi nf_0t}\ud t+
+        \frac{1}{T_0}\int_{0}^{+\frac{T_0}{2}}x(t)\e^{-\j2\pi nf_0t}\ud t
+\intertext{e ponendo $t'=t+T_0/2$:}
+    & = \frac{1}{T_0}\int_{0}^{+\frac{T_0}{2}}
+        x\biggl(t'-\frac{T_0}{2}\biggr)\e^{-\j2\pi nf_0\left(t'-\frac{T_0}{2}\right)}\ud t'
+        +\frac{1}{T_0}\int_{0}^{+\frac{T_0}{2}}x(t)\e^{-\j2\pi nf_0t}\ud t\\
+    & = \frac{1}{T_0}\int_{0}^{+\frac{T_0}{2}}
+        \bigl(-x(t')\bigr)\e^{-\j2\pi nf_0t'}\e^{\,\j2\pi nf_0\frac{T_0}{2}}\ud t'
+        +\frac{1}{T_0}\int_{0}^{+\frac{T_0}{2}}x(t)\e^{-\j2\pi nf_0t}\ud t\\
+    & = \frac{1}{T_0}\int_{0}^{+\frac{T_0}{2}}
+        (-\e^{\,\j\pi n})\,x(t')\e^{-\j2\pi nf_0t'}\ud t'
+        +\frac{1}{T_0}\int_{0}^{+\frac{T_0}{2}}x(t)\e^{-\j2\pi nf_0t}\ud t\\
+    & = (1-\e^{\,\j\pi n})\cdot\frac{1}{T_0}\int_{0}^{+\frac{T_0}{2}}x(t)\e^{-\j2\pi nf_0t}\ud t
+\end{align*}
+dove il termine $(1-\e^{\,\j\pi n})$ è nullo per $n$ pari e vale $2$ per $n$ dispari.
+\end{proof}
+
+
+\section{Periodicizzazione di un segnale aperiodico}
+\label{sec:periodicizzazione}
+
+Sia $x_0(t)$ un segnale aperiodico. Il segnale definito come
+%
+\begin{equation}\label{eq:periodicizzazione}
+x(t)\triangleq \sum_{n=-\infty}^{+\infty}x_0(t-nT_0)
+\end{equation}
+%
+(somma di versioni traslate del segnale $x_0(t)$) è una periodicizzazione con periodo di ripetizione $T_0$ del segnale $x_0(t)$. Si dimostra subito, infatti, che il segnale di eq.~\eqref{eq:periodicizzazione} è periodico di periodo $T_0$:
+%
+\begin{align*}
+x(t-kT_0) & = \sum_{n=-\infty}^{+\infty}x_0(t-kT_0-nT_0)=\sum_{n=-\infty}^{+\infty}x_0\bigl(t-(n+k)T_0\bigr)\\
+     & = \sum_{m=-\infty}^{+\infty}x_0(t-mT_0)=x(t)
+\end{align*}
+%
+avendo definito $m=n+k$.

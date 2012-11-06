@@ -1,0 +1,648 @@
+\chapter{Segnali}
+\label{cha:segnali}
+
+
+\section{Concetti generali}
+
+Un \emph{segnale} è una rappresentazione di una grandezza fisica a cui è associata informazione. Per esempio, un segnale audio o video, un elettrocardiogramma, l'uscita di un sensore di temperatura, umidità o pressione. Il segnale è quindi diverso dalla grandezza fisica rappresentata, rispetto alla quale ne è una astrazione, una rappresentazione in forma (spesso) matematica, utile a studiare e caratterizzare determinate proprietà del segnale stesso e poterlo elaborare.
+
+\paragraph{Classificazione dei segnali.}
+Una prima classificazione dei segnali è tra i segnali deterministici e quelli aleatori:
+\begin{itemize}
+\item \emph{determinati} o \emph{deterministici}, dei quali si conosce con esattezza il valore che assumono a un certo istante (in quanto rappresentati mediante una funzione analitica o un grafico);
+\item \emph{aleatori}, dei quali non si può conoscere \emph{a priori} il valore assunto a determinati istanti, ma si ha solamente una conoscenza di massima tramite dati statistici e alcune proprietà, motivo per cui possono essere rappresentati come un \emph{insieme} di segnali.%
+\footnote{L'\emph{alea} è il grado di indeterminazione relativo alla conoscenza di questi segnali.}
+\end{itemize}
+
+\paragraph{Dimensionalità.}
+Un elettrocardiogramma o un sensore di temperatura forniscono segnali scalari, ma altri segnali possono avere dimensionalità maggiore, per esempio un segnale audio stereo, con i canali destro e sinistro. Peraltro, non solo il segnale può essere multidimensionale, ma anche la sua variabile indipendente. In generale un segnale è una funzione:
+%
+\[v(x)\colon \R^{n}\to\R^{n}.\]
+%
+Un esempio di segnale con variabile indipendente multidimensionale è un $x(t_1,t_2)$ con $(t_1,t_2)$ coordinate su uno schermo e $x(t_1,t_2)$ che rappresenta il livello di grigio del relativo pixel (televisione in bianco e nero).
+
+Noi analizzeremo principalmente segnali (scalari ma) complessi di variabile reale.
+
+\paragraph{Esempi.}
+Ecco alcuni esempi di segnali:
+%
+\begin{itemize}
+\item \emph{elettrocardiogramma} $x(t)$, dove $t$ è il tempo e $x$ l'ampiezza;
+\item \emph{audio stereo} $\big(x(t),y(t)\big)$, dove $x$ e $y$ sono le ampiezza dei canali destro e sinistro;
+\item \emph{immagine in B/N} $z(x,y)$, con $(x,y)$ coordinate spaziali e $z$ intensità di grigio;
+\item \emph{immagine a colori RBG} $z(x,y)$, dove $z=(z_1,z_2,z_3)$ è l'intensità dei colori.
+\end{itemize}
+
+\paragraph{Tipologia di segnali.}
+Un'altra suddivisione dei segnali può esser fatta a seconda delle caratteristiche della variabile indipendente e della variabile dipendente:
+%
+\begin{itemize}
+\item \emph{segnali a tempo continuo} nei quali la variabile $t$ assume con continuità tutti i valori reali
+        contenuti in un certo intervallo (anche da $-\infty$ a $+\infty$):
+        \[x(t),\quad y(t),\quad\ldots\]
+\item \emph{segnali a tempo discreto} quando la variabile indipendente ($n$) assume solamente valori discreti:
+        \[x[n],\quad y[n],\quad\ldots\]
+\item \emph{segnali ad ampiezza continua} se la grandezza fisica del segnale assume con continuità tutti i
+        valori (reali o complessi) all'interno di un certo intervallo (anche illimitato);
+\item \emph{segnali ad ampiezza discreta} nei quali la grandezza fisica del segnale assume solo valori
+        discreti (reali o complessi) appartenenti a un certo alfabeto (il più semplice è un alfabeto binario).
+\end{itemize}
+\begin{center}
+\begin{tabular}{>{\slshape}rcc}
+\toprule
+                  & \textsl{tempo continuo} & \textsl{tempo discreto} \\
+\midrule
+ampiezza continua & analogici               & sequenza \\
+ampiezza discreta & quantizzati             & numerici \\
+\bottomrule
+\end{tabular}\\
+\end{center}
+
+Segnali analogici tipici sono: il segnale audio analogico, video analogico, elettrocardiogramma, eccetera.
+
+I segnali tempo discreti ad ampiezza discreta sono le sequenze e i segnali campionati. Esiste una differenza tra i due. Le sequenze possono essere ottenute da sorgenti che sono intrinsecamente discrete, come ad esempio il risultato di una misura periodica della temperatura
+%
+\begin{center}\framebox{\begin{pspicture*}(-0.5,-0.6)(5,2)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-0.2,-0.3)(4.7,1.7)
+  \psline[linewidth=0.5pt](0.6,0)(0.6,1.0)
+  \psline[linewidth=0.5pt](1.4,0)(1.4,0.8)
+  \psline[linewidth=0.5pt](2.2,0)(2.2,0.7)
+  \psline[linewidth=0.5pt](2.8,0)(2.8,1.2)
+  \psline[linewidth=0.5pt](3.8,0)(3.8,1.1)
+  \pscircle*(0.6,1.0){1pt}
+  \pscircle*(1.4,0.8){1pt}
+  \pscircle*(2.2,0.7){1pt}
+  \pscircle*(2.8,1.2){1pt}
+  \pscircle*(3.8,1.1){1pt}
+  \uput[u](0.6,0.9){$\scriptscriptstyle{20{,}3\text{\textcelsius}}$}
+  \uput[u](1.4,0.7){$\scriptscriptstyle{16{,}5\text{\textcelsius}}$}
+  \uput[u](2.2,0.6){$\scriptscriptstyle{14{,}1\text{\textcelsius}}$}
+  \uput[u](2.8,1.1){$\scriptscriptstyle{24{,}9\text{\textcelsius}}$}
+  \uput[u](3.8,1.0){$\scriptscriptstyle{22{,}7\text{\textcelsius}}$}
+  \uput[d](4.6,0){$n$}
+\end{pspicture*}}\end{center}
+%
+oppure per campionamento di segnali analogici:
+%
+\begin{center}\framebox{\begin{pspicture*}(-4.5,-1)(4.5,1.6)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-4.2,-0.7)(4.2,1.3)
+  \uput[d](4.1,0){$t$}
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]% 0.5*sin(500*x) - 0.2*cos(300*x)
+         {-3.7}{3.7}{0.5 x 100 mul sin mul 0.2 x 50 mul cos mul add}
+  \psline[linewidth=0.5pt](-3.2,-0.05)(-3.2,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](-3.2,0.1)(-3.2,0.14)
+  \pscircle*(-3.2,0.14){1pt}
+  \psline[linewidth=0.5pt](-2.4,-0.05)(-2.4,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](-2.4,0.1)(-2.4,0.32)
+  \pscircle*(-2.4,0.32){1pt}
+  \psline[linewidth=0.5pt](-1.6,-0.05)(-1.6,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](-1.6,-0.1)(-1.6,-0.15)
+  \pscircle*(-1.6,-0.15){1pt}
+  \psline[linewidth=0.5pt](-0.8,-0.05)(-0.8,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](-0.8,-0.1)(-0.8,-0.33)
+  \pscircle*(-0.8,-0.33){1pt}
+  \pscircle*(0,0.21){1pt}
+  \psline[linewidth=0.5pt](0.8,-0.05)(0.8,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](0.8,0.1)(0.8,0.63)
+  \pscircle*(0.8,0.63){1pt}
+  \psline[linewidth=0.5pt](1.6,-0.05)(1.6,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](1.6,0.1)(1.6,0.22)
+  \pscircle*(1.6,0.22){1pt}
+  \psline[linewidth=0.5pt](2.4,-0.05)(2.4,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](2.4,-0.1)(2.4,-0.52)
+  \pscircle*(2.4,-0.52){1pt}
+  \psline[linewidth=0.5pt](3.2,-0.05)(3.2,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](3.2,-0.1)(3.2,-0.5)
+  \pscircle*(3.2,-0.5){1pt}
+\end{pspicture*}}\end{center}
+
+Per i segnali quantizzati la variabile indipendente è continua, mentre la variabile dipendente (l'ampiezza del
+segnale) assume solo valori discreti, appartenenti a un certo alfabeto. Possono scaturire ad esempio da segnali
+di led luminosi (acceso/spento, come per una comunicazione in codice Morse):
+%
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{pspicture*}(-1,-0.6)(6,2)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-0.2,-0.3)(5.7,1.7)
+  \psline[linewidth=1pt](0.3,0.4)(1.1,0.4)
+  \psline[linewidth=0.5pt](1.1,0.4)(1.1,1.0)
+  \psline[linewidth=1pt](1.1,1.0)(2.4,1.0)
+  \psline[linewidth=0.5pt](2.4,1.0)(2.4,0.4)
+  \psline[linewidth=1pt](2.4,0.4)(3.3,0.4)
+  \psline[linewidth=0.5pt](3.3,0.4)(3.3,1.0)
+  \psline[linewidth=1pt](3.3,1.0)(4.1,1.0)
+  \psline[linewidth=0.5pt](4.1,1.0)(4.1,0.4)
+  \psline[linewidth=1pt](4.1,0.4)(5.1,0.4)
+  \psline[linewidth=0.5pt](5.1,0.4)(5.1,1.0)
+  \psline[linewidth=1pt](5.1,1.0)(5.4,1.0)
+  \uput[l](0,0.4){$\scriptscriptstyle{ON}$}
+  \uput[l](0,1.0){$\scriptscriptstyle{OFF}$}
+  \uput[d](5.6,0){$t$}
+\end{pspicture*}}\end{center}
+
+I segnali digitali (detti anche sequenze numeriche) hanno sia variabile indipendente che variabile dipendente
+discreta, appartenente a un certo alfabeto (un insieme finito). Per questo motivo sono interamente
+rappresentabili tramite bit, e si ottengono infatti tipicamente come conversione analogico-digitale per il
+trattamento dell'informazione tramite calcolatori.
+%
+\begin{center}\framebox{\setlength{\unitlength}{1mm}\begin{tabular}{ccc}
+\begin{pspicture*}(-1.8,-0.7)(2.1,1.6)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-1.7,-0.4)(1.9,1.4)
+  \uput[d](1.8,0){$t$}
+  \uput[l](0,1.2){$x(t)$}
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]%
+         {-1.6}{1.7}{0.4 x 500 mul sin mul 0.2 x 400 mul cos mul add 0.4 add}
+\end{pspicture*}&
+\begin{pspicture*}(-1.8,-1.15)(1.9,1.15)
+  \psframe[linewidth=0.5pt](-0.7,0.4)(0.7,-0.4)
+  \uput[u](0,-0.4){A/D}
+  \uput[u](-1.2,0){$\scriptstyle{x(t)}$}
+  \uput[u](1.2,0){$\scriptstyle{d[n]}$}
+  \psline[linewidth=0.5pt]{->}(-1.7,0)(-0.7,0)
+  \psline[linewidth=0.5pt]{->}(0.7,0)(1.7,0)
+\end{pspicture*}&
+\begin{pspicture*}(-0.5,-0.5)(3.7,1.8)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-0.4,-0.3)(3.5,1.6)
+  \uput[l](0,0.4){$\scriptstyle{0}$}
+  \uput[l](0,1.0){$\scriptstyle{1}$}
+  \uput[r](0,1.4){$d[n]$}
+  \uput[d](3.4,0){$n$}
+  \psline[linewidth=0.5pt](-0.05,0.4)(0.05,0.4)
+  \psline[linewidth=0.5pt](-0.05,0.8)(0.05,0.8)
+  \psline[linewidth=0.5pt](0.5,-0.05)(0.5,0.8)
+  \pscircle*(0.5,0.8){1pt}
+  \psline[linewidth=0.5pt](1.0,-0.05)(1.0,0.4)
+  \pscircle*(1.0,0.4){1pt}
+  \psline[linewidth=0.5pt](1.5,-0.05)(1.5,0.4)
+  \pscircle*(1.5,0.4){1pt}
+  \psline[linewidth=0.5pt](2.0,-0.05)(2.0,0.8)
+  \pscircle*(2.0,0.8){1pt}
+  \psline[linewidth=0.5pt](2.5,-0.05)(2.5,0.8)
+  \pscircle*(2.5,0.8){1pt}
+  \psline[linewidth=0.5pt](3.0,-0.05)(3.0,0.8)
+  \pscircle*(3.0,0.8){1pt}
+\end{pspicture*}\end{tabular}}\end{center}
+
+Durante il corso capiremo come funziona un sistema di codifica e decodifica dell'informazione, e come
+questa venga trasmessa, rendendola disponibile all'utente \textit{quasi} uguale a come era stata trasmessa.
+
+Un esempio è la codifica, trasmissione e decodifica di un sistema audio. Innanzitutto, un microfono funge da trasduttore,%
+\footnote{Un \emph{trasduttore} è un dispositivo che cambia la natura fisica del segnale senza alterarne la forma (e quindi l'informazione associata).}
+ossia converte il segnale acustico in un segnale elettrico. Questo segnale (analogico) viene campionato per ottenere una sequenza, che viene poi quantizzata, ossia si associa a ciascun valore della sequenza stessa il valore \textit{più vicino} appartenente all'insieme finito di valori dell'alfabeto usato. All'uscita dal quantizzatore il segnale ha perciò subito una certa perdita di informazione. A questo punto, un codificatore fornisce in uscita stringhe di bit che rappresentano il segnale quantizzato. Il segnale digitale può esser quindi trattato dai calcolatori, ad esempio incidendo un CD o memorizzandolo su altri dispositivi.
+
+Il segnale può essere trasferito tramite Internet a un altro calcolatore (sempre in forma digitale, e pertanto giunge al calcolatore destinatario così come il mittente l'aveva mandato). Questo calcolatore dovrà disporre di un sistema di decodifica, per ottenere i valori quantizzati a partire dal flusso di bit, e di un interpolatore, per ottiene il segnale analogico $\widetilde{x}(t)$.
+
+Quest'ultimo non è esattamente $x(t)$, ma è una replica più o meno fedele del segnale originario a seconda di come sono progettate le varie parti.
+Per esempio, come si vedrà più avanti, è molto importante l'intervallo di campionamento: se troppo grande non sarà possibile ricostruire fedelmente il segnale originario, ma al tempo stesso non è conveniente che sia troppo piccolo, per evitare di dover trasmettere una quantità eccessiva di bit. Altri elementi importanti sono ad esempio il numero di livelli in cui quantizzare la sequenza, come codificare l'informazione in modo da renderla robusta per la trasmissione tramite internet, e anche come dovrà essere effettuata l'interpolazione affinché si possa ricostruire esattamente (ciò è teoricamente possibile) il segnale originario.
+%
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{segnali-05}
+\caption{Un sistema di elaborazione e trasmissione dell'informazione.}
+\label{fig:sistema-di-elaborazione-e-trasmissione}
+\end{figure}
+
+
+\section{Proprietà dei segnali deterministici}
+
+Analizziamo ora alcune proprietà dei segnali deterministici analogici.
+Dato un segnale $x(t)$ (reale o complesso) ne definiamo innanzitutto la \emph{potenza istantanea}:
+%
+\begin{equation}
+P_x(t)\triangleq\abs{x(t)}^{2}   \label{eq:potenza-istant-segnale}
+\end{equation}
+%
+In ottica di rimanere astratti e indipendenti dalla realtà del fenomeno fisico rappresentato, la potenza definita in eq.~\eqref{eq:potenza-istant-segnale} è indipendente dalla grandezza fisica cui si riferisce il segnale. Ciò significa che la potenza che definiamo non è effettivamente misurabile in watt, anzi non lo è quasi mai: sarà poi legata all'effettiva potenza tramite delle costanti.
+
+L'\emph{energia} di un segnale è definita come:
+%
+\begin{equation}\label{eq:energia-segnale}
+E_x \triangleq\int_{-\infty}^{+\infty}P_x(t)\ud t =\int_{-\infty}^{+\infty}\abs{x(t)}^{2}\ud t
+\end{equation}
+%
+Segnali fisici, ossia segnali che rappresentano le grandezze effettivamente osservabili in natura, hanno tutti energia finita ($E_x < \infty$). Segnali ideali possono avere invece anche energia infinita ($E_x = \infty$). Questi ultimi sono delle astrazioni o idealizzazioni di alcuni sistemi, come ad esempio il generatore di tensione ideale, che genera una tensione costante $V$ su tutto l'asse dei tempi:
+%
+\[x(t)=V \text{ per } -\infty<t<+\infty \qquad\Rightarrow\qquad E_x=\infty\]
+%
+Ma in realtà nessun generatore viene costruito a $-\infty$ né dura fino a $+\infty$.
+
+Per caratterizzare dal punto di visto energetico i segnali a energia infinita, si introduce il concetto di
+``segnale troncato nel tempo''. Consideriamo due generatori ideali $V_1$ e $V_2$ che hanno entrambi energia
+(secondo la definizione appena data) infinita: a causa di ciò essi risulterebbero energeticamente equivalenti
+(pur essendo segnali diversi). Per evitare ciò e consentire confronti tra i due, si fa in realtà riferimento a
+versioni troncate dei segnali:
+%
+\[x_p(t)=\begin{cases} x(t) & -\frac{T}{2}\leq t\leq\frac{T}{2}\\0 & \textrm{altrove.}\end{cases}\]
+%
+L'\emph{energia di un segnale troncato} nel tempo è quindi:
+%
+\begin{equation}
+E_{x_T} = \int_{-\infty}^{+\infty}\abs{x_p(t)}^{2}\ud t = \int_{-\frac{T}{2}}^{+\frac{T}{2}}\abs{x(t)}^{2}\ud t
+\end{equation}
+%
+che è finita (si suppone che il segnale assuma solo valori finiti), mentre:
+%
+\[E_x = \lim_{T\to\infty} E_{x_T} = \infty.\]
+%
+La \emph{potenza del segnale troncato} vale:
+%
+\begin{equation}
+P_{x_T}\triangleq\frac{E_{x_T}}{T}
+\end{equation}
+%
+e la \emph{potenza media} è definita come:
+%
+\begin{equation}\label{eq:potenza-media-segnale}
+P_x\triangleq\lim_{T\to\infty}P_{x_T}=
+      \lim_{T\to\infty}\frac{E_{x_T}}{T}=
+      \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{\frac{T}{2}}\abs{x(t)}^2 \ud t.
+\end{equation}
+
+Si osservi che tra energia e potenza valgono le seguenti implicazioni:
+%
+\begin{align*}
+P_x=k \qquad \Rightarrow \qquad E_x=\infty\\
+E_x<\infty \qquad \Rightarrow \qquad P_x=0
+\end{align*}
+%
+ossia un segnale a potenza finita avrà necessariamente energia infinita, mentre un segnale a energia finita avrà sempre potenza nulla. La motivazione di ciò è semplice da capire:
+%
+\begin{align*}
+P_x=\lim_{T\to\infty}P_{x_T}=\lim_{T\to\infty}\frac{E_{x_T}}{T}=k \qquad \Rightarrow \qquad \lim_{T\to\infty}E_{x_T}=\infty\\
+E_x=\lim_{T\to\infty}E_{x_T}=\lim_{T\to\infty}P_{x_T}T=k \qquad \Rightarrow \qquad \lim_{T\to\infty}P_{x_T}=0.
+\end{align*}
+
+Per i segnali a potenza finita si definisce anche il \emph{valore efficace} (è quel valore che dovrebbe assumere un segnale costante per avere lo stesso contenuto in potenza del segnale dato):
+%
+\begin{equation}
+x_\mathrm{eff}\triangleq\sqrt{P_x}
+\end{equation}
+
+L'ultimo parametro che definiamo è il \emph{valor medio} temporale:
+%
+\begin{equation}
+x_\mathrm{m}\triangleq\lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}} x(t)\ud t.
+\end{equation}
+
+
+\section{Segnali tipici}
+
+\subsection{Costante}
+$x(t)=A$, con $A\in\R$
+\begin{align*}
+P_x(t) & =A^2\\
+E_x & =\int_{-\infty}^{+\infty}A^2\ud t=\infty\\
+P_x & = \lim_{T\to\infty}\frac{E_{x_T}}{T}=\lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}A^2\ud t
+                    = \lim_{T\to\infty}\frac{1}{T}A^2T=A^2\\
+x_\mathrm{eff} &=\sqrt{A^2}=A\\
+x_\mathrm{m} &=\lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}A\ud t=\lim_{T\to\infty}\frac{1}{T}AT=A
+\end{align*}
+
+
+\subsection{Sinusoide}
+Prendiamo in esame un segnale sinusoidale
+%
+\[x(t)=A\cos(2\pi f_0t+\varphi)\]
+%
+e calcoliamone i parametri energetici. Potenza istantanea e potenza media sono:
+%
+\begin{align*}
+P_x(t)&=A^2\cos^2(2\pi f_0t+\varphi)\\
+P_x & = \lim_{T\to\infty}\frac{1}{T}\int_{-\infty}^{+\infty}A^2\cos^2(2\pi f_0t+\varphi)\ud t\\
+    & = \lim_{T\to\infty}\frac{A^2}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\frac{1}{2}\ud t+
+        \lim_{T\to\infty}\frac{A^2}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\frac{1}{2}\cos(4\pi f_0t+2\varphi)\ud t\\
+\intertext{e procedendo in modo non rigorosamente matematico, si può ``sdoppiare'' il secondo limite, scrivendo:}
+    & = \lim_{T\to\infty}\frac{A^2}{T}\frac{T}{2}+
+        \frac{A^2}{2}\frac{\displaystyle\lim_{T\to\infty}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\cos(4\pi f_0t+2\varphi)\ud t}
+                          {\displaystyle\lim_{T\to\infty}T}=
+        \frac{A^2}{2}
+\end{align*}
+%
+Infatti il denominatore del secondo termine tende all'infinito, mentre il numeratore è una forma sì indefinita, ma comunque limitata:
+%
+\begin{align*}
+ & \lim_{T\to\infty}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\cos(4\pi f_0t+2\varphi)\ud t=
+     \lim_{T\to\infty}\left.\frac{1}{4\pi f_0}\sin(4\pi f_0t+2\varphi)\right|_{-\frac{T}{2}}^{+\frac{T}{2}}
+\end{align*}
+%
+dovunque si calcoli il seno esso è sempre compreso tra $-1$ e $1$.
+
+L'energia
+%
+\begin{align*}
+E_x & = \int_{-\infty}^{+\infty}A^2\cos^2(2\pi f_0t+\varphi)\ud t\\
+    & = -A^2\underbrace{\int_{-\infty}^{+\infty}\frac{1}{2}\ud t}_{\infty}+
+         A^2\underbrace{\int_{-\infty}^{+\infty}\frac{1}{2}\cos(4\pi f_0t+2\varphi)\ud t}_{0}=\infty\\
+\end{align*}
+%
+è infinita, come si poteva affermare già non appena era stata calcolata la potenza, che si era trovata finita non nulla.
+
+Il valor efficace e il valor medio sono rispettivamente:
+%
+\begin{align*}
+x_\mathrm{eff}&=\sqrt{\frac{A^2}{2}}=\frac{A}{\sqrt{2}}\\
+x_\mathrm{m} & = \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}A\cos(2\pi f_0t+\varphi)\ud t\\
+    & = \frac{\lim_{T\to\infty}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\cos(2\pi f_0t+\varphi)\ud t}{\lim_{T\to\infty}T}=0\\
+\end{align*}
+%
+dove per il calcolo del valor medio abbiamo nuovamente sdoppiato un limite.
+
+
+\subsection{Gradino}
+\label{sub:gradino}
+La funzione gradino, indicata con $\u(t)$, è definita come:
+%
+\[\u(t)=\begin{cases}1&t\geq 0\\0&t<0.\end{cases}\]
+%
+Benché esistano in realtà altre definizioni di gradino, relativamente al valore che assume in $0$ (ad esempio
+una per cui in $0$ vale la metà del valore massimo), nulla cambia ai fini delle valutazioni energetiche.
+
+\begin{figure}[b]
+\centering
+\framebox{\begin{pspicture*}(-2.8,-0.6)(5.8,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-2.5,-0.4)(5.5,1.7)
+  \psline[linewidth=1pt](0,0.8)(4,0.8)
+  \psline[linewidth=1pt](0,0)(-1,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](-1,0)(-2.2,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](4,0.8)(5.2,0.8)
+  \uput[l](0,1.5){$\u(t)$}
+  \uput[d](5.4,0){$t$}
+  \uput[l](0,0.8){$1$}
+\end{pspicture*}}
+\caption{Rappresentazione grafica della funzione gradino.}
+\end{figure}
+
+La potenza istantanea e la potenza media sono:
+%
+\begin{align*}
+P_x(t) & = \u^2(t)=\u(t)\\
+P_x    & = \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\u^2(t)\ud t=
+           \lim_{T\to\infty}\frac{1}{T}\int_{0}^{\frac{T}{2}}\ud t=
+           \lim_{T\to\infty}\frac{1}{T}\frac{T}{2}=\frac{1}{2}
+\end{align*}
+
+L'energia sarà quindi infinita:
+%
+\[E_x=\int_{-\infty}^{+\infty}\u^2(t)\ud t=\int_{-\infty}^{+\infty}\u(t)\ud t=\int_{0}^{+\infty}\ud t=\infty\]
+
+Valore efficace e valor medio sono:
+%
+\begin{align*}
+x_\mathrm{eff} & =\frac{1}{\sqrt{2}}\\
+x_\mathrm{m} & = \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\u(t)\ud t=
+        \lim_{T\to\infty}\frac{1}{T}\int_{0}^{+\frac{T}{2}}\ud t=
+        \lim_{T\to\infty}\left.\frac{1}{T}\cdot t\,\right|_{0}^{\frac{T}{2}}=
+        \frac{1}{2}
+\end{align*}
+
+
+\subsection{Rettangolo}
+La funzione rettangolo $\rect{t}{T_0}$ è definita nel seguente modo:
+%
+\[\rect{t}{T_0}=\begin{cases}1 & -\frac{T_0}{2}\leq t\leq\frac{T_0}{2}\\0 & \textrm{altrove}\end{cases}\]
+%
+dove la $t$ è la variabile indipendente, mentre $T_0$ è un parametro che indica la durata temporale della \textit{rect}.
+
+\begin{figure}
+\centering
+\framebox{\begin{pspicture*}(-4.3,-0.6)(4.3,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-4.1,-0.4)(4,1.7)
+  \psline[linewidth=1pt](-1,0.8)(1,0.8)
+  \psline[linewidth=0.5pt](1,0.8)(1,0)
+  \psline[linewidth=0.5pt](-1,0.8)(-1,0)
+  \psline[linewidth=1pt](-1,0)(-2.5,0)
+  \psline[linewidth=1pt](1,0)(2.5,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](-2.5,0)(-3.5,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](2.5,0)(3.5,0)
+  \uput[l](0,1.5){$x(t)$}
+  \uput[d](3.9,0){$t$}
+  \uput[u](0.4,0.8){$1$}
+  \uput[d](-1,0){$\scriptstyle{-T_0/2}$}
+  \uput[d](1,0){$\scriptstyle{+T_0/2}$}
+\end{pspicture*}}
+\caption{Rappresentazione grafica della funzione rettangolo.}
+\end{figure}
+
+Notiamo innanzitutto che il quadrato della funzione rettangolo è uguale alla funzione stessa:
+%
+\[\vrect^2\biggl(\frac{t}{T_0}\biggr)=\rect{t}{T_0}\]
+%
+e pertanto otteniamo che la potenza istantanea vale:
+%
+\[P_x(t) = \abs{x(t)}^2 = \rect{t}{T_0}\]
+%
+mentre la potenza media risulta uguale al valore medio ed è:
+%
+\[P_x = x_\mathrm{m} = \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\rect{t}{T_0}\ud t=0\]
+%
+Quest'ultimo risultato lo si comprende considerando il seguente grafico:
+%
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{pspicture*}(-5.3,-0.6)(5.5,1.9)
+  \pscustom[linewidth=0.5pt,fillstyle=solid,fillcolor=lightgray]{%
+    \psline[linewidth=0.5pt](-1,0)(-1,0.8)
+    \psline[linewidth=1pt](-1,0.8)(1,0.8)
+    \psline[linewidth=0.5pt](1,0.8)(1,0)}
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-5.1,-0.4)(5.2,1.7)
+  \psline[linewidth=1pt](-2.5,0.8)(2.5,0.8)
+  \psline[linewidth=0.5pt](2.5,0.8)(2.5,0)
+  \psline[linewidth=0.5pt](-2.5,0.8)(-2.5,0)
+  \psline[linewidth=1pt](-2.5,0)(-3.8,0)
+  \psline[linewidth=1pt](2.5,0)(3.8,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](-3.8,0)(-4.8,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](3.8,0)(4.8,0)
+  \uput[l](0,1.5){$x(t)$}
+  \uput[d](5.1,0){$t$}
+  \uput[u](0.4,0.8){$1$}
+  \uput[d](-1,0){$\scriptstyle{-T/2}$}
+  \uput[d](1,0){$\scriptstyle{+T/2}$}
+  \uput[d](-2.5,0){$\scriptstyle{-T_0/2}$}
+  \uput[d](2.5,0){$\scriptstyle{+T_0/2}$}
+\end{pspicture*}}\end{center}
+%
+Infatti:
+%
+\begin{equation*}
+\int_{-\frac{T}{2}}^{+\frac{T}{2}}\rect{t}{T_0}\ud t=
+    \begin{cases}T&\text{se }T<T_0\\T_0&\text{se }T\geq T_0\end{cases}
+\end{equation*}
+%
+e perciò, nella formula precedente, il limite del rapporto tra l'integrale (che tende a $T_0$) e $T$ (che tende a infinito) vale zero.
+
+L'energia vale invece:
+%
+\[E_x = \int_{-\infty}^{+\infty}\rect{t}{T_0}\ud t=T_0\]
+%
+Se prima della potenza si fosse calcolata l'energia, trovandola finita avremmo potuto concludere subito che la potenza è nulla. Infine:
+%
+\[x_\mathrm{eff}=0\]
+
+
+\subsection{Esponenziale unilatera}
+La funzione esponenziale unilatera è definita come:
+%
+\[x(t)=\e^{-t}\u(t).\]
+%
+Il suo grafico è riportato in figura~\ref{fig:esponenziale-unilatera}.
+%
+\begin{figure}
+\centering
+\framebox{\begin{pspicture*}(-2.8,-0.6)(5.8,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-2.5,-0.4)(5.5,1.7)
+  \psline[linewidth=1pt](-2.2,0)(0,0)
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]% 0.5*e^(-x)
+         {0}{5.2}{1 2.718281828459045235 x neg exp mul}
+  \uput[l](0,1.5){$x(t)$}
+  \uput[d](5.4,0){$t$}
+\end{pspicture*}}
+\caption{Grafico della funzione esponenziale unilatera.}
+\label{fig:esponenziale-unilatera}
+\end{figure}
+%
+Potenza istantanea ed energia valgono:
+%
+\begin{align*}
+P_x(t) & =\e^{-2t}\u(t)\\
+E_x & =\int_{-\infty}^{+\infty}\e^{-2t}\u(t)\ud t=\int_{0}^{+\infty}\e^{-2t}\ud t=\left.-\frac{1}{2}\e^{-2t}\right|_{0}^{\infty}=\frac{1}{2}
+\end{align*}
+%
+Di conseguenza la potenza media del segnale è nulla:
+%
+\begin{align*}
+P_x & = \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\e^{-2t}\u(t)\ud t=
+        \lim_{T\to\infty}\frac{1}{T}\int_{0}^{\frac{T}{2}}\e^{-2t}\ud t\\
+    & = \lim_{T\to\infty}\frac{1}{T}\left(-\frac{1}{2}\right)\left.\e^{-2t}\right|_{0}^{\frac{T}{2}}=
+        \lim_{T\to\infty}-\frac{1}{2T}\left(\e^{-T}-1\right)=0
+\end{align*}
+%
+e lo stesso il suo valore efficace:
+%
+\[x_\mathrm{eff} = 0\]
+%
+Anche il valor medio è nullo:
+%
+\begin{align*}
+x_\mathrm{m} & = \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\e^{-t}\u(t)\ud t=
+        \lim_{T\to\infty}\frac{1}{T}\int_{0}^{\frac{T}{2}}\e^{-t}\ud t\\
+    & = \lim_{T\to\infty}\frac{1}{T}(-1)\left.\e^{-t}\right|_{0}^{\frac{T}{2}}=
+        -\frac{1}{T}\left(\e^{-\frac{T}{2}}-1\right)=0
+\end{align*}
+
+\subsection{Esponenziale bilatera}
+L'esponenziale bilatera è:
+%
+\[x(t)=\e^{-\abs{t}}.\]
+%
+\begin{figure}
+\centering
+\framebox{\begin{pspicture*}(-4.8,-0.6)(4.8,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-4.5,-0.4)(4.5,1.7)
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]% 0.5*\e^(-abs(x))
+         {-4.2}{0}{1 2.718281828459045235 x abs neg exp mul}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]% 0.5*\e^(-abs(x))
+         {0}{4.2}{1 2.718281828459045235 x abs neg exp mul}
+  \uput[l](0,1.5){$x(t)$}
+  \uput[d](4.4,0){$t$}
+\end{pspicture*}}
+\caption{Rappresentazione grafica della funzione esponenziale bilatera.}
+\label{fig:esponenziale-bilatera}
+\end{figure}
+%
+\begin{align*}
+P_x(t) &=\e^{-2\abs{t}}\\
+E_x & =\int_{-\infty}^{+\infty}\e^{-2\abs{t}}\ud t=2\int_{0}^{+\infty}\e^{-2t}\ud t=1\\
+P_x & =\lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\e^{-2\abs{t}}\ud t=
+     \lim_{T\to\infty}\frac{2}{T}\int_{0}^{+\frac{T}{2}}\e^{-2t}\ud t=0\\
+x_\mathrm{eff} & =0\\
+x_\mathrm{m} &= \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\e^{-\abs{t}}\ud t=
+       \lim_{T\to\infty}\frac{2}{T}\int_{0}^{+\frac{T}{2}}\e^{-t}\ud t=0
+\end{align*}
+
+\subsection{Segno*}
+La funzione \textit{segno} è definita come:
+%
+\[\sgn(t)=\begin{cases}1&t\geq 0\\-1&t<0\end{cases}\]
+%
+\begin{figure}
+\centering
+\framebox{\begin{pspicture*}(-4.3,-1)(4.3,1.5)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-4.1,-0.8)(4,1.3)
+  \psline[linewidth=1pt](0,0.5)(2.5,0.5)
+  \psline[linewidth=1pt](0,-0.5)(-2.5,-0.5)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](-2.5,-0.5)(-3.7,-0.5)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](2.5,0.5)(3.7,0.5)
+  \uput[l](0,1.1){$\sgn(t)$}
+  \uput[d](3.9,0){$t$}
+  \uput[l](0,0.5){$1$}
+  \uput[r](0,-0.5){$-1$}
+\end{pspicture*}}
+\caption{Rappresentazione della funzione segno.}
+\end{figure}
+%
+\begin{align*}
+P_x(t) &=1\\
+E_x &=\int_{-\infty}^{+\infty}1\ud t=\infty\\
+P_x &=1\\
+x_\mathrm{eff}&=1\\
+x_\mathrm{m} & = \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\sgn(t)\ud t=
+        \lim_{T\to\infty}\frac{1}{T}\left(\frac{T}{2}-\frac{T}{2}\right)=0
+\end{align*}
+
+
+\section[Relazione tra \texorpdfstring{$P_x$, $x_\mathrm{eff}$ e $x_\mathrm{m}$}%
+                                      {potenza media, valore efficace e valor medio}]%
+        {Relazione tra potenza media, valore efficace e valor medio}
+
+Osservando i vari casi analizzati, si può constatare che laddove la potenza media sia nulla, anche il valor medio e il valore efficace sono risultati nulli. Si può dimostrare che questa proprietà è vera in generale.
+
+\begin{proposizione}
+Dato un qualsiasi segnale $x(t)$, vale l'implicazione:
+\[P_x=0 \quad\Rightarrow\quad \left\{\begin{array}{l}x_\mathrm{eff}=0\\x_\mathrm{m}=0.\end{array}\right.\]
+\end{proposizione}
+\begin{proof}
+La dimostrazione per il valore efficace è banale. Per il valor medio, possiamo scomporre il generico segnale
+$x(t)$ come
+\[x(t)=x_\mathrm{m}+x'(t)\]
+ossia come somma della sua media $x_\mathrm{m}$ più un segnale $x'(t)\triangleq x(t)-x_\mathrm{m}$ (il quale rappresenta
+le variazioni del segnale originario rispetto alla sua media). Il segnale $x'(t)$ ha media nulla:
+\begin{align*}
+ & \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}x'(t)\ud t=
+        \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}[x(t)-x_\mathrm{m}]\ud t\\
+ &\quad =\underbrace{\lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}x(t)\ud t}_{x_\mathrm{m}}-
+        \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}x_\mathrm{m}\ud t\\
+ &\quad =x_\mathrm{m} - \lim_{T\to\infty}\frac{1}{T}x_\mathrm{m} T=x_\mathrm{m}-x_\mathrm{m}=0.
+\end{align*}
+La dimostrazione si effettua partendo dall'espressione della potenza media, riscrivendola in
+un determinato modo e imponendo infine che sia nulla.
+\begin{align*}
+P_x = & \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\abs{x(t)}^2\ud t=
+        \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\abs{x_\mathrm{m}+x'(t)}^2\ud t\\
+ \intertext{ma poiché $\abs{z}^2=z\cdot z^*$ e $(z_1+z_2)^*=z_1^*+z_2^*$, otteniamo:}
+    = & \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\left(x_\mathrm{m}+x'(t)\right)\left(x_\mathrm{m}^*+x'^*(t)\right)\ud t\\
+    = & \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\left[\abs{x_\mathrm{m}}^2+\abs{x'(t)}^2 +
+        x_\mathrm{m}x'^*(t)+ x_\mathrm{m}^*x'(t)\right]\ud t
+\end{align*}
+nella quale compare un'espressione del tipo $z_1z_2^*+z_1^*z_2$. Siccome $(z_1z_2)^*=z_1^*z_2^*$, allora:
+\begin{align*}
+z_1z_2^*+z_1^*z_2 & = z_1z_2^*+(z_1z_2^*)^*=z+z^*    \tag{$z\triangleq z_1z_2^*$}\\
+                  & = 2\Re\{z\} = 2\Re\{z_1z_2^*\}.
+\end{align*}
+Infatti, se $z=a+\j b$, allora $a=\Re\{z\}=\frac{1}{2}(z+z^*)$. Tornando quindi alla potenza scriviamo:
+\begin{align*}
+P_x = & \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\left[\abs{x_\mathrm{m}}^2+\abs{x'(t)}^2 +
+        2\Re\left\{x_\mathrm{m}^*x'(t)\right\}\right]\ud t\\
+    = & \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\abs{x_\mathrm{m}}^2\ud t+
+        \lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}\abs{x'(t)}^2\ud t\\
+      & +2\Re\Bigg\{x_\mathrm{m}^*\underbrace{\lim_{T\to\infty}\frac{1}{T}\int_{-\frac{T}{2}}^{+\frac{T}{2}}x'(t)\ud t}_{0}\Bigg\}\\
+    = & \abs{x_\mathrm{m}}^2+P_{x'}
+\end{align*}
+Deve quindi essere:
+\begin{align*}
+ P_x= & \abs{x_\mathrm{m}}^2+P_{x'} = 0
+\end{align*}
+dove sia $\abs{x_\mathrm{m}}^2$ che $P_{x'}$ sono numeri non negativi ($\geq 0$) essendo integrali di funzioni
+($|\cdot|^2$) sempre maggiori o uguali a zero. Affinché loro somma sia nulla, devono esser per forza nulli
+entrambi e pertanto, in particolare, è nullo il valor medio $x_\mathrm{m}$.
+\end{proof}
+
+Quanto appena dimostrato può essere espresso in altri termini dicendo che condizioni necessarie affinché $P_x=0$ sono che il segnale $x(t)$ sia a media e a valore efficace nulli.
+

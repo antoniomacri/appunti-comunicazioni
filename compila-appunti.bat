@@ -1,0 +1,6 @@
+
+@echo Compilazione...
+pdflatex appunti.tex -aux-directory=%temp%
+
+@echo Esecuzione Acrobat Reader...
+appunti.pdf

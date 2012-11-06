@@ -1,0 +1,1018 @@
+\chapter{Segnali campionati}
+\label{cha:segnali-campionati}
+
+
+\section{Introduzione}
+Come già anticipato nel capitolo~\ref{cha:segnali}, tra i segnali a tempo discreto si annoverano sia segnali la cui natura è intrinsecamente discreta, sia segnali ottenuti per ``campionamento'' di segnali continui nel tempo. Quest'ultimo è il caso più tipico che si presenta nell'elaborazione dei segnali. L'operazione di campionamento viene eseguita da un apposito strumento detto \emph{campionatore}, avente in ingresso un segnale a tempo continuo e in uscita una sequenza. Viene rappresentato graficamente come una sorta di interruttore:
+%
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(80,20)(-8,0)
+\put(5,3){\line(1,0){20}}
+\put(25,3){\line(1,1){7}}
+\put(35,3){\line(1,0){20}}
+\qbezier(30,15)(34,14)(36,10)
+\put(35.5,11){\vector(1,-2){2}}
+\put(35,15){$T_\mathrm{c}$}
+\put(12,6){$x(t)$}
+\put(42,6){$x[n]$}
+\end{picture}}\end{center}
+%
+dove $T_\mathrm{c}$ è l'\emph{intervallo di campionamento} o \emph{tempo di campionamento}, che indica la periodicità con cui l'interruttore si apre e si chiude (in un tempo infinitesimo). Nell'istante in cui l'interruttore si chiude viene prelevato il valore del segnale. Campionare un segnale significa quindi costruire una sequenza i cui campioni sono i valori del segnale analogico in ingresso prelevati a intervalli temporali spaziati di $T_\mathrm{c}$:
+%
+\[x[n]\triangleq x(nT_\mathrm{c}).\]
+
+L'inverso dell'intervallo di campionamento è la \emph{frequenza di campionamento}:
+%
+\[f_\mathrm{c}=1/T_\mathrm{c}.\]
+
+\begin{figure}
+\centering
+\framebox{\begin{pspicture*}(-4.5,-1)(4.5,2)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-4.2,-0.2)(4.2,1.8)
+  \uput[l](0,1.5){$x(t)$}
+  \uput[d](4.1,0){$t$}
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]% 0.5*sin(500*x) - 0.2*cos(300*x)
+         {-3.7}{3.7}{0.5 x 100 mul sin mul 0.2 x 50 mul cos mul add}
+  \psline[linewidth=0.5pt](-3.2,-0.05)(-3.2,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](-3.2,0.1)(-3.2,0.14)
+  \pscircle*(-3.2,0.14){1pt}
+  \psline[linewidth=0.5pt](-2.4,-0.05)(-2.4,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](-2.4,0.1)(-2.4,0.32)
+  \pscircle*(-2.4,0.32){1pt}
+  \psline[linewidth=0.5pt](-1.6,-0.05)(-1.6,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](-1.6,-0.1)(-1.6,-0.15)
+  \pscircle*(-1.6,-0.15){1pt}
+  \psline[linewidth=0.5pt](-0.8,-0.05)(-0.8,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](-0.8,-0.1)(-0.8,-0.33)
+  \pscircle*(-0.8,-0.33){1pt}
+  \pscircle*(0,0.21){1pt}
+  \psline[linewidth=0.5pt](0.8,-0.05)(0.8,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](0.8,0.1)(0.8,0.63)
+  \pscircle*(0.8,0.63){1pt}
+  \psline[linewidth=0.5pt](1.6,-0.05)(1.6,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](1.6,0.1)(1.6,0.22)
+  \pscircle*(1.6,0.22){1pt}
+  \psline[linewidth=0.5pt](2.4,-0.05)(2.4,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](2.4,-0.1)(2.4,-0.52)
+  \pscircle*(2.4,-0.52){1pt}
+  \psline[linewidth=0.5pt](3.2,-0.05)(3.2,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](3.2,-0.1)(3.2,-0.5)
+  \pscircle*(3.2,-0.5){1pt}
+  \uput[d](-3.2,0){$\scriptstyle{-4T_\mathrm{c}}$}
+  \uput[d](-2.4,0){$\scriptstyle{-3T_\mathrm{c}}$}
+  \uput[u](-1.6,0){$\scriptstyle{-2T_\mathrm{c}}$}
+  \uput[u](-0.8,0){$\scriptstyle{-T_\mathrm{c}}$}
+  \uput[d](0.8,0){$\scriptstyle{T_\mathrm{c}}$}
+  \uput[d](1.6,0){$\scriptstyle{2T_\mathrm{c}}$}
+  \uput[u](2.4,0){$\scriptstyle{3T_\mathrm{c}}$}
+  \uput[u](3.2,0){$\scriptstyle{4T_\mathrm{c}}$}
+\end{pspicture*}}
+\caption{Esempio di campionamento di un segnale.}
+\end{figure}
+
+\section{Sequenze notevoli}
+Consideriamo ora esempi di segnali a tempo discreto di particolare rilevanza e utilità. Alcuni di essi possono essere derivati dalle rispettive controparti a tempo continuo per semplice campionamento, altri necessitano invece di importanti precisazioni.
+
+\paragraph{Gradino unitario.}
+\begin{center}\begin{tabular}{m{0.4\textwidth}m{0.5\textwidth}}
+\[\u[n]=\begin{cases}1&n\geq 0\\0&n<0\end{cases}\]  &
+\framebox{\setlength{\unitlength}{1mm}
+ \begin{picture}(56,25)(-25,-5)
+  \put(0,-1){\vector(0,1){14}}
+  \put(-23,0){\vector(1,0){48}}
+  \put(-5,16){$\u[n]$}
+  \put(26,-1){$n$}
+  \put(-1,-4){$0$}
+  \put(-4,5){$1$}
+  \multiput(6,0)(6,0){3}{\line(0,1){6}}
+  \thicklines
+  \multiput(-6,0)(-6,0){3}{\circle*{1}}
+  \multiput(0,6)(6,0){4}{\circle*{1}}
+\end{picture}}\end{tabular}\end{center}
+
+\paragraph{Sequenza impulsiva o delta di Kronecker.}
+\begin{center}\begin{tabular}{m{0.4\textwidth}m{0.5\textwidth}}
+\[\delta[n]=\begin{cases}1 & n=0\\0&n\neq 0\end{cases}\] &
+\framebox{\setlength{\unitlength}{1mm}
+ \begin{picture}(56,25)(-25,-5)
+  \put(0,-1){\vector(0,1){14}}
+  \put(-23,0){\vector(1,0){48}}
+  \put(-5,16){$\delta[n]$}
+  \put(26,-1){$n$}
+  \put(-1,-4){$0$}
+  \put(2,5){$1$}
+  \thicklines
+  \multiput(-6,0)(-6,0){3}{\circle*{1}}
+  \put(0,6){\circle*{1}}
+  \multiput(6,0)(6,0){3}{\circle*{1}}
+\end{picture}}\end{tabular}\end{center}
+%
+Non ha senso pensare di ottenere la sequenza $\delta[n]$ per campionamento del segnale analogico $\delta (t)$. Infatti il valore di $\delta(0)$ non è limitato e quindi sarebbe privo di senso definire $\delta[0]=\delta(0)$. Le sequenze $\u[n]$ e $\delta[n]$ sono legate da relazioni simili a quelle che legano $\u(t)$ e $\delta(t)$. Infatti, come il segnale a gradino è la funzione integrale della $\delta (t)$, nell'ambito del tempo discreto l'integrale diventa una sommatoria e si ha:
+%
+\[\u[n] = \sum_{i=-\infty}^{n}\delta[i] = \sum_{k=0}^{\infty}\delta[n-k].\]
+%
+Infatti%
+\margincomment{In matematica $\delta_{n,k}=\delta[n-k]$ è detto ``simbolo di Kronecker''.}
+la $\delta[n-k]$ è graficamente:
+%
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+ \begin{picture}(56,20)(-25,-5)
+  \put(0,-1){\vector(0,1){14}}
+  \put(-23,0){\vector(1,0){48}}
+  \put(-14.5,11){$\delta[n-k]$}
+  \put(26,-1){$n$}
+  \put(-1,-4){$0$}
+  \put(11,-4){$k$}
+  \put(2,5){$1$}
+  \put(12,0){\line(0,1){6}}
+  \thicklines
+  \multiput(6,0)(-6,0){5}{\circle*{1}}
+  \put(12,6){\circle*{1}}
+  \multiput(18,0)(6,0){1}{\circle*{1}}
+\end{picture}}\end{center}
+%
+e sommandone infinite, una per ogni $k\geq 0$, si ottiene proprio la funzione gradino. È altresì vero che la delta di Kronecker si può scrivere come differenza di gradini:
+%
+\[\delta[n]=\u[n]-\u[n-1]\]
+%
+e può esser vista anche come un rettangolo con un solo campione non nullo. Compare%
+\margincomment{È la cosiddetta ``differenza all'indietro del primo ordine'' o \emph{incremento}.}
+qui una differenza a ricalcare la proprietà che, nel tempo continuo, la delta di Dirac è la derivata temporale della funzione gradino.
+
+\paragraph{Esponenziale unilatera.}
+Per $0<a<1$ si definisce la sequenza esponenziale unilatera come:
+\begin{center}\begin{tabular}{m{0.4\textwidth}m{0.5\textwidth}}
+\[x[n]=a^n\u[n]\] &
+\framebox{\setlength{\unitlength}{1mm}
+ \begin{picture}(56,25)(-21,-5)
+  \put(0,-1){\vector(0,1){14}}
+  \put(-19,0){\vector(1,0){48}}
+  \put(-5,16){$x[n]$}
+  \put(30,-1){$n$}
+  \put(-1,-4){$0$}
+  \put(8,0){\line(0,1){4}}
+  \put(16,0){\line(0,1){2}}
+  \put(24,0){\line(0,1){1}}
+  \thicklines
+  \multiput(-8,0)(-8,0){2}{\circle*{1}}
+  \put(0,8){\circle*{1}}
+  \put(8,4){\circle*{1}}
+  \put(16,2){\circle*{1}}
+  \put(24,1){\circle*{1}}
+\end{picture}}\end{tabular}\end{center}
+
+\paragraph{Rettangolo di durata $N$.}
+La sequenza rettangolo è definita come differenza tra due gradini:
+%
+\begin{center}\begin{tabular}{m{0.4\textwidth}m{0.5\textwidth}}
+\[x[n]=\u[n]-\u[n-N]\] &
+\framebox{\setlength{\unitlength}{1mm}
+ \begin{picture}(56,25)(-19,-5)
+  \put(0,-1){\vector(0,1){14}}
+  \put(-17,0){\vector(1,0){48}}
+  \put(-5,16){$x[n]$}
+  \put(32,-1){$n$}
+  \put(-1,-4){$0$}
+  \put(8.3,-4){$\scriptstyle{N-1}$}
+  \put(17,-4){$\scriptstyle{N}$}
+  \put(-4,5){$1$}
+  \multiput(6,0)(6,0){2}{\line(0,1){6}}
+  \thicklines
+  \multiput(-6,0)(-6,0){2}{\circle*{1}}
+  \multiput(0,6)(6,0){3}{\circle*{1}}
+  \multiput(18,0)(6,0){2}{\circle*{1}}
+\end{picture}}\end{tabular}\end{center}
+Il termine $-\u[n-N]$ è un gradino traslato di $N$ (che parte cioè in $n=N$) e con segno negativo.
+
+\paragraph{Oscillazione discreta.}
+La sequenza oscillazione discreta è definita come:
+%
+\[x[n]=\e^{\,\j2\pi F_0n}\]
+%
+dove%
+\margincomment{Si parla di frequenza normalizzata perché ottenuta come rapporto di frequenze e quindi adimensionale.}
+$F_0$ è una \emph{frequenza normalizzata} (cioè adimensionale). È un'oscillazione complessa (la versione a tempo discreto dell'oscillazione complessa analogica $\e^{\,\j2\pi f_0 t}$) che potrebbe sembrare periodica, essendo $\e^{\,\j\varphi}=\cos(\varphi)+\j\sin(\varphi)$. In realtà non è così. Affinché sia una sequenza periodica (rispetto alla variabile temporale $n$) è necessario che la frequenza normalizzata $F_0$ sia un numero razionale, scrivibile cioè come rapporto di interi:
+%
+\[F_0=\frac{p}{q} \qquad p,q\in\mathbb{Z}.\]
+%
+In tal caso il periodo della sequenza è $N_0=q'$ dove $q'$ si ottiene partendo da una coppia di numeri $p'$ e $q'$ che siano interi primi tra loro e il cui rapporto valga:
+%
+\[\frac{p'}{q'}=\frac{p}{q}\]
+%
+(che siano interi primi fra loro significa che la frazione $p'/q'$ non è ulteriormente semplificabile).
+
+
+\section{Trasformata di Fourier di una Sequenza (\acs{TFS})}
+
+La \acf{TFS} è uno strumento utile ad analizzare spettralmente le sequenze, potendo capire pertanto cosa succede allo spettro di un segnale quando questo viene campionato. In particolare si vuole determinare, se esiste, una relazione tra il contenuto spettrale definito sulle sequenze e quello originario del segnale analogico. Questo consentirebbe di ottenere informazioni sul contenuto spettrale del segnale originario a partire dai suoi campioni ed eventualmente di ricostruirlo.
+
+La Trasformata di Fourier di Sequenze viene indicata con $\bar{X}(f)$
+%
+\[x[n]\xLeftrightarrow{\TFS} \bar{X}(f)\]
+%
+ed è definita come:
+%
+\begin{center}\begin{tabular}{lm{5cm}}
+ \framebox[.50\linewidth]{$\displaystyle{\bar{X}(f)\triangleq \sum_{n=-\infty}^{+\infty} x[n]\e^{-\j2\pi fnT}}$} &
+ \begin{flushleft}\textsc{Trasformata di Fourier di una Sequenza}\end{flushleft}
+\end{tabular}\end{center}
+%
+dove $T$ è il tempo di campionamento usato per ottenere $x[n]$ da $x(t)$.
+
+Trasformando una sequenza tramite questa definizione di \ac{TFS}, si ottiene uno spettro periodico. In particolare, vale la seguente proprietà.
+
+\begin{proprieta}[di periodicità della \ac{TFS}]
+La funzione $\bar{X}(f)$ è periodica di periodo pari alla frequenza di campionamento $f_\mathrm{c}=1/T$, ossia:
+\[\bar{X}(f) = \bar{X}\biggl(f+\frac{k}{T}\biggr) \qquad \forall k\in\mathbb{Z}.\]
+\end{proprieta}
+\begin{proof}
+Si ha:
+\begin{align*}
+\bar{X}\biggl(f+\frac{k}{T}\biggr) & = \sum_{n=-\infty}^{+\infty}x[n]\e^{-\j2\pi n\left(f+\frac{k}{T}\right)T}\\
+ & = \sum_{n=-\infty}^{+\infty}x[n]\e^{-\j2\pi nfT} \underbrace{\e^{-\j2\pi nk}}_{1} = \bar{X}(f)
+\end{align*}
+dove il termine $\e^{-\j2\pi nk}$ vale $1$ in quanto $nk\in\mathbb{Z}$.
+\end{proof}
+
+\paragraph{Rappresentazione della \acs{TFS}.}
+Trattandosi di uno spettro periodico, $\bar{X}(f)$ è pienamente nota se è noto il suo andamento in un intervallo di frequenze di ampiezza $1/T$. La rappresentazione può quindi limitarsi al periodo da $-1/2T$ a $+1/2T$ o anche da $0$ a $1/T$ (a volte è preferibile la prima rappresentazione perché si esaltano alcune caratteristiche del segnale, ad esempio l'assenza di componenti alla continua).
+%
+\begin{figure}[b]
+\centering
+\subfloat{\framebox{\begin{pspicture*}(-2.8,-0.8)(3.2,2)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.6,-0.1)(2.9,1.8)
+  \uput[l](0,1.55){$\abs{\bar{X}(f)}$}
+  \uput[d](2.8,0){$f$}
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-2,0)(-2,1.25)
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]%
+         {-2}{2}{1 2.718281828459045235 x 1.1 div abs 2 exp neg exp mul neg 1.2 add}
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](2,0)(2,1.25)
+  \uput[d](-2,0){$-\frac{1}{2T}$}
+  \uput[d](2,0){$-\frac{1}{2T}$}
+\end{pspicture*}}} \quad
+\subfloat{\framebox{\begin{pspicture*}(-2.8,-1.2)(3.2,1.6)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.6,-0.9)(2.9,1.4)
+  \uput[l](0,1.15){$\angle\bar{X}(f)$}
+  \uput[d](2.8,0){$f$}
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](-2,0)(-2,-1.1)
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{-2}{0}{x 2 div neg sqrt neg}
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{0}{2}{x 2 div sqrt}
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=2pt 2pt](2,0)(2,1.1)
+  \uput[u](-2,0){$-\frac{1}{2T}$}
+  \uput[d](2,0){$-\frac{1}{2T}$}
+\end{pspicture*}}}
+\caption{Esempio degli spettri di ampiezza e fase di una sequenza.}
+\end{figure}
+
+\begin{esempio}[{\ac{TFS} di una $\delta[n]$}]
+Poiché la $\delta[n]$ è nulla per ogni $n\neq 0$ l'unico termine della sommatoria che sopravvive è
+quello con $n=0$ e pertanto:
+%
+\[\bar{\Delta}(f)=\sum_{n=-\infty}^{+\infty}\delta[n]\e^{-\j2\pi nfT}=1\]
+%
+Il modulo della $\bar{\Delta}(f)$ è quindi unitario e la sua fase è nulla.
+%
+\begin{figure}
+\centering
+\subfloat{\framebox{\setlength{\unitlength}{1mm}
+ \begin{picture}(44,25)(-19,-5)
+  \put(0,-1){\vector(0,1){14}}
+  \put(-17,0){\vector(1,0){36}}
+  \put(-4,16){$\delta[n]$}
+  \put(20,-1){$n$}
+  \put(-1,-4){$0$}
+  \put(2,5){$1$}
+  \thicklines
+  \multiput(-6,0)(-6,0){2}{\circle*{1}}
+  \put(0,6){\circle*{1}}
+  \multiput(6,0)(6,0){2}{\circle*{1}}
+ \end{picture}}} \quad
+\subfloat{\framebox{\setlength{\unitlength}{1mm}
+ \begin{picture}(50,25)(-22,-6)
+  \put(0,-1){\vector(0,1){13}}
+  \put(-20,0){\vector(1,0){42}}
+  \put(-4,14){$\abs{\bar{\Delta}(f)}$}
+  \put(23,-1){$f$}
+  \put(-13,-4){$\scriptstyle{-\frac{1}{2T}}$}
+  \put(7,-4){$\scriptstyle{+\frac{1}{2T}}$}
+  \multiput(-10,-0.5)(0,2){5}{\line(0,1){1}}
+  \multiput(10,-0.5)(0,2){5}{\line(0,1){1}}
+  \thicklines
+  \put(-12,8){\line(1,0){24}}
+  \multiput(-13,8)(-2,0){3}{\line(-1,0){1}}
+  \multiput(13,8)(2,0){3}{\line(1,0){1}}
+ \end{picture}}}
+\caption{Trasformata di Fourier di una ``delta'' di Kronecker.}
+\end{figure}
+\end{esempio}
+
+\begin{teorema}[antitrasformata]
+Se si conosce la \ac{TFS} $X(f)$ di una sequenza $x[n]$, allora la sequenza stessa si ottiene mediante la
+\begin{center}\begin{tabular}{lm{5cm}}
+ \framebox[.50\linewidth]{$\displaystyle{x[n]\triangleq T\int_{-\frac{1}{2T}}^{+\frac{1}{2T}}\bar{X}(f)\e^{\,\j2\pi fnT}\ud f}$} &
+ \begin{flushleft}\textsc{Antitrasformata di Fourier di una Sequenza}\end{flushleft}
+\end{tabular}\end{center}
+\end{teorema}
+\begin{proof}
+Si parte dalla 
+\begin{align*}
+\ATFS[\bar{X}(f)] &= T\int_{-\frac{1}{2T}}^{+\frac{1}{2T}}\bar{X}(f)\e^{\,\j2\pi fnT}\ud f\\
+\intertext{sostituendo alla $\bar{X}(f)$ la sua espressione come trasformata di Fourier di sequenza:}
+      &= T\int_{-\frac{1}{2T}}^{+\frac{1}{2T}}\sum_{k=-\infty}^{+\infty}x[k]\e^{-\j2\pi kfT}\e^{\,\j2\pi nfT}\ud f\\
+      &= T\sum_{k=-\infty}^{+\infty}x[k]
+         \underbrace{\int_{-\frac{1}{2T}}^{+\frac{1}{2T}}\e^{\,\j2\pi(n-k)fT}\ud f}_{\text{nullo per ogni }k\neq n}=
+         Tx[n]\frac{1}{T}=x[n].    \qedhere
+\end{align*}
+\end{proof}
+
+Il risultato appena ottenuto consente di affermare che esiste una corrispondenza biunivoca tra i due domini (tempo e frequenza) e che conoscere il segnale (sotto forma di sequenza) nel dominio del tempo o nel dominio della frequenza è invariante.
+
+
+\subsection{Periodicità della \acs{TFS} e intervallo di campionamento}
+La periodicità della \ac{TFS} e la limitatezza dell'intervallo frequenziale significativo nello spettro del segnale sono conseguenze di un unico fenomeno: nell'ambito dei segnali a tempo discreto, due oscillazioni complesse (campionate con lo stesso periodo $T$) che abbiano rispettivamente frequenza $f_0$ e $f_0+k/T$, con $k\in\Z$, sono \emph{indistinguibili}.
+
+Per capire a fondo questo aspetto consideriamo le due oscillazioni discrete:
+\begin{align}
+\begin{cases} x_1[n]=\e^{\,\j2\pi nf_0T} \\ x_2[n]=\e^{\,\j2\pi n(f_0+k/T)T}. \end{cases}   \label{eq:oscdisc}
+\end{align}
+Un'oscillazione discreta è un'oscillazione che è stata campionata a partire da un segnale oscillatorio continuo nel tempo.
+Nel caso delle oscillazioni \eqref{eq:oscdisc} le due oscillazioni originarie continue nel tempo sono:
+\begin{align*}
+\begin{cases} x_1(t)=\e^{\,\j2\pi f_0t} \\ x_2(t)= \e^{\,\j2\pi(f_0+k/T)t}. \end{cases}
+\end{align*}
+Si può vedere facilmente come le due oscillazioni discrete siano indistinguibili. Infatti, considerandole nel dominio del tempo:
+\begin{align*}
+x_2[n]=\e^{\,\j2\pi nf_0T} \e^{\,\j2\pi n\frac{k}{T}T} = x_1[n] \underbrace{\e^{\,\j2\pi nk}}_{1}=x_1[n].
+\end{align*}
+
+Come anticipato, si conclude che partendo da due oscillazioni tempo continue diverse, una alla frequenza $f_0$ e un'altra alla frequenza $f_0+k/T$, con $k\in\mathbb{Z}$, e campionandole con passo di campionamento pari a $T$ si ottengono sequenze identiche. Non ha quindi senso pensare a componenti significative nello spettro del segnale discreto al di fuori di un intervallo-base di ampiezza pari alla frequenza di campionamento, poiché tali componenti sono \emph{repliche indistinguibili} di quelle già presenti nel periodo-base. È proprio per questo che la trasformata $\bar{X}(f)$ è periodica.
+
+Come ovvio, per la biunivocità della \ac{TFS}, anche gli spettri sono uguali:
+\begin{align*}\left\{\begin{aligned}
+\bar{X}_1(f) & = \sum_{n=-\infty}^{+\infty} x_1[n]\e^{-\j2\pi nfT} =
+                      \sum_{n=-\infty}^{+\infty} \e^{\,\j2\pi nf_0T}\e^{-\j2\pi nfT}\\
+                  & = \sum_{n=-\infty}^{+\infty} \e^{-\j2\pi n(f-f_0)T} =
+                      \frac{1}{T} \sum_{n=-\infty}^{+\infty} \delta\left(f-f_0-\frac{n}{T}\right)\\
+\bar{X}_2(f) & = \sum_{n=-\infty}^{+\infty} x_2[n]\e^{-\j2\pi nfT} =
+                      \sum_{n=-\infty}^{+\infty} \e^{\,\j2\pi n\left(f_0+\frac{k}{T}\right)T}\e^{-\j2\pi nfT}\\
+                  & = \sum_{n=-\infty}^{+\infty} \e^{-\j2\pi n\left(f-f_0-\frac{k}{T}\right)T} =
+                      \frac{1}{T}\sum_{n=-\infty}^{+\infty} \delta\left(f-f_0-\frac{k}{T}-\frac{n}{T}\right)\\
+                  & = \frac{1}{T}\sum_{n'=-\infty}^{+\infty} \delta\left(f-f_0-\frac{n'}{T}\right)
+%                                                                            \tag{$n'=n+k$}
+\end{aligned}\right.\end{align*}
+dove si è sfruttata in entrambi i casi la formula di Poisson.
+
+Quanto detto comporta, inoltre, che la scelta dell'intervallo di campionamento è fondamentale al fine di poter ricostruire il segnale originario a partire dai suoi campioni. È ovvio che in un caso come questo il segnale non è ricostruibile dai suoi campioni, perché abbiamo già visto due segnali che hanno esattamente la stessa sequenza se campionati con lo stesso passo di campionamento.
+
+
+\subsection{Condizione per l'esistenza della \acs{TFS}}
+Esistono diversi criteri per stabilire se una sequenza è trasformabile secondo Fourier. Quello che vediamo noi è un criterio di sufficienza molto semplice (detto della \emph{assoluta sommabilità}).
+
+\begin{teorema}
+Se la sequenza $x[n]$ è assolutamente sommabile
+\[\sum_{n=-\infty}^{+\infty}\abs{x[n]} < \infty,\]
+allora essa ammette Trasformata di Fourier di Sequenza.
+\end{teorema}
+\begin{proof}
+Dire che la \ac{TFS} esiste equivale a dire che il suo modulo è finito:
+\begin{align*}
+\abs{\bar{X}(f)} =
+    \abs{\sum_{n=-\infty}^{+\infty}x[n]\e^{-\j2\pi nfT}} \leq \sum_{n=-\infty}^{+\infty}\abs{x[n]} < \infty
+\end{align*}
+Si è semplicemente sfruttata la relazione che afferma che il modulo di una somma algebrica è
+minore o uguale della somma dei moduli.
+\end{proof}
+
+
+\subsection{Relazione tra la \acs{TCF} di un segnale e la \acs{TFS} di un suo campionamento}
+\begin{teorema}
+Sia $x[n]$ la sequenza ottenuta per campionamento di $x(t)$ con intervallo di campionamento $T$ e siano $\bar{X}(f)$ e $X(f)$ rispettivamente \ac{TFS} di $x[n]$ e la \ac{TCF} di $x(t)$, allora:
+\[\bar{X}(f) = \frac{1}{T}\sum_{n=-\infty}^{+\infty}X\biggl(f-\frac{n}{T}\biggr).\]
+\end{teorema}
+\begin{proof}
+Poiché vale la relazione $x[n]=x(nT)$, la trasformata di Fourier della sequenza $x[n]$ può essere scritta come:
+\begin{align*}
+\bar{X}(f) & = \sum_{n=-\infty}^{+\infty}x[n]\e^{-\j2\pi nfT}=\sum_{n=-\infty}^{+\infty}x(nT)\e^{-\j2\pi nfT}\\
+    & = \sum_{n=-\infty}^{+\infty}
+        \biggl[\int_{-\infty}^{+\infty}X(\alpha)\e^{\,\j2\pi\alpha nT}\ud\alpha\biggr] \e^{-\j2\pi nfT}\\
+    & = \int_{-\infty}^{+\infty}X(\alpha)\sum_{n=-\infty}^{+\infty}\e^{-\j2\pi(f-\alpha)nT}\ud\alpha\\
+\intertext{e utilizzando la seconda formula di Poisson applicata alla delta di Dirac (vedi eq.~\eqref{eq:seconda-di-poisson-applicata-alla-delta} a pag.~\pageref{eq:seconda-di-poisson-applicata-alla-delta}), si ottiene:}
+    & = \int_{-\infty}^{+\infty}X(\alpha)
+        \biggl[\frac{1}{T}\sum_{n=-\infty}^{+\infty}\delta\biggl(f-\alpha-\frac{n}{T}\biggr)\biggr]\ud\alpha\\
+    & = \frac{1}{T}\sum_{n=-\infty}^{+\infty}\int_{-\infty}^{+\infty}
+        X(\alpha)\delta\Biggl(\biggl(f-\frac{n}{T}\biggr)-\alpha\Biggr)\ud\alpha\\
+\intertext{e sfruttando la proprietà campionatrice della $\delta(t)$ si ottiene infine:}
+    & = \frac{1}{T}\sum_{n=-\infty}^{+\infty}X\biggl(f-\frac{n}{T}\biggr).  \qedhere
+\end{align*}
+\end{proof}
+
+La formula appena dimostrata si interpreta dicendo che la trasformata della sequenza è pari alla trasformata
+della funzione replicata a intervalli pari a $1/T$ e moltiplicata per $1/T$.
+Lo spettro di una sequenza è quindi la periodicizzazione dello spettro segnale che ha originato la sequenza.
+
+\begin{esempio}
+Si consideri la funzione \textop{sinc} che ha come \ac{TCF} una \textop{rect}.
+Lo spettro della sequenza viene ottenuto semplicemente moltiplicando lo spettro del segnale per $1/T$ e replicandolo.
+%
+\begin{figure}
+\centering
+\subfloat{\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(56.10,23.61)(-25.10,-7.36)
+\put(-23.10,0.00){\vector(1,0){48.10}}
+\put(0.00,-5.36){\vector(0,1){19.61}}
+\put(26.00,-1){$t$}
+\put(1.5,11.25){$x(t)$}
+\multiput(-16,0.25)(0,-1){2}{\line(0,-1){0.5}}
+\put(-16,-1.18){\circle*{1}}
+\put(-12,0.29){\circle*{1}}
+\multiput(-8,-0.25)(0,1){3}{\line(0,1){0.5}}
+\put(-8,2.84){\circle*{1}}
+\multiput(-4,-0.25)(0,1){6}{\line(0,1){0.5}}
+\put(-4,5.26){\circle*{1}}
+\put(0,6.25){\circle*{1}}
+\multiput(4,-0.25)(0,1){6}{\line(0,1){0.5}}
+\put(4,5.26){\circle*{1}}
+\multiput(8,-0.25)(0,1){3}{\line(0,1){0.5}}
+\put(8,2.84){\circle*{1}}
+\put(12,0.29){\circle*{1}}
+\multiput(16,0.25)(0,-1){2}{\line(0,-1){0.5}}
+\put(16,-1.18){\circle*{1}}
+\put(-17.5,9.8){$x[n]$}
+\put(-13,8){\vector(3,-1){6.5}}
+\put(-13,8){\vector(1,-1){4}}
+\thicklines
+\qbezier(-20.10,-1.18)(-19.04,-1.35)(-18.10,-1.36)
+\qbezier(-18.10,-1.36)(-17.08,-1.37)(-16.10,-1.20)
+\qbezier(-16.10,-1.20)(-15.11,-1.03)(-14.10,-0.66)
+\qbezier(-14.10,-0.66)(-13.14,-0.31)(-12.10,0.24)
+\qbezier(-12.10,0.24)(-11.20,0.72)(-10.10,1.43)
+\qbezier(-10.10,1.43)(-9.10,2.10)(-8.10,2.77)
+\qbezier(-8.10,2.77)(-6.83,3.64)(-6.10,4.09)
+\qbezier(-6.10,4.09)(-5.01,4.78)(-4.10,5.21)
+\qbezier(-4.10,5.21)(-3.06,5.71)(-2.10,5.97)
+\qbezier(-2.10,5.97)(-1.09,6.24)(-0.10,6.25)
+\qbezier(-0.10,6.25)(0.89,6.26)(1.90,6.02)
+\qbezier(1.90,6.02)(2.86,5.79)(3.90,5.31)
+\qbezier(3.90,5.31)(4.81,4.88)(5.90,4.22)
+\qbezier(5.90,4.22)(6.67,3.75)(7.90,2.91)
+\qbezier(7.90,2.91)(8.90,2.24)(9.90,1.56)
+\qbezier(9.90,1.56)(11.01,0.83)(11.90,0.35)
+\qbezier(11.90,0.35)(12.94,-0.22)(13.90,-0.59)
+\qbezier(13.90,-0.59)(14.91,-0.97)(15.90,-1.16)
+\qbezier(15.90,-1.16)(16.88,-1.35)(17.90,-1.36)
+\qbezier(17.90,-1.36)(18.85,-1.36)(19.90,-1.21)
+\end{picture}}} \quad
+\subfloat{\framebox{\setlength{\unitlength}{1mm}
+ \begin{picture}(50,23.61)(-22,-4)
+ \put(0,-1){\vector(0,1){13}}
+ \put(-20,0){\vector(1,0){42}}
+ \put(-5,15){$X(f)$}
+ \put(2,8){$\scriptstyle{1}$}
+ \put(23,-1){$f$}
+ \put(-13,0){\line(0,1){7}}
+ \put(13,0){\line(0,1){7}}
+ \thicklines
+ \put(-13,7){\line(1,0){26}}
+\end{picture}}} \\
+\subfloat{\framebox{\setlength{\unitlength}{1mm}
+ \begin{picture}(120,25)(-42,-6)
+  \put(0,-1){\vector(0,1){13}}
+  \put(-40,0){\vector(1,0){112}}
+  \put(-4,14){$\bar{X}(f)$}
+  \put(2,8.2){$\scriptstyle{1/T}$}
+  \put(73,-1){$f$}
+  \put(-12,-4){$-B$}
+  \put(6,-4){$+B$}
+  \put(-31,-4){$\scriptstyle{-1/T}$}
+  \put(25,-4){$\scriptstyle{1/T}$}
+  \put(52,-4){$\scriptstyle{2/T}$}
+  \put(-9,-0.5){\line(0,1){7.5}}
+  \put(9,-0.5){\line(0,1){7.5}}
+  \put(-36,-0.5){\line(0,1){7.5}}
+  \put(-27,-1){\line(0,1){2}}
+  \put(-18,-0.5){\line(0,1){7.5}}
+  \put(-9,-0.5){\line(0,1){7.5}}
+  \put(0,-1){\line(0,1){2}}
+  \put(9,-0.5){\line(0,1){7.5}}
+  \put(18,-0.5){\line(0,1){7.5}}
+  \put(27,-1){\line(0,1){2}}
+  \put(36,-0.5){\line(0,1){7.5}}
+  \put(45,-0.5){\line(0,1){7.5}}
+  \put(54,-1){\line(0,1){2}}
+  \put(63,-0.5){\line(0,1){7.5}}
+  \thicklines
+  \put(-36,7){\line(1,0){18}}
+  \put(-9,7){\line(1,0){18}}
+  \put(18,7){\line(1,0){18}}
+  \put(45,7){\line(1,0){18}}
+ \end{picture}}}
+\caption{Spettro di una sequenza ottenuta per campionamento di una \textop{sinc}.}
+\end{figure}
+\end{esempio}
+
+
+\section{Condizione di Nyquist}
+Si supponga di avere un segnale $x(t)$ \emph{a banda rigorosamente limitata}. Campionandolo con un tempo di campionamento $T$ per ottenere una sequenza $x[n]$, lo spettro $\bar{X}(f)$ della sequenza può presentarsi come rappresentato nella figura~\ref{fig:spettro-sequenza-con-aliasing}.
+%
+\begin{figure}[b!]
+\centering
+\subfloat[Spettro di una sequenza affetto da ``aliasing''.]{\label{fig:spettro-sequenza-con-aliasing}
+\framebox{\begin{pspicture*}(-6.5,-0.6)(6.5,1.9)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-6.2,-0.4)(6.2,1.7)
+  \uput[d](6.1,0){$f$}
+  \uput[l](0,1.5){$\bar{X}(f)$}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{-5.35}{-2.85}% 1*\e^(-abs(x*1.1)^2) + cos(x*550)/15
+         {1 2.718281828459045235 x 4.1 add 1.1 mul abs 2 exp neg exp mul 1000 x 4.1 add mul cos 30 div add 0.12 sub}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{-3.3}{-0.8}%
+         {1 2.718281828459045235 x 2.05 add 1.1 mul abs 2 exp neg exp mul 1000 x 2.05 add mul cos 30 div add 0.12 sub}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{-1.25}{1.25}%
+         {1 2.718281828459045235 x 1.1 mul abs 2 exp neg exp mul 1000 x mul cos 30 div add 0.12 sub}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{0.8}{3.3}%
+         {1 2.718281828459045235 x 2.05 sub 1.1 mul abs 2 exp neg exp mul 1000 x 2.05 sub mul cos 30 div add 0.12 sub}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{2.85}{5.35}%
+         {1 2.718281828459045235 x 4.1 sub 1.1 mul abs 2 exp neg exp mul 1000 x 4.1 sub mul cos 30 div add 0.12 sub}
+  \psline[linewidth=0.5pt](-1.25,-0.05)(-1.25,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](-1.25,0.1)(-1.25,0.65)
+  \uput[u](-1.25,0.63){$\scriptstyle{-B}$}
+  \psline[linewidth=0.5pt](1.25,-0.05)(1.25,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](1.25,0.1)(1.25,0.65)
+  \uput[u](1.25,0.63){$\scriptstyle{+B}$}
+  \psline[linewidth=0.5pt](-4.1,-0.05)(-4.1,0.05)
+  \uput[d](-4.1,0){$\scriptstyle{-2/T}$}
+  \psline[linewidth=0.5pt](-2.05,-0.05)(-2.05,0.05)
+  \uput[d](-2.05,0){$\scriptstyle{-1/T}$}
+  \psline[linewidth=0.5pt](2.05,-0.05)(2.05,0.05)
+  \uput[d](2.05,0){$\scriptstyle{1/T}$}
+  \psline[linewidth=0.5pt](4.1,-0.05)(4.1,0.05)
+  \uput[d](4.1,0){$\scriptstyle{2/T}$}
+\end{pspicture*}}} \\
+\subfloat[Spettro di una sequenza non affetto da ``aliasing''.]{\label{fig:spettro-sequenza-senza-aliasing}
+\framebox{\begin{pspicture*}(-6.5,-0.6)(6.5,1.9)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-6.2,-0.4)(6.2,1.7)
+  \uput[d](6.1,0){$f$}
+  \uput[l](0,1.5){$\bar{X}(f)$}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{-5.8}{-4.25}% 1*\e^(-abs(x*1.1)^2) + cos(x*550)/15
+         {1 2.718281828459045235 x 5.5 add 1.1 mul abs 2 exp neg exp mul 1000 x 5.5 add mul cos 30 div add 0.12 sub}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{-4}{-1.5}%
+         {1 2.718281828459045235 x 2.75 add 1.1 mul abs 2 exp neg exp mul 1000 x 2.75 add mul cos 30 div add 0.12 sub}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{-1.25}{1.25}%
+         {1 2.718281828459045235 x 1.1 mul abs 2 exp neg exp mul 1000 x mul cos 30 div add 0.12 sub}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{1.5}{4}%
+         {1 2.718281828459045235 x 2.75 sub 1.1 mul abs 2 exp neg exp mul 1000 x 2.75 sub mul cos 30 div add 0.12 sub}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{4.25}{5.8}%
+         {1 2.718281828459045235 x 5.5 sub 1.1 mul abs 2 exp neg exp mul 1000 x 5.5 sub mul cos 30 div add 0.12 sub}
+  \psline[linewidth=0.5pt](-1.25,-0.05)(-1.25,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](-1.25,0.1)(-1.25,0.65)
+  \uput[u](-1.25,0.63){$\scriptstyle{-B}$}
+  \psline[linewidth=0.5pt](1.25,-0.05)(1.25,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](1.25,0.1)(1.25,0.65)
+  \uput[u](1.25,0.63){$\scriptstyle{+B}$}
+  \psline[linewidth=0.5pt](-5.5,-0.05)(-5.5,0.05)
+  \uput[d](-5.5,0){$\scriptstyle{-2/T}$}
+  \psline[linewidth=0.5pt](-2.75,-0.05)(-2.75,0.05)
+  \uput[d](-2.75,0){$\scriptstyle{-1/T}$}
+  \psline[linewidth=0.5pt](2.75,-0.05)(2.75,0.05)
+  \uput[d](2.75,0){$\scriptstyle{1/T}$}
+  \psline[linewidth=0.5pt](5.5,-0.05)(5.5,0.05)
+  \uput[d](5.5,0){$\scriptstyle{2/T}$}
+\end{pspicture*}}}
+\end{figure}
+
+Se lo spettro della sequenza è soggetto a una situazione di questo tipo, ossia le repliche dello spettro del segnale originario si intersecano fra di loro, allora il fenomeno che si presenta è detto ``aliasing''. In realtà, negli intervalli in cui due repliche si intersecano lo spettro sarà la somma delle varie repliche.
+
+In assenza di aliasing il periodo frequenziale di base $[-1/2T,1/2T]$ contiene una replica non distorta della trasformata $X(f)$ del segnale a tempo continuo originario (vedi figura~\ref{fig:spettro-sequenza-senza-aliasing}). In una situazione di aliasing, invece, il segnale viene distorto a causa del cosiddetto \emph{errore di aliasing}, creato proprio dalle repliche (``alias'' appunto) dello spettro-base.
+
+La condizione di Nyquist fornisce un criterio che consente di affermare se lo spettro della sequenza è affetto da aliasing o no.
+
+\begin{condizione}[di Nyquist]
+Dato un segnale $x(t)$ a banda rigorosamente limitata $B$, se la frequenza di campionamento $F=1/T$ è
+\begin{subequations}
+\begin{gather}
+F\geq 2B \\
+\intertext{o, equivalentemente, il tempo di campionamento è}
+T\leq\frac{1}{2B},
+\end{gather}
+\end{subequations}
+allora lo spettro della sequenza non è affetto da aliasing.
+\end{condizione}
+
+Se si vuole evitare l'aliasing, bisogna scegliere la frequenza di campionamento in funzione della banda del segnale analogico. Come vedremo questa di Nyquist sarà la condizione fondamentale alla base del teorema del campionamento e della possibilità, in assenza di aliasing, di ricostruire il segnale originario a banda limitata elaborando il segnale campionato.
+
+
+\section[Correlazione, autocorrelazione ed energia**]{Correlazione, autocorrelazione e densità spettrale di energia}
+La correlazione tra sequenze è definita come:
+\[R_{xy}[k] \triangleq \sum_{n=-\infty}^{+\infty}x[n]\,y^*[n-k]\]
+e l'autocorrelazione
+\[R_x[k] \triangleq \sum_{n=-\infty}^{+\infty}x[n]\,x^*[n-k].\]
+
+La densità spettrale di energia la si ottiene come trasformata della funzione di autocorrelazione:
+\begin{align*}
+S_x(f) & = \TFS\big[R_x[k]\big] = \sum_{k=-\infty}^{+\infty}R_x[k]\e^{-\j2\pi kfT}\\
+       & = \sum_{k=-\infty}^{+\infty}\sum_{n=-\infty}^{+\infty}x[n]\,x^*[n-k]\e^{-\j2\pi kfT}\\
+       & = \sum_{n=-\infty}^{+\infty}x[n]\sum_{k=-\infty}^{+\infty}x^*[n-k]\e^{-\j2\pi kfT}\\
+\intertext{che, con la sostituzione $k'=n-k$, diventa:}
+       & = \sum_{n=-\infty}^{+\infty}x[n]\sum_{k'=-\infty}^{+\infty}x^*[k']\e^{-\j2\pi(n-k')fT}\\
+       & = \sum_{n=-\infty}^{+\infty}x[n]\e^{-\j2\pi nfT}\left[\sum_{k'=-\infty}^{+\infty}x[k']\e^{-\j2\pi k'fT}\right]^*\\
+       & = \bar{X}(f)\,\bar{X}^*(f) = \abs{\bar{X}(f)}^2.
+\end{align*}
+
+
+\section{Teorema di Parseval per Sequenze**}
+\begin{teorema}
+\begin{equation*}
+\sum_{n=-\infty}^{+\infty}x[n]\,y^*[n] = T\int_{-\frac{1}{2T}}^{+\frac{1}{2T}}\bar{X}(f)\,\bar{Y}^*(f)\ud f
+\end{equation*}
+\end{teorema}
+\begin{proof}
+\begin{align*}
+&\sum_{n=-\infty}^{+\infty}x[n]\,y^*[n] =
+      \sum_{n=-\infty}^{+\infty} T\int_{-\frac{1}{2T}}^{+\frac{1}{2T}}\bar{X}(f)\e^{\,\j2\pi fnT}\ud f \:y^*[n]\\
+&\qquad = T\int_{-\frac{1}{2T}}^{+\frac{1}{2T}}\bar{X}(f) \left[\sum_{n=-\infty}^{+\infty}y^*[n]\e^{\,\j2\pi fnT}\right]\ud f\\
+&\qquad = T\int_{-\frac{1}{2T}}^{+\frac{1}{2T}}\bar{X}(f) \left[\sum_{n=-\infty}^{+\infty}y[n]\e^{-\j2\pi fnT}\right]^*\ud f\\
+&\qquad = T\int_{-\frac{1}{2T}}^{+\frac{1}{2T}}\bar{X}(f)\bar{Y}^*(f)\ud f   \qedhere
+\end{align*}
+\end{proof}
+
+
+\subsection{Applicazione per il calcolo dell'energia di una sequenza**}
+L'energia $E_x$ di una sequenza può essere ottenuta calcolando il valore che la $R_x$ assume in $0$:
+\begin{align}
+E_x & = R_x[0] = \sum_{n=-\infty}^{+\infty}\abs{x[n]}^2     \label{eq:energia-sequenza}
+\end{align}
+Se la serie di equazione \ref{eq:energia-sequenza} converge, allora la sequenza ha energia finita (noi tratteremo soltanto sequenze a energia finita).
+
+\begin{teorema}
+Se si conosce lo spettro della sequenza, si può calcolare la sua energia anche come integrale sul periodo
+della densità spettrale di energia:
+\begin{align*}
+E_x & = T\int_{-\frac{1}{2T}}^{+\frac{1}{2T}}S_x(f)\ud f
+\end{align*}
+\end{teorema}
+\begin{proof}
+Si applica il teorema di Parseval, sostituendo $y[n]$ con $x[n]$:
+\begin{align*}
+E_x & = R_x[0] = \sum_{n=-\infty}^{+\infty}\abs{x[n]}^2\\
+    & = T\int_{-\frac{1}{2T}}^{+\frac{1}{2T}}\abs{\bar{X}(f)}^2\ud f \tag{per Parseval}\\
+    & = T\int_{-\frac{1}{2T}}^{+\frac{1}{2T}}S_x(f)\ud f  \qedhere
+\end{align*}
+\end{proof}
+
+
+\section{Interpolatori}
+L'interpolatore è lo strumento che opera in modo duale rispetto al campionatore, ossia fornisce in uscita un segnale a tempo continuo $\widetilde{x}(t)$ (il segnale \emph{interpolato}) che è una ricostruzione del segnale (tempo continuo) a partire dal quale la sequenza è stata ottenuta.
+%
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(60,10)
+\put(10,5){\vector(1,0){10}}
+\put(40,5){\vector(1,0){10}}
+\put(20,1){\framebox(20,8){$p(t)$}}
+\put(2,4){$x[n]$}
+\put(52,4){$\widetilde{x}(t)$}
+\end{picture}}\end{center}
+
+A caratterizzare l'interpolatore è una funzione del tempo $p(t)$ (la \emph{risposta dell'interpolatore}) che
+determina le proprietà che esso ha rispetto alla ricostruzione del segnale. In segnale interpolato viene infatti
+ottenuto come la sommatoria dei campioni della sequenza moltiplicati per versioni ritardate della $p(t)$:
+\begin{equation}
+\widetilde{x}(t) = \sum_{n=-\infty}^{+\infty} x[n]\,p(t-nT)    \label{eq:xInterpolato}
+\end{equation}
+
+Da notare che la $p(t)$ \emph{non} è la risposta impulsiva di un \ac{SLS}, infatti ha in ingresso una sequenza e
+in uscita un segnale analogico (i sistemi, non solo quelli lineari, hanno sia in ingresso che in uscita segnali
+continui).
+
+
+\subsection{Interpolatore a mantenimento}
+Nell'interpolatore a mantenimento (detto anche \emph{interpolatore di ordine zero}) la $p(t)$ è una \textop{rect}:
+\begin{center}\begin{tabular}{m{0.4\textwidth}m{0.5\textwidth}}
+\[p(t) = \rect{t-\frac{T}{2}}{T}\] &
+\framebox{\setlength{\unitlength}{1mm}
+ \begin{picture}(56,25)(-25,-5)
+  \put(0,-1){\vector(0,1){14}}
+  \put(-23,0){\vector(1,0){48}}
+  \put(-5,16){$p(t)$}
+  \put(26,-1){$t$}
+  \put(13.5,-4){$T$}
+  \put(-4,5.5){$1$}
+  \put(15,7){\line(0,-1){7}}
+  \thicklines
+  \put(0,7){\line(1,0){15}}
+\end{picture}}
+\end{tabular}\end{center}
+
+Poiché si moltiplica l'$n$-esimo campione per una \textop{rect} traslata nel tempo di $nT$ e di durata $T$, in uscita viene presentato ciascun campione all'istante $nT$ e per un tempo pari a $T$ (si tratta di impulsi rettangolari). Il segnale $\widetilde{x}(t)$ viene pertanto \textit{mantenuto} a livello costante per un intervallo pari a $T$ per poi variare istantaneamente al valore del campione successivo. In uscita a un interpolatore a mantenimento si ha quindi una forma d'onda costante a tratti:
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+ \begin{picture}(80,25)(-35,-8)
+  \put(0,-6){\vector(0,1){21}}
+  \put(-33,0){\vector(1,0){74}}
+  \put(-8.3,12){$x[n]$}
+  \put(2,12){$\widetilde{x}(t)$}
+  \put(39,-4){$n$}
+  \put(39,2){$t$}
+  \put(-33,-3){$\scriptscriptstyle{-5T}$}
+  \put(-27,-3){$\scriptscriptstyle{-4T}$}
+  \put(-15,2){$\scriptscriptstyle{-2T}$}
+  \put(5,-3){$\scriptscriptstyle{T}$}
+  \put(10,-3){$\scriptscriptstyle{2T}$}
+  \put(16,-3){$\scriptscriptstyle{3T}$}
+  \put(22,-3){$\scriptscriptstyle{4T}$}
+  \put(-30,0){\line(0,1){0.5}}
+  \put(-24,0){\line(0,1){2}}
+  \put(-18,0){\line(0,-1){2}}
+  \put(-12,0){\line(0,-1){3}}
+  \put(-6,0){\line(0,1){1}}
+  \put(6,0){\line(0,1){6}}
+  \put(12,0){\line(0,1){7}}
+  \put(18,0){\line(0,1){5}}
+  \put(24,0){\line(0,1){2}}
+  \put(30,0){\line(0,-1){3}}
+  \thicklines
+  \put(-30,0.5){\circle*{1}}
+  \put(-30,0.5){\line(1,0){6}}
+  \put(-24,2){\circle*{1}}
+  \put(-24,2){\line(1,0){6}}
+  \put(-18,-2){\circle*{1}}
+  \put(-18,-2){\line(1,0){6}}
+  \put(-12,-3){\circle*{1}}
+  \put(-12,-3){\line(1,0){6}}
+  \put(-6,1){\circle*{1}}
+  \put(-6,1){\line(1,0){6}}
+  \put(0,2.5){\circle*{1}}
+  \put(0,2.5){\line(1,0){6}}
+  \put(6,6){\circle*{1}}
+  \put(6,6){\line(1,0){6}}
+  \put(12,7){\circle*{1}}
+  \put(12,7){\line(1,0){6}}
+  \put(18,5){\circle*{1}}
+  \put(18,5){\line(1,0){6}}
+  \put(24,2){\circle*{1}}
+  \put(24,2){\line(1,0){6}}
+  \put(30,-3){\circle*{1}}
+  \put(30,-3){\line(1,0){6}}
+\end{picture}}\end{center}
+
+I%
+\margincomment{Cose non dette dal Martorella.}
+due principali svantaggi di un interpolatore a mantenimento sono la banda illimitata del segnale interpolato, dovuta in sostanza agli infiniti punti di discontinuità che esso presenta per effetto degli impulsi rettangolari, e il fatto che anche all'interno della banda ``utile'', o meglio all'interno dell'intervallo base $[-1/2T,1/2T]$, lo spettro del segnale ricostruito differisce dallo spettro del segnale di partenza, subendo una distorsione di ampiezza (infatti, vedi il paragrafo seguente, la trasformata della $p(t)$ è una \textop{sinc}, non costante in ampiezza).
+
+\subsection[Trasformata di Fourier del segnale interpolato]{Trasformata Continua di Fourier del segnale interpolato}
+Poiché il segnale interpolato, così come definito nella \ref{eq:xInterpolato}, è una sommatoria di infiniti termini, potrebbe non essere agevole calcolarne la Trasformata Continua di Fourier a partire dall'espressione dell'$\widetilde{x}(t)$ stessa.
+
+\begin{center}\begin{tabular}{cc}
+ \framebox{\setlength{\unitlength}{1mm}
+  \begin{picture}(50,10)(1,0)
+  \put(10,5){\vector(1,0){7}}
+  \put(33,5){\vector(1,0){7}}
+  \put(17,1){\framebox(16,8){$p(t)$}}
+  \put(2,4){$x[n]$}
+  \put(42,4){$\widetilde{x}(t)$}
+ \end{picture}}
+ &
+ \framebox{\setlength{\unitlength}{1mm}
+  \begin{picture}(50,10)(1,0)
+  \put(12,5){\vector(1,0){5}}
+  \put(33,5){\vector(1,0){5}}
+  \put(17,1){\framebox(16,8){$P(f)$}}
+  \put(2,4){$\bar{X}(f)$}
+  \put(40,4){$\widetilde{X}(f)$}
+ \end{picture}}
+\end{tabular}\end{center}
+
+Lo spettro del segnale in uscita può essere calcolato in realtà conoscendo solamente la $P(f)$ e la $\bar{X}(f)$.
+
+\begin{teorema}
+La \ac{TCF} dell'uscita di un interpolatore può essere calcolata come:
+\[\widetilde{X}(f) = \bar{X}(f)P(f).\]
+\end{teorema}
+\begin{proof}
+Lo spettro del segnale interpolato è:
+\begin{align*}
+\widetilde{X}(f) & = \TCF\big[\widetilde{x}(t)\big] =
+        \int_{-\infty}^{+\infty}\sum_{n=-\infty}^{+\infty}x[n]\,p(t-nT)\e^{-\j2\pi ft}\ud t\\
+    & = \sum_{n=-\infty}^{+\infty} x[n]\int_{-\infty}^{+\infty}p(t-nT)\e^{-\j2\pi ft}\ud t\\
+    & = \sum_{n=-\infty}^{+\infty} x[n]P(f)\e^{-\j2\pi nfT}\\
+    & = \left[\sum_{n=-\infty}^{+\infty} x[n]\e^{-\j2\pi nfT}\right]P(f) = \bar{X}(f)P(f).   \qedhere
+\end{align*}
+\end{proof}
+
+Da ciò si vede che problemi di interpolazione si risolvono bene nel dominio della frequenza perché basta fare delle moltiplicazioni, proprio come per i filtri lineari stazionari. Lo spettro del segnale campionato si ottiene semplicemente moltiplicando lo spettro della sequenza per lo spettro della risposta dell'interpolatore. Ma è importante ribadire che l'interpolatore \emph{non} è un sistema lineare stazionario. Il comportamento analogo ai \ac{SLS}, peraltro, lo si riscontra a patto di utilizzare come spettro del segnale in ingresso la Trasformata di Fourier della Sequenza (in ingresso non c'è un segnale a tempo continuo).
+
+
+\section{Teorema del Campionamento}
+Ponendo in serie un campionatore e un interpolatore
+
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(100,20)(1,-2)
+\put(5,3){\line(1,0){20}}
+\put(25,3){\line(1,1){7}}
+\put(35,3){\vector(1,0){20}}
+\qbezier(30,14)(34,13)(36,9)
+\put(35.5,10){\vector(1,-2){2}}
+\put(35,13){$T$}
+\put(12,6){$x(t)$}
+\put(42,6){$x[n]$}
+\put(55,1){\framebox(20,8){$p(t)$}}
+\put(75,3){\vector(1,0){20}}
+\put(82,6){$\widetilde{x}(t)$}
+\end{picture}}\end{center}
+è possibile, scegliendo opportunamente $T$ e $p(t)$, ottenere una $\widetilde{x}(t)$ che sia uguale al segnale originario $x(t)$?
+
+In realtà non è importante riottenere esattamente il segnale $x(t)$ bensì una sua replica fedele, ossia un segnale nella forma $kx(t-t_0)$: può presentarsi un ritardo e/o un coefficiente a moltiplicare, perché quello che conta è che si ottenga un segnale $\widetilde{x}(t)$ con la stessa \emph{forma} dell'$x(t)$ originario. L'informazione è infatti associata alla forma del segnale: è normale che ci siano ritardi durante una trasmissione e sono altrettanto normali amplificazioni/attenuazioni, ma questo non inficia la trasmissione dell'informazione.
+
+La risposta alla domanda posta sopra viene dal Teorema del Campionamento.
+
+\begin{teorema}[del campionamento]
+Un segnale $x(t)$ a banda rigorosamente limitata $B$ può essere ricostruito esattamente dai suoi campioni se e solo se è rispettata la condizione di Nyquist, ossia se la frequenza di campionamento non è inferiore a $2B$.
+\end{teorema}
+
+\begin{teorema}
+L'interpolatore che permette di ricostruire perfettamente il segnale è detto \emph{interpolatore cardinale}, ed ha
+la seguente forma:%
+\footnote{Il nome $\sinc(\cdot)$ assegnato a suo tempo alla funzione $\sin(\pi x)/\pi x$ significa infatti ``seno cardinale'', con riferimento all'interpolazione cardinale stessa.}
+\begin{center}$p(t) = 2B\sinc(2Bt)$,\quad $P(f)=\rect{f}{2B}$.\end{center}
+\end{teorema}
+\begin{proof}
+Effettuiamo la dimostrazione per via grafica. Si basa sul criterio di Nyquist. Siccome il segnale è a banda
+rigorosamente limitata e inoltre è soddisfatta la condizione di Nyquist, la \ac{TFS} $\bar{X}(f)$ è data dalla
+somma di infinite repliche della $X(f)$ non sovrapposte (non c'è aliasing):
+\begin{center}\begin{tabular}{cc}\framebox{\setlength{\unitlength}{1mm}
+\begin{pspicture*}(-6.5,-0.6)(6.5,1.9)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-6.2,-0.4)(6.2,1.7)
+  \uput[d](6.1,0){$f$}
+  \uput[l](0,1.5){$\bar{X}(f)$}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{-5.8}{-4.25}% 1*\e^(-abs(x*1.1)^2) + cos(x*550)/15
+         {1 2.718281828459045235 x 5.5 add 1.1 mul abs 2 exp neg exp mul 1000 x 5.5 add mul cos 30 div add 0.12 sub}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{-4}{-1.5}%
+         {1 2.718281828459045235 x 2.75 add 1.1 mul abs 2 exp neg exp mul 1000 x 2.75 add mul cos 30 div add 0.12 sub}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{-1.25}{1.25}%
+         {1 2.718281828459045235 x 1.1 mul abs 2 exp neg exp mul 1000 x mul cos 30 div add 0.12 sub}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{1.5}{4}%
+         {1 2.718281828459045235 x 2.75 sub 1.1 mul abs 2 exp neg exp mul 1000 x 2.75 sub mul cos 30 div add 0.12 sub}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{4.25}{5.8}%
+         {1 2.718281828459045235 x 5.5 sub 1.1 mul abs 2 exp neg exp mul 1000 x 5.5 sub mul cos 30 div add 0.12 sub}
+  \psline[linewidth=0.5pt](-1.25,-0.05)(-1.25,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](-1.25,0.1)(-1.25,1)
+  \psline[linewidth=0.5pt](1.25,-0.05)(1.25,0.05)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](1.25,0.1)(1.25,1)
+  \psline[linewidth=0.5pt,linestyle=dashed,dash=1pt 1pt](-1.25,1)(1.25,1)
+  \uput[u](1.8,1.1){$\scriptstyle{P(f)}$}
+  \psline[linewidth=0.5pt]{->}(1.7,1.25)(1.3,1.02)
+  \uput[d](-1.25,0){$\scriptstyle{-B}$}
+  \uput[d](1.25,0){$\scriptstyle{+B}$}
+  \psline[linewidth=0.5pt](-5.5,-0.05)(-5.5,0.05)
+  \uput[d](-5.5,0){$\scriptstyle{-2/T}$}
+  \psline[linewidth=0.5pt](-2.75,-0.05)(-2.75,0.05)
+  \uput[d](-2.75,0){$\scriptstyle{-1/T}$}
+  \psline[linewidth=0.5pt](2.75,-0.05)(2.75,0.05)
+  \uput[d](2.75,0){$\scriptstyle{1/T}$}
+  \psline[linewidth=0.5pt](5.5,-0.05)(5.5,0.05)
+  \uput[d](5.5,0){$\scriptstyle{2/T}$}
+\end{pspicture*}}\end{tabular}\end{center}
+
+\looseness=-1%revisione
+L'impulso interpolante $p(t)$ è scelto in modo che la sua trasformata sia un rettangolo che vale costantemente $1$ in $[-B,+B]$ e zero altrove. Di conseguenza, essendo
+%
+\begin{align*}
+\widetilde{X}(f) = \bar{X}(f)P(f) = \bar{X}(f)\rect{f}{2B}
+\end{align*}
+la $\widetilde{X}(f)$ è nulla al di fuori dell'intervallo $[-B,+B]$. L'unica replica del segnale $\bar{X}(f)$ che rimane nell'uscita $\widetilde{X}(f)$ è pertanto quella centrata in zero. Questa ``replica'' vale in realtà $1/T$ volte la $X(f)$, infatti:
+\begin{align*}
+\bar{X}(f) & = \frac{1}{T}\sum_{n=-\infty}^{+\infty}X\biggl(f-\frac{n}{T}\biggr).
+\end{align*}
+
+In conclusione:
+\begin{align*}
+\widetilde{X}(f) & = \frac{1}{T}\sum_{n=-\infty}^{+\infty}X\biggl(f-\frac{n}{T}\biggr)\rect{f}{2B}=\frac{1}{T}X(f)
+\end{align*}
+e antitrasformando:
+\begin{equation*}
+\widetilde{x}(t) = \frac{1}{T}x(t).  \qedhere
+\end{equation*}
+\end{proof}
+
+Si noti che è presente il coefficiente $1/T$, ma come detto ciò che interessa è ottenere una replica fedele del segnale originario. Il fattore $1/T$ può essere facilmente tolto.
+
+Il segnale interpolato coincide ovviamente (a parte coefficienti a moltiplicare) con il segnale di partenza negli istanti di campionamento. In un qualunque altro istante non coincidente con quelli di campionamento, il segnale originario, a banda rigorosamente limitata, viene ricostruito combinando linearmente tutti gli infiniti campioni $x[n]$ del segnale $x(t)$, in questo modo:
+\begin{align}
+\widetilde{x}(t) &= \sum_{n=-\infty}^{+\infty}x[n]\,p(t-nT)\notag\\
+                 &= 2B\sum_{n=-\infty}^{+\infty}x[n]\sinc\big(2B(t-nT)\big)=\label{eq:ricostruzione-segnale-campionato-1}
+                    \frac{1}{T}x(t).
+\end{align}
+
+In particolare, quando $T=1\,/\,2B$ si ha:
+\begin{equation}\label{eq:ricostruzione-segnale-campionato-2}
+x(t) = \sum_{n=-\infty}^{+\infty}x[n]\sinc\big(2B(t-nT)\big).
+\end{equation}
+
+In altre parole, come si vede chiaramente nelle equazioni~\eqref{eq:ricostruzione-segnale-campionato-1} e~\eqref{eq:ricostruzione-segnale-campionato-2}, la ricostruzione di un segnale a banda limitata a un certo istante richiede la conoscenza di tutta la sequenza di campioni del segnale stesso, in istanti sia antecedenti quello considerato, sia successivi. Pertanto la formula di interpolazione cardinale, di grande rilevanza teorica, è inutilizzabile nella sua forma esatta nelle applicazioni pratiche per due motivi: in primo luogo, sono in teoria richiesti infiniti termini di una sommatoria per ricostruire il segnale originario; secondariamente, una ricostruzione in tempo reale è impossibile perché si richiederebbe la conoscenza di valori di segnale in istanti successivi a quello di interpolazione (interpolatore \emph{non causale}).
+
+\begin{esempio}[ricostruzione grafica da tre campioni con interpolatore cardinale]
+\[T=\frac{1}{2B}\]
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{pspicture*}(-6.5,-1)(6.5,2.5)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-6.2,-0.8)(6.2,2.3)
+  \uput[d](6.1,0){$t$}
+  \uput[l](0,2.1){$\widetilde{x}(t)$}
+  \psline[linewidth=0.5pt](-1.2,-0.05)(-1.2,1.05)
+  \pscircle*(-1.2,1.05){1.5pt}
+  \psplot[linewidth=0.8pt,linestyle=dashed,dash=3pt 3pt,plotstyle=curve]%
+         {-5.8}{5.8}{0.4 150 x 1.2 add mul sin x 1.2 add div mul}
+  \pscircle*(0,1.57){1.5pt}
+  \psplot[linewidth=0.8pt,linestyle=dashed,dash=3pt 3pt,plotstyle=curve]%
+         {-5.8}{5.8}{0.6 150 x mul sin x div mul}
+  \psplot[linewidth=0.8pt,linestyle=dashed,dash=3pt 3pt,plotstyle=curve]%
+         {-5.8}{5.8}{0.3 150 x 1.2 sub mul sin x 1.2 sub div mul}
+  \psline[linewidth=0.5pt](1.2,-0.05)(1.2,0.78)
+  \pscircle*(1.2,0.78){1.5pt}
+\end{pspicture*}}\end{center}
+\end{esempio}
+
+\section{Filtraggio numerico}
+Molti dei concetti e delle proprietà dei sistemi monodimensionali a tempo continuo viste nel capitolo~\ref{cha:sistemi-lineari} (da pag.~\pageref{cha:sistemi-lineari}) possono essere adattate al caso dei sistemi a tempo discreto. Per tutte le proprietà possedute dai sistemi a tempo discreto (linearità, stazionarietà, causalità, stabilità, memoria, invertibilità) non ci sono sostanziali differenze rispetto al caso a tempo continuo, salvo piccoli adattamenti (come sostituire, ad esempio, integrali con sommatorie). Anche per il caso dei sistemi lineari e stazionari a tempo discreto valgono le stesse considerazioni: i concetti di risposta impulsiva, risposta in frequenza, convoluzione ecc. sono analoghi ai corrispondenti a tempo continuo.
+
+Mostriamo%
+\margincomment{Più che di ``filtri'' numerici (termine usato dal Martorella) qui parliamo di \emph{sistemi a tempo discreto}.}
+ora come in pratica alcuni di questi concetti dei \ac{SLS} si riadattino al filtraggio numerico.
+
+Il filtraggio numerico è il filtraggio operato su una sequenza da un sistema lineare stazionario non analogico, ma numerico (discreto).
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(60,10)
+\put(10,5){\vector(1,0){10}}
+\put(40,5){\vector(1,0){10}}
+\put(20,1){\framebox(20,8){$h[n]$}}
+\put(2,4){$x[n]$}
+\put(52,4){$y[n]$}
+\end{picture}}\end{center}
+
+Innanzitutto il prodotto di convoluzione tra sequenze è definito (in modo analogo a quello nel tempo
+continuo) mediante una somma (\emph{somma di convoluzione}):
+\[x[n]\otimes y[n] = \sum_{k=-\infty}^{+\infty}x[k]\,y[n-k].\]
+La somma di convoluzione gode naturalmente delle stesse proprietà commutativa, associativa e distributiva già dimostrate per l'integrale di convoluzione tra segnali analogici.
+
+Il sistema può essere caratterizzato per mezzo della $h[n]$, che come per i \ac{SLS} tempo continui è la
+risposta impulsiva del sistema:
+\[h[n] \triangleq \T\big[\delta[n]\big].\]
+
+\begin{teorema}
+La sequenza in uscita a un sistema lineare stazionario numerico si calcola come:
+\begin{equation}y[n] = x[n] \otimes h[n].   \label{eq:outTime} \end{equation}
+\end{teorema}
+\begin{proof}
+Intanto, (come l'analoga per i segnali tempo continui) per i segnali tempo discreti vale la relazione:
+\[x[n] \otimes \delta[n] = \sum_{k=-\infty}^{+\infty} x[k]\delta[n-k] = x[n]\]
+in quanto la $\delta$ vale 1 solo dove l'argomento si annulla ($n-k=0 \Rightarrow k=n$) e zero altrove
+e dunque l'unico termine della sommatoria che sopravvive è quello per $k=n$.
+
+Quindi:
+\begin{align*}
+y[n] & = \T\big[x[n]\big] = \T\big[x[n]\otimes\delta[n]\big] =
+         \T\left[\sum_{k=-\infty}^{+\infty}x[k]\delta[n-k]\right]\\
+\intertext{ma poiché $\T$ è un operatore lineare che opera sulla variabile $n$:}
+     & = \sum_{k=-\infty}^{+\infty}x[k]\T\big[\delta[n-k]\big].\\
+\intertext{Infine, per l'ipotesi di stazionarietà del sistema, per cui $\T\big[\delta[n-k]\big]=h[n-k]$, si giunge alla:}
+     & = \sum_{k=-\infty}^{+\infty}x[k]\,h[n-k] = x[n]\otimes h[n].   \qedhere
+\end{align*}
+\end{proof}
+
+\begin{teorema}
+L'uscita nel dominio della frequenza può essere calcolata come:
+\begin{equation}\bar{Y}(f) = \bar{X}(f) \bar{H}(f).   \label{eq:outSpectrum} \end{equation}
+\end{teorema}
+\begin{proof}
+Infatti:
+\begin{align*}
+\bar{Y}(f) & = \TFS\big[y[n]\big] = \sum_{n=-\infty}^{+\infty} y[n]\e^{-\j2\pi fnT}\\
+                & = \sum_{n=-\infty}^{+\infty} \sum_{k=-\infty}^{+\infty} x[k]\,h[n-k]\e^{-\j2\pi fnT}\\
+                & = \sum_{k=-\infty}^{+\infty} x[k] \sum_{n=-\infty}^{+\infty} h[n-k]\e^{-\j2\pi fnT}\\
+\intertext{ponendo $n'=n-k$, otteniamo:}
+                & = \sum_{k=-\infty}^{+\infty}x[k]\sum_{n'=-\infty}^{+\infty}h[n']\e^{-\j2\pi fn'T}\e^{-\j2\pi fkT}=
+                    \bar{X}(f) \bar{H}(f).  \qedhere
+\end{align*}
+\end{proof}
+
+La risposta in frequenza è una funzione periodica di periodo $1/T$. Data la risposta in frequenza, definiamo anche per i sistemi a tempo discreto la risposta in ampiezza, che permette di stabilirne le caratteristiche di \emph{selettività}, e la sua risposta in fase.
+
+\subsection{Filtri numerici e analisi energetica}
+Si tratta di capire come è fatta la funzione di autocorrelazione dell'uscita, nota quella in ingresso e la risposta impulsiva del sistema. Così come avevamo fatto per i sistemi lineari a tempo continuo, consideriamo di trattare $h[n]$ reale.
+
+\begin{teorema}
+La funzione di autocorrelazione della sequenza in uscita è data dalla:
+\[R_y[k] = R_x[k] \otimes h[k] \otimes h[-k].\]
+\end{teorema}
+\begin{proof}
+La densità spettrale di energia è:
+\begin{align*}
+S_y(f) & = \abs{\bar{Y}(f)}^2 = \abs{\bar{X}(f)}^2 \abs{\bar{H}(f)}^2 =
+           S_x(F) \bar{H}(f) \bar{H}^*(f)
+\end{align*}
+e antitrasformando otteniamo
+\begin{equation*}
+R_y[k] = R_x[k] \otimes h[k] \otimes h[-k].  \qedhere
+\end{equation*}
+\end{proof}
+
+Si può, pertanto, calcolare l'energia $E_x$ della sequenza in uscita senza conoscere la $y[n]$ stessa:
+\begin{align*}
+E_x = T\int_{-\frac{1}{2T}}^{\frac{1}{2T}} S_y(f)\ud f.
+\end{align*}
+

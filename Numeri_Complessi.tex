@@ -1,0 +1,70 @@
+\chapter{Richiami sui numeri complessi**}
+\label{cha:numeri-complessi}
+
+
+\begin{align*}
+z=a+jb\qquad \begin{array}{l}
+a=\Re{\{z\}}:\text{parte reale}\\
+b=\Im{\{z\}}:\text{parte immaginaria}
+\end{array}\end{align*}
+
+\begin{align*}
+z=ce^{j\varphi}\qquad\begin{array}{l}
+c=\text{modulo}\\
+\varphi=\text{fase}
+\end{array}\end{align*}
+
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(60,45)(-5,-5)
+\put(-1,0){\vector(1,0){50}}
+\put(0,-1){\vector(0,1){40}}
+\put(-4,35){$\mathbf{Im}$}
+\put(50,-1){$\mathbf{Re}$}
+\put(39,-4){$a$}
+\put(-4,29){$b$}
+\put(18,16){$c$}
+\put(12,3){$\varphi$}
+\qbezier(10,0)(10,4)(8,6)
+\multiput(40,-1)(0,4){8}{\line(0,1){2}}
+\multiput(-1,30)(4,0){10}{\line(1,0){2}}
+\thicklines
+\put(0,0){\vector(4,3){40}}
+\end{picture}}\end{center}
+
+\begin{align*}\begin{array}{ll}
+c=\sqrt{a^2+b^2} & a=c\cos\varphi\\
+\varphi=\arctan\biggl(\frac{b}{a}\biggr) & b=c\sin\varphi
+\end{array}\end{align*}
+
+\begin{align*}
+z=a+jb=c\cos\varphi +jc\sin\varphi=ce^{j\varphi}  \tag{$e^{j\varphi}=\cos\varphi+j\sin\varphi$}
+\end{align*}
+
+\begin{align*}
+\Re{\{z\}}=a=\frac{1}{2}(z+z^*)\\
+\Im{\{z\}}=b=\frac{1}{2}(z-z^*)
+\end{align*}
+
+\section{Operazioni algebriche}
+\begin{align*}
+ & z_1=a_1+jb_1=c_1e^{j\varphi_1}\\
+ & z_2=a_2+jb_2=c_2e^{j\varphi_2}\\
+ & z=z_1\pm z_2=(a_1\pm a_2)+j(b_1\pm b_2)\\
+ & z=z_1\cdot z_2=(a_1a_2-b_1b_2)+j(a_1b_2-a_2b_1)=c_1c_2e^{j(\varphi_1+\varphi_2)}\\
+ & |z|^2=z\cdot z^*=ce^{j\varphi}\cdot ce^{-j\varphi}=c^2e^{j(\varphi-\varphi)}=c^2\\
+ & z^2=z\cdot z=ce^{j\varphi}\cdot ce^{j\varphi}=c^2e^{j2\varphi}=(a^2-b^2)+j2ab\\
+ & z=\frac{z_1}{z_2}=z_1z_2^{-1}=\frac{c_1e^{j\varphi_1}}{c_2e^{j\varphi_2}}=\frac{c_1}{c_2}e^{j(\varphi_1-\varphi_2)}
+\end{align*}
+
+\section{Funzioni complesse di variabile reale}
+\begin{align*}
+ & z(t)\text{,}\qquad z\in\mathbb{C}\text{, }t\in\mathbb{R}\\
+ & z(t)=a(t)+jb(t)=c(t)e^{j\varphi(t)}\\
+ & \int_a^b z(t)\ud t=\int_a^b a(t)\ud t+j\int_a^b b(t)\ud t\\
+ & \frac{\ud}{\ud t}[z(t)]=\frac{\ud}{\ud t}[a(t)] + j\frac{\ud}{\ud t}[b(t)]
+\end{align*}
+
+
+
+
+

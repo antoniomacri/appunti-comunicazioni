@@ -1,0 +1,384 @@
+\chapter[Sistemi non lineari a tempo continuo]{Sistemi non lineari\\a tempo continuo}
+\label{cha:sistemi-non-lineari}
+
+
+\section{Concetti generali}
+I sistemi non lineari sono per definizione tutti quei sistemi che non soddisfano la condizione di linearità.
+Essi sono il risultato di due tipi di non linearità:
+\begin{itemize}
+\item \emph{non linearità essenziali} che sono non linearità volute che risultano essenziali per il corretto
+      funzionamento di un sistema;
+\item \emph{non linearità parassite} che sono invece non linearità non volute, sono spurie, legate a problemi di
+      costruzione di sistemi che si vorrebbero lineari (\emph{nominalmente lineari}) ma non lo sono completamente.
+\end{itemize}
+Vediamo alcuni esempi.
+
+\paragraph{Quadratore.}
+Il quadratore è un esempio classico di non linearità essenziale. Fornisce in uscita il quadrato dell'ingresso e viene utilizzato in particolare per raddoppiare la frequenza di un'oscillazione.
+%
+\begin{center}\makebox[\textwidth][s]{\hspace{1cm}
+ \begin{minipage}{0.25\textwidth}$\displaystyle{y(t)=x^2(t)}$\end{minipage}
+ \begin{minipage}{0.55\textwidth}
+  \begin{flushright}\framebox{\setlength{\unitlength}{1mm}\begin{picture}(60,10)
+  \put(10,5){\vector(1,0){10}}
+  \put(40,5){\vector(1,0){10}}
+  \put(20,1){\framebox(20,8){$(\:\cdot\:)^2$}}
+  \put(2,4){$x(t)$}
+  \put(52,4){$y(t)$}
+ \end{picture}}\end{flushright}
+ \end{minipage}
+ \hspace{1cm}}\end{center}
+
+\paragraph{Amplificatore non ideale.}
+Un amplificatore ideale con un guadagno pari ad $A$ è caratterizzato dalla relazione ingresso-uscita
+%
+\[y(t)=Ax(t).\]
+%
+Ma tutti gli amplificatori reali introducono delle distorsioni, che vengono rappresentate tramite un
+termine $d(t)$.
+%
+\begin{center}\makebox[\textwidth][s]{\hspace{1cm}
+ \begin{minipage}{0.35\textwidth}$\displaystyle{y(t)=Ax(t)+d(t)}$\end{minipage}
+ \begin{minipage}{0.45\textwidth}
+  \begin{flushright}\framebox{\setlength{\unitlength}{1mm}\begin{picture}(50,14)
+   \put(10,7){\vector(1,0){9}}
+   \put(31,7){\vector(1,0){9}}
+   \put(19,13){\line(0,-1){12}}
+   \put(19,13){\line(2,-1){12}}
+   \put(19,1){\line(2,1){12}}
+   \put(21,6){$A$}
+   \put(2,6){$x(t)$}
+   \put(42,6){$y(t)$}
+  \end{picture}}\end{flushright}
+ \end{minipage}
+ \hspace{1cm}}\end{center}
+ 
+Peraltro, entro un certo intervallo di valori dell'ingresso l'amplificatore può supportare l'uscita correttamente amplificata,  ma all'esterno dell'intervallo stesso si giunge a una situazione di saturazione, per cui l'uscita non supera un valore limite (introducendo così ulteriori distorsioni non lineari).
+
+Notare che queste distorsioni sono completamente diverse da quelle lineari (introdotte dai sistemi lineari).
+I sistemi lineari non introducono distorsioni lineari se e solo se generano in uscita una replica fedele del segnale
+in ingresso. Per sistemi non lineari, invece, non vale la mutua esclusione tra distorsione e replica
+fedele.
+
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(60,10)
+\put(10,5){\vector(1,0){10}}
+\put(40,5){\vector(1,0){10}}
+\put(20,1){\framebox(20,8){$\text{\textsc{snl}}$}}
+\put(2,4){$x(t)$}
+\put(52,4){$y(t)$}
+\end{picture}}\end{center}
+
+Prenderemo in considerazione sistemi non lineari monodimensionali a tempo continuo e in particolare quelli \emph{stazionari} e \emph{senza memoria}. Tali sistemi si possono descrivere molto semplicemente tramite la propria \emph{caratteristica ingresso-uscita}, che è una semplice funzione rappresentabile graficamente su un piano cartesiano con l'ingresso e l'uscita sui due assi:
+
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+\begin{pspicture*}(-4.3,-1.3)(4.3,1.6)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-4.1,-1.1)(4,1.4)
+  \uput[l](0,1.2){$y$}
+  \uput[d](3.9,0){$x$}
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{-2}{0}{x 2 div 2 exp neg}
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{0}{2}{x 2 div 2 exp}
+\end{pspicture*}}\end{center}
+%
+Notare che il tempo non è rappresentato, dato che il sistema è istantaneo e stazionario e la $t$
+non influisce sull'uscita.
+
+Per i sistemi non lineari non ha senso definire una risposta impulsiva. L'uscita da un sistema non lineare si può ottenere tramite la caratteristica ingresso-uscita \textop{g}:
+%
+\[y(t)=\operatorname{g}[x(t)].\]
+
+
+\section{Non linearità essenziali}
+Molti sistemi non lineari vengono utilizzati per realizzare componenti di sistemi complessi. Infatti, hanno la caratteristica di produrre contributi frequenziali nel segnale di uscita che non erano presenti nel segnale di ingresso e questo viene sfruttato per realizzare, ad esempio, i raddrizzatori a doppia semionda ($g(x)=\abs{x}$) dei circuiti alimentatori degli apparati elettronici, o i moltiplicatori di frequenza.
+
+\subsection{Moltiplicatori di frequenza}
+\paragraph{Raddoppiatore di frequenza.}
+Si è già visto un quadratore, che fornisce in uscita il quadrato del segnale in ingresso e ne raddoppia la frequenza. Ma affinché funzioni correttamente come raddoppiatore di frequenza, bisogna utilizzare a valle del quadratore stesso un filtro passa banda.
+
+\begin{figure}
+\centering
+\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(90,10)
+\put(10,5){\vector(1,0){10}}
+\put(20,1){\framebox(20,8){$(\:\cdot\:)^2$}}
+\put(40,5){\vector(1,0){10}}
+\put(50,1){\framebox(20,8){$H\gp{BP}(f)$}}
+\put(70,5){\vector(1,0){10}}
+\put(2,4){$x(t)$}
+\put(42.5,7){$\scriptstyle{y(t)}$}
+\put(82,4){$z(t)$}
+\end{picture}}
+\caption{Schema di un raddoppiatore di frequenza.}
+\end{figure}
+
+Posta in ingresso una oscillazione del tipo:
+%
+\[x(t)=A\cos(2\pi f_0t)\]
+%
+si ottiene in uscita:
+%
+\[y(t)=x^2(t)=A^2\cos^2(2\pi f_0t)=\frac{A^2}{2}\left[1+\cos(4\pi f_0t)\right].\]
+%
+Facendo il quadrato del segnale $x(t)$ si ottengono due componenti, una alla continua e una alla frequenza $2f_0$ (\emph{distorsione di seconda armonica}): il secondo blocco serve proprio a eliminare la componente continua. Nel dominio della frequenza l'uscita è:
+%
+\[Y(f)=\frac{A^2}{2}\delta(f)+\frac{A^2}{4}\left[\delta(f-2f_0)+\delta(f+2f_0)\right]\]
+%
+rappresentata graficamente in figura~\ref{fig:uscita-raddoppiatore-di-frequenza}.
+%
+\begin{figure}[b]
+\centering
+\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(60,25)(-27,-5)
+ \put(0,-1){\vector(0,1){18}}
+ \put(-25,0){\vector(1,0){52}}
+ \put(2,16){$Y(f)$}
+ \put(28,-1){$f$}
+ \put(14.5,7.5){$\scriptstyle{\frac{A^2}{4}}$}
+ \put(-18.5,7.5){$\scriptstyle{\frac{A^2}{4}}$}
+ \put(-6,11){$\scriptstyle{\frac{A^2}{2}}$}
+ \put(-17,-4){$\scriptstyle{-2f_0}$}
+ \put(11,-4){$\scriptstyle{+2f_0}$}
+ \multiput(-14,-1)(7,0){5}{\line(0,1){2}}
+ \thicklines
+ \put(-14,0){\vector(0,1){6}}
+ \put(0,0){\vector(0,1){12}}
+ \put(14,0){\vector(0,1){6}}
+\end{picture}}
+\caption{Spettro di uscita di un raddoppiatore di frequenza.}
+\label{fig:uscita-raddoppiatore-di-frequenza}
+\end{figure}
+%
+Il filtro passa banda dovrà quindi prelevare le componenti di area $A^2/2$, tagliando la continua.
+%
+\[H\gp{BP}(f)=\rect{f-2f_0}{\Delta f}+\rect{f+2f_0}{\Delta f}\]
+%
+L'uscita $Z(f)$ del raddoppiatore di frequenza è:
+%
+\[Z(f)=H\gp{BP}(f)\cdot Y(f)=\frac{A^2}{4}\left[\delta(f-2f_0)+\delta(f+2f_0)\right]\]
+%
+(notare che ora abbiamo usato la risposta in frequenza, perché il secondo blocco è un filtro lineare, mentre prima per calcolare l'uscita del quadratore abbiamo dovuto operare nel dominio del tempo). Antitrasformando, risaliamo alla $z(t)$:
+%
+\[z(t)=\frac{A^2}{2}\cos(4\pi f_0t)=B\cos(4\pi f_0t).\]
+
+\paragraph{Moltiplicatore di frequenza di un fattore $3$.}
+Analizziamo cosa accade se invece di un quadratore si mette come primo blocco un sistema non lineare che
+restituisce in uscita il cubo del segnale in ingresso.
+
+\begin{figure}
+\centering
+\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(90,10)
+\put(10,5){\vector(1,0){10}}
+\put(20,1){\framebox(20,8){$(\:\cdot\:)^3$}}
+\put(40,5){\vector(1,0){10}}
+\put(50,1){\framebox(20,8){$H\gp{BP}(f)$}}
+\put(70,5){\vector(1,0){10}}
+\put(2,4){$x(t)$}
+\put(42.5,7){$\scriptstyle{y(t)}$}
+\put(82,4){$z(t)$}
+\end{picture}}
+\caption{Triplicatore di frequenza.}
+\end{figure}
+
+Supponiamo sempre che in ingresso ci sia un segnale del tipo:
+%
+\[x(t) = A\cos(2\pi f_0t).\]
+%
+L'uscita (da calcolarsi nel dominio del tempo) è:
+%
+\begin{align*}
+y(t) & = x^3(t)=A^3\cos^3(2\pi f_0t)\\
+     & = A^3\cdot\frac{1}{2}\left[1+\cos(4\pi f_0t)\right]\cdot\cos(2\pi f_0t)\\
+     & = \frac{A^3}{2}\left[\cos(2\pi f_0t)+\cos(4\pi f_0t)\cos(2\pi f_0t)\right]
+\intertext{ma poiché $\cos\alpha\cos\beta=\frac{1}{2}[\cos(\alpha+\beta)+\cos(\alpha-\beta)]$, otteniamo:}
+     & = \frac{A^3}{2}\left[\cos(2\pi f_0t)+\frac{1}{2}\cos(6\pi f_0t)+\frac{1}{2}\cos(2\pi f_0t)\right]\\
+     & = \frac{A^3}{2}\left[\frac{3}{2}\cos(2\pi f_0t)+\frac{1}{2}\cos(6\pi f_0t)\right]\\
+     & = \frac{3A^3}{4}\cos(2\pi f_0t)+\frac{A^3}{4}\cos(6\pi f_0t).
+\end{align*}
+%
+Si ottiene in uscita un segnale con una componente alla stessa frequenza del segnale originario e una componente a frequenza tripla. Bisogna prelevare quest'ultima utilizzando sempre un filtro passa banda, centrato questa volta a $3f_0$:
+%
+\[H\gp{BP}(f)=\rect{f-3f_0}{\Delta f}+\rect{f+3f_0}{\Delta f}.\]
+%
+Infine l'uscita sarà:
+%
+\[z(t) = \frac{A^3}{4}\cos(6\pi f_0t)=B\cos(6\pi f_0).\]
+
+\paragraph{Moltiplicatore di frequenza di un fattore $N$.}
+Si potrebbe dimostrare che i risultati ottenuti sono generalizzabili per una generica potenza.
+
+\begin{figure}[b]
+\centering
+\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(90,10)
+\put(10,5){\vector(1,0){10}}
+\put(20,1){\framebox(20,8){$(\:\cdot\:)^N$}}
+\put(40,5){\vector(1,0){10}}
+\put(50,1){\framebox(20,8){$H\gp{BP}(f)$}}
+\put(70,5){\vector(1,0){10}}
+\put(2,4){$x(t)$}
+\put(42.5,7){$\scriptstyle{y(t)}$}
+\put(82,4){$z(t)$}
+\end{picture}}
+\caption{Moltiplicatore di frequenza di un fattore $N$.}
+\end{figure}
+
+Facendo passare un ingresso nella forma
+%
+\[x(t) = A\cos(2\pi f_0t)\]
+%
+attraverso un sistema che lo eleva alla $N$-esima potenza, si ottiene come uscita $y(t)$ una sommatoria di $N$ termini cosinusoidali a frequenze multiple di $f_0$:
+%
+\[y(t)=\sum_{k=0}^{N}B_k\cos(2\pi kf_0t).\]
+%
+Alcuni dei termini $B_k$ potrebbero essere nulli, ma certamente (lo si potrebbe dimostrare) il termine $B_N$ è diverso da zero. Con questo tipo di schema si riesce a realizzare un moltiplicatore $N$-esimo di frequenza, purché il filtro passa banda sia centrato intorno alla frequenza $Nf_0$:
+%
+\[H\gp{BP}(f) =\rect{f-Nf_0}{\Delta f} + \rect{f+Nf_0}{\Delta f}\]
+%
+ottenendo pertanto:
+%
+\[z(t) = B_N\cos(2\pi Nf_0t).\]
+
+\medskip Laddove le applicazioni lo richiedano, si potrebbe, noto ovviamente il segnale di ingresso e
+l'esponente, e studiando il comportamento di $y(t)$, realizzare un sistema che da una frequenza di ingresso
+$f_0$ ne preleva un certo numero in uscita, tutte multiple della $f_0$. Si deriva il segnale $y(t)$ e lo si
+invia a una barriera di filtri passa banda prelevando le frequenze di interesse, come rappresentato nella figura~\ref{fig:moltiplicatori-di-frequenza}.
+%
+\begin{figure}
+\centering
+\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(90,35)(0, -25)
+\put(10,5){\vector(1,0){10}}
+\put(20,1){\framebox(20,8){$(\:\cdot\:)^n$}}
+\put(40,5){\vector(1,0){10}}
+\put(50,1){\framebox(20,8){$H_{\mathrm{BP}_1}(f)$}}
+\put(70,5){\vector(1,0){10}}
+\put(50,-9){\framebox(20,8){$H_{\mathrm{BP}_2}(f)$}}
+\put(70,-5){\vector(1,0){10}}
+\put(59,-13.9){$\vdots$}
+\put(50,-24){\framebox(20,8){$H_{\mathrm{BP}_k}(f)$}}
+\put(70,-20){\vector(1,0){10}}
+\put(2,4){$x(t)$}
+\put(42.5,7){$\scriptstyle{y(t)}$}
+\put(82,4){$z_1(t)$}
+\put(82,-6){$z_2(t)$}
+\put(84,-13.9){$\vdots$}
+\put(82,-20){$z_k(t)$}
+\put(45,5){\line(0,-1){25}}
+\put(45,-5){\vector(1,0){5}}
+\put(45,-20){\vector(1,0){5}}
+\end{picture}}
+\caption{Usando un unico sistema che eleva il segnale di ingresso all'$n$-esima potenza si può realizzare una serie di moltiplicatori di frequenza.}
+\label{fig:moltiplicatori-di-frequenza}
+\end{figure}
+
+
+\section{Non linearità parassite}
+Vediamo ora come caratterizzare le non linearità parassite, in modo tale da quantificarle e garantire che un sistema abbia una determinata fedeltà.
+
+Come già visto da esempi, le distorsioni lineari deformano lo spettro del segnale di ingresso, ma non possono creare delle componenti spettrali che stanno al di fuori delle componenti spettrali del segnale in ingresso. Questo perché laddove $X(f)=0$ (il segnale in ingresso non ha componenti) anche $Y(f)=H(f)X(f)=0$ (neanche il segnale di uscita avrà componenti).
+
+I sistemi non lineari invece possono anche introdurre componenti frequenziali che non erano presenti nel segnale di ingresso.
+
+Consideriamo di operare su sistemi non lineari
+%
+\begin{center}\framebox{\setlength{\unitlength}{1mm}
+ \begin{picture}(60,10)
+  \put(10,5){\vector(1,0){10}}
+  \put(40,5){\vector(1,0){10}}
+  \put(20,1){\framebox(20,8){$\text{\textsc{snl}}$}}
+  \put(2,4){$x(t)$}
+  \put(52,4){$y(t)$}
+ \end{picture}}\end{center}
+%
+che siano anche istantanei e stazionari, rappresentabili con un grafico sul piano cartesiano in cui $u$ rappresenta
+l'uscita, $i$ l'ingresso e la relazione tra ingresso e uscita è data da una funzione \textop{g} dell'ingresso:
+%
+\[u=\operatorname{g}[i].\]
+
+\begin{figure}
+\centering
+\framebox{\begin{pspicture*}(-3.3,-1.3)(3.3,1.6)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-3.1,-1.1)(3,1.4)
+  \uput[l](0,1.2){$u$}
+  \uput[d](2.9,0){$i$}
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{-2}{0}{x 2 div 2 exp neg}
+  \psplot[linewidth=0.6pt,plotstyle=curve,plotpoints=200]{0}{2}{x 2 div 2 exp}
+\end{pspicture*}}
+\caption{Rappresentazione greafica di un generico sistema non lineare stazionario \emph{istantaneo}.}
+\end{figure}
+
+Si tratta di capire come una generica funzione \textop{g} vada a influire sul grado di non linearità del sistema, dove per grado di non linearità si intende una misura quantitativa della distorsione che il sistema introduce sul segnale. Queste distorsioni dipendono esclusivamente da \textop{g}, essendo il sistema stazionario istantaneo.
+Scriviamo la $\operatorname{g}[x]$ sviluppandola come un polinomio di Taylor di grado $N$ intorno a un certo punto di lavoro (potrebbe essere uno qualunque, ma per semplicità noi facciamo lo sviluppo per un intorno dello zero):
+%
+\begin{align*}
+\operatorname{g}[x(t)] & = g_0 + g'x(t) + \frac{1}{2}g''x^2(t) + \frac{1}{6}g'''x^3(t) + \dots \\
+                       & \simeq g_0 + \sum_{k=1}^N \frac{1}{k!}\operatorname{g}^{(k)}x^k(t)
+\end{align*}
+%
+dove $g'=\frac{\ud}{\ud x}\operatorname{g}[x]$, $g''=\frac{\ud^2}{\ud x^2}\operatorname{g}[x]$ e così via, da calcolarsi nel punto iniziale (che abbiamo supposto sia zero). Sono proprio i coefficienti $g'$, $\frac{g''}{2}$, $\frac{g'''}{6}$, ... a dare una misura quantitativa della distorsione introdotta, e dipendono, come avevamo anticipato, solamente dalla funzione \textop{g}. In particolare sono dei pesi, e le varie distorsioni saranno pesate da questi coefficienti.
+
+Intuitivamente, più la \textop{g} varia nel punto intorno al quale la si sviluppa e più termini polinomiali sono necessari per rappresentarla correttamente. Viceversa più è simile a una retta e più i termini sono piccoli. Un sistema quindi è più lineare di un altro se i suoi termini di grado superiore al primo sono piccoli.
+
+Se l'ingresso è una cosinusoide
+%
+\begin{align}
+x(t)=A\cos(2\pi f_0t)   \label{eq:incos}
+\end{align}
+%
+allora l'uscita sarà una sovrapposizione di cosinusoidi a frequenze multiple:
+%
+\[y(t) = g[x(t)] = \sum_{n=0}^\infty B_n\cos(2\pi nf_0t).\]
+
+I coefficienti $B_n$ dipendono dai $g^{(k)}/k!$ ($B_n$ può dipendere da $g^{(k)}/k!$ per più $k$, non solo da $g^{(n)}/n!$) e alcuni di essi possono naturalmente esser nulli, e in tal caso non si introduce un termine di distorsione alla frequenza relativa.
+
+Da qui si evince che uno dei metodi per caratterizzare le non linearità parassite è quello di misurare le \emph{distorsioni armoniche} (il termine ``armoniche'' specifica che le componenti frequenziali sono multiple l'una dell'altra o, meglio, che si tratta di componenti in \emph{relazione armonica} con la frequenza del segnale d'ingresso). Quindi:
+\pagebreak%revisione
+\begin{align}
+y(t) & = \sum_{n=0}^\infty B_n\cos(2\pi nf_0t) \notag  \\
+     & = B_0 + B_1\cos(2\pi f_0t)+d(t)   \label{eq:outcos}
+\end{align}
+dove abbiamo definito il termine di distorsione armonica come ``residuo'' del segnale di uscita tolta la componente utile e quella (ininfluente) continua:
+\begin{align*}
+d(t) \triangleq\sum_{n=2}^\infty B_n\cos(2\pi nf_0t).
+\end{align*}
+
+Il termine in $B_1$ non è distorsione in quanto è una componente frequenziale alla stessa frequenza del segnale in ingresso (è parte ``utile'' del segnale di uscita perché replica fedele del segnale di ingresso). La componente continua non viene considerata come distorsione nelle comuni applicazioni (in quanto spesso è ininfluente).
+
+
+\subsection{Distorsioni armoniche}
+Consideriamo ora segnali in ingresso \emph{sinusoidali}, nella forma di equazione~\eqref{eq:incos} che producono in uscita segnali come in eq.~\eqref{eq:outcos}, e introduciamo dei parametri di distorsione armonica. Il primo che definiamo è la potenza dell'$n$-esima armonica, ossia della $n$-esima cosinusoide in uscita (che fa parte del termine $d(t)$, quindi stiamo considerando $n\geq 2$):
+\begin{equation}
+P_n =\frac{B_n^2}{2}.
+\end{equation}
+
+Il valore efficace $V_n$ dell'$n$-esima armonica è definito come:
+\begin{equation}
+V_n \triangleq\sqrt{P_n}=\frac{B_n}{\sqrt{2}}.
+\end{equation}
+
+Il coefficiente di distorsione armonica di ordine $n$-esimo vale:
+\begin{equation}
+D_n \triangleq\frac{V_n}{V_1}=\sqrt{\frac{P_n}{P_1}}.
+\end{equation}
+Il rapporto indica la potenza che viene dispersa sulle armoniche superiori rispetto all'armonica fondamentale (la prima), ed è indipendente dall'ampiezza del segnale in ingresso. È importante infatti notare che si tratta di un rapporto, perché i coefficienti $V_n$ non dipendono solo dai valori $g^{(k)}$, ma anche dall'ampiezza del segnale di ingresso: aumentando quest'ultima aumentano anche i $V_n$, ma ciò non significa che aumenta la distorsione.
+
+Il coefficiente di distorsione armonica totale è invece definito come il rapporto tra la potenza del residuo di distorsione $d(t)$ e quella della componente utile:
+\begin{align*}
+D_T & \triangleq \sqrt{\frac{P_D}{P_1}}=\frac{V_D}{V_1}=
+                 \sqrt{\frac{\sum_{n=2}^{\infty}P_n}{P_1}}=\sqrt{\frac{P_T - P_0 - P_1}{P_1}}
+\end{align*}
+dove $P_D$ è la potenza della distorsione:
+\begin{align*}
+P_D=\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}|d(t)|^2\ud t.
+\end{align*}
+Calcolare in tal modo la potenza della distorsione non sarebbe banale. Si potrebbe sfruttare invece il teorema di Parseval, che afferma che possiamo calcolarla a partire dalla somma delle potenze delle varie componenti in questo modo:
+\begin{align*}
+P_D=\sum_{n=2}^{\infty}P_n=\sum_{n=2}^{\infty}\frac{|B_n|^2}{2}
+\end{align*}
+dove dividiamo per due in quanto facciamo la somma solo per valori positivi. Ma un modo ancora migliore di calcolare la potenza della distorsione (anziché una somma di infiniti termini) è tramite la differenza:
+\begin{equation}
+P_D = P_T - P_0 - P_1 = P_T - B_0^2 - \frac{B_1^2}{2}.
+\end{equation}
+
+La potenza della distorsione è potenza che viene distribuita sulle armoniche superiori a quella fondamentale, e può esser vista come una perdita, perché non finisce sulla componente di interesse ma su altre componenti. Oltre che essere una perdita crea anche delle componenti spurie. Affinché un sistema sia il più possibile lineare, il termine $P_D$ deve quindi essere il più piccolo possibile.

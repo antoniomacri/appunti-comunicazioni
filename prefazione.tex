@@ -1,0 +1,58 @@
+\chapter{Prefazione}
+
+\markboth{Prefazione}{Prefazione}
+
+Questi Appunti nascono per esser la materia di una forma che si chiama \LaTeX. Il loro scopo iniziale era fornire sostanza per un tempo e un esercizio appena sufficienti per consentire al sottoscritto di cominciare a usare questo strumento nel modo più efficace e pulito possibile.
+
+Per quanto riguarda la prima parte, i capitoli~\ref{cha:segnali}, \ref{cha:sistemi-lineari}, \ref{cha:sistemi-non-lineari}, \ref{cha:segnali-campionati} sono stati scritti a partire dalle lezioni del professor Martorella integrando successivamente dal~\citep{b:luise}. I capitoli~\ref{cha:segnali-periodici}, \ref{cha:segnali-aperiodici} sono stati invece ottenuti principalmente rielaborando il contenuto del libro, ignorando parti non utili ai fini del nostro corso e in ogni caso avendo come guida il programma svolto a lezione dal prof.~Martorella.
+
+La seconda parte di questi Appunti è stata ottenuta partendo dalle lezioni del prof.~Berizzi e dal materiale che lo stesso ha messo in rete. Tuttavia, ampio spazio è stato dato a integrazioni dal~\citep{b:luise} (per il capitolo~\ref{cha:processi-stocastici}) e dal~\citep{b:Dandrea} (per i restanti capitoli della seconda parte), nell'ottica di fornire un fondamentale impianto teorico agli argomenti trattati (totalmente assente nelle slide del professore).
+
+Le \annotation[nolist]{annotazioni a margine}{Come questa!} indicano parti del testo che sarebbe meglio rivedere, o perché possono contenere imprecisioni o perché il contenuto non è espresso nel migliore dei modi. I capitoli e le sezioni contrassegnati con \textbf{un asterisco (*)} sono opzionali: il professore (Martorella o Berizzi) non li ha trattati esplicitamente a lezione. Infine, i capitoli e le sezioni contrassegnati con \textbf{due asterischi (**)} sono solamente delle bozze.
+
+
+\vspace{\stretch{1}}
+\begin{flushright}
+Antonio Macrì\\
+\vspace{1pt}
+9 luglio 2009 --- 13 novembre 2009
+\end{flushright}
+\vspace{\stretch{4}}
+
+
+\phantomsection
+\pdfbookmark[0]{Nota ai posteri}{note}
+\section*{Nota ai posteri}
+
+Avendo finalmente passato l'esame (12 novembre 2009), non metterò più mano a questi Appunti. Due note a chi vorrà continuare il lavoro.
+
+Vanno convertite in \LaTeX{} (con PSTricks) alcune immagini, come la figura a pagina~\pageref{fig:sistema-di-elaborazione-e-trasmissione} e le varie figure nel paragrafo~\ref{sec:relazione-tcf-tsf-e-formule-di-poisson} (da pag.~\pageref{sec:relazione-tcf-tsf-e-formule-di-poisson}).
+Andrebbero approfonditi argomenti come l'autocorrelazione di segnali periodici (la sua \acsfont{TCF} è la \acsfont{DSP}?), il filtraggio di segnali campionati. Va riaggiustato l'appendice~\ref{cha:numeri-complessi}. Inoltre, potrebbe essere utile un'ulteriore operazione di \emph{refactoring} per il capitolo~\ref{cha:processi-stocastici}: nel paragrafo~\ref{sec:relazione-io-tra-le-statistiche} forse è possibile togliere qualcosa e scremare un po'; che fare (pagina~\pageref{sec:densita-spettrale-di-un-processo-ssl}) della \emph{densità spettrale di potenza di un processo stazionario}? Il prof.~non ha detto praticamente nulla sui processi parametrici, che c'è da dire? Infine, gli altri capitoli della seconda parte sono sostanzialmente ancora delle bozze.
+
+
+\clearpage
+
+\markboth{Acronimi, Annotazioni e Bibliografia}{Acronimi, Annotazioni e Bibliografia}
+
+\phantomsection
+\pdfbookmark[0]{Acronimi}{acronimi}
+\section*{Acronimi}
+\begin{acronym}[ATCF]
+\acro{TSF}{\textit{Trasformata Serie Di Fourier}}
+\acro{ATSF}{\textit{Antitrasformata Serie Di Fourier}}
+\acro{TCF}{\textit{Trasformata Continua Di Fourier}}
+\acro{ATCF}{\textit{Antitrasformata Continua Di Fourier}}
+\acro{SLS}{\textit{Sistemi Lineari Stazionari}}
+\acro{BIBO}{\textit{Bounded Input Bounded Output}}
+\acro{TFS}{\textit{Trasformata Di Fourier di una Sequenza}}
+\acro{SSS}{\textit{Stazionario in Senso Stretto}}
+\acro{SSL}{\textit{Stazionario in Senso Lato}}
+\acro{PAM}{\textit{Pulse Amplitude Modulation}}
+\acro{ISI}{\textit{InterSymbol Interference}}
+\end{acronym}
+
+\pdfbookmark[0]{Annotazioni}{annotazioni}
+\listoftodos[Annotazioni]
+
+\pdfbookmark[0]{\bibname}{bibliografia}
+{\nocite{*}\small\bibliography{bibliografia}}

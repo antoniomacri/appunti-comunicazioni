@@ -1,0 +1,1048 @@
+\chapter[Sistemi di comunicazione in banda base]{Sistemi di comunicazione\\in banda base}
+
+\section{Introduzione}
+
+Un sistema di telecomunicazione è l'insieme di tecniche, apparati e infrastrutture per ``comunicare a distanza'' (\emph{telecomunicare}) mediante l'impiego di segnali elettrici, elettromagnetici, ottici\dots
+
+L'aspetto cruciale nella teoria delle comunicazioni, che motiva il ricorso alla teoria della probabilità, è rappresentato dall'\emph{incertezza} che il destinatario ha nei confronti dell'\emph{informazione} effettivamente trasmessa. Questa incertezza dipende in parte dal fatto che, per essere tale, l'informazione deve essere imprevedibile, e in parte dal fatto che il segnale ricevuto è sempre accompagnato da \emph{rumore}, cioè da disturbi non voluti che tendono ad alterare l'informazione trasmessa.
+
+Una prima classificazione dei sistemi di comunicazione può esser fatta sulla base del tipo di connessione:
+\begin{itemize}
+\item\emph{punto-punto} (\emph{unicast}) quando sorgente e destinatario sono utenti singoli;
+\item\emph{punto-multipunto} (\emph{multicast}) quando la sorgente comunica con diversi utenti;
+\item\emph{circolare} (\emph{broadcast}) quando la sorgente comunica a tutti gli utenti che ``ascoltano'' sullo stesso canale di comunicazione.
+\end{itemize}
+
+I sistemi di comunicazione possono esser suddivisi, inoltre, in sistemi che operano in \emph{banda base} e sistemi che operano in \emph{banda passante}. La distinzione tra le due classi è spesso legata al canale fisico a disposizione. È infatti evidente che su un canale fisico passa banda, come quello tipicamente impiegato nelle radiotrasmissioni, si devono impiegare sistemi di comunicazione in banda passante, mentre su un canale fisico passa basso, ad esempio un cavo coassiale, si possono impiegare sia i sistemi di comunicazione in banda base che quelli in banda passante.
+
+Un'altra classificazione viene fatta in base al tipo di tecniche e segnali impiegati:
+\begin{itemize}
+\item\emph{analogici}, ad ampiezza e tempo continui;
+\item\emph{digitali}, ad ampiezza quantizzata e tempo discreto.
+\end{itemize}
+Un sistema di comunicazione viene detto \emph{analogico} quando consente il trasferimento di segnali che possono assumere \emph{qualunque} valore in un intervallo prefissato, mentre è detto \emph{numerico} se può trasferire segnali che possono assumere solo valori \emph{discreti}, appartenenti a un alfabeto $\mathcal{A}=\{m_0,\dots,m_{M-1}\}$ costituito da un numero limitato ($M$) di elementi. Un segnale vocale è un esempio di segnale analogico, mentre una pagina di testo dà luogo a un segnale numerico.
+
+
+\section{Struttura di un sistema di comunicazione}
+
+Consideriamo un sistema generico di telecomunicazione e analizziamone la struttura. Lo schema a blocchi è rappresentato nella figura~\ref{fig:sistema-di-comunicazione}.
+
+\begin{figure}[b]
+\centering
+\framebox{\begin{pspicture*}(-6.7,-2)(6.7,2)
+  \uput[r](-6,1.2){\psframebox[linewidth=0.5pt]{\parbox{2.2cm}{\centering\small{Sorgente di informazione}}}}
+  \psline[linewidth=0.5pt]{->}(-3.4,1.2)(-2.8,1.2)
+  \uput[r](-3,1.2){\psframebox[linewidth=0.5pt]{\parbox{2.2cm}{\centering\small{Trasduttore di ingresso}}}}
+  \psline[linewidth=0.5pt]{->}(-0.4,1.2)(0.2,1.2)
+  \uput[r](0,1.2){\psframebox[linewidth=0.5pt]{\parbox{2.2cm}{\centering\small{Codificatore} \tiny{(per sistemi numerici)}}}}
+  \psline[linewidth=0.5pt]{->}(2.6,1.2)(3.2,1.2)
+  \uput[r](3,1.2){\psframebox[linewidth=0.5pt]{\parbox{2.2cm}{\centering\small{Trasmettitore} (Tx)}}}
+  \psline[linewidth=0.5pt](5.6,1.2)(6,1.2)
+  \psline[linewidth=0.5pt](6,1.2)(6,0)
+  \psline[linewidth=0.5pt]{->}(6,0)(1.2,0)
+  \uput[u](0,-0.4){\psframebox[linewidth=0.5pt]{\parbox{2.2cm}{\centering\small{Canale}}}}
+  \psline[linewidth=0.5pt](-1.2,0)(-6.2,0)
+  \psline[linewidth=0.5pt](-6.2,0)(-6.2,-1.2)
+  \psline[linewidth=0.5pt]{->}(-6.2,-1.2)(-5.8,-1.2)
+  \uput[r](-6,-1.2){\psframebox[linewidth=0.5pt]{\parbox{2.2cm}{\centering\small{Ricevitore} (Rx)}}}
+  \psline[linewidth=0.5pt]{->}(-3.4,-1.2)(-2.8,-1.2)
+  \uput[r](-3,-1.2){\psframebox[linewidth=0.5pt]{\parbox{2.2cm}{\centering\small{Decodificatore} \tiny{(per sistemi numerici)}}}}
+  \psline[linewidth=0.5pt]{->}(-0.4,-1.2)(0.2,-1.2)
+  \uput[r](0,-1.2){\psframebox[linewidth=0.5pt]{\parbox{2.2cm}{\centering\small{Trasduttore di uscita}}}}
+  \psline[linewidth=0.5pt]{->}(2.6,-1.2)(3.2,-1.2)
+  \uput[r](3,-1.2){\psframebox[linewidth=0.5pt]{\parbox{2.2cm}{\centering\small{Utilizzatore finale}}}}
+\end{pspicture*}}
+\caption{Schema a blocchi di un generico sistema di comunicazione.}
+\label{fig:sistema-di-comunicazione}
+\end{figure}
+
+\paragraph{Sorgente.}
+La sorgente genera l'informazione da trasmettere. Data la sua intrinseca imprevedibilità, l'informazione è generalmente caratterizzata in termini statistici. Può essere:
+\begin{itemize}
+\item\emph{analogica} (per esempio un segnale vocale), quando il segnale emesso può assumere qualunque valore in un intervallo prefissato;
+\item\emph{digitale o numerica} (come un testo o l'uscita di un RS232), quando il segnale emesso può assumere solo valori discreti.
+\end{itemize}
+Spesso si suppone che la sorgente numerica renda disponibili i segnali numerici nella forma di \emph{parole} di $n$ \emph{cifre binarie}, cioè in blocchi di $n$ simboli binari, anche quando il sistema di trasmissione trasmetterà poi simboli $M$-ari (ossia appartenenti a un alfabeto di $M$ elementi): è poi il codificatore a occuparsi di convertire ciascuno di questi blocchi di bit in un simbolo $M$-ario.
+
+\paragraph{Trasduttore di ingresso.}
+Ha il compito di convertire l'informazione emessa dalla sorgente in un opportuno segnale, elettrico o luminoso. Esempio di trasduttori in ingresso sono: un microfono, uno scanner, un lettore ottico, eccetera.
+
+Se la sorgente è analogica e il sistema di comunicazione è numerico, è necessario provvedere alla numerizzazione del segnale di sorgente, che viene prima campionato e poi quantizzato.
+
+\paragraph{Codificatore.}
+Viene utilizzato solo nei sistemi numerici di comunicazione ed ha il compito di modificare la ridondanza del segnale (numerico) prodotto dal trasduttore. In alcuni casi esso agisce riducendo la ridondanza del messaggio da trasmettere (\emph{codifica di sorgente}), come ad esempio accade tipicamente per le immagini (compressione \textsmaller{JPEG}, \textsmaller{MPEG}), mentre in altri casi esso aggiunge ridondanza al messaggio (\emph{codifica di canale}) in modo da migliorarne l'immunità ai disturbi.
+
+Per%
+\margincomment{Estratto da~\citep[pag.~6]{b:Dandrea}.}
+quest'ultimo scopo, sono molto usati i codici a blocco. Un codice a blocco di tipo $(n,k)$ è ottenuto aggiungendo $n-k$ simboli binari di codice ogni $k$ simboli binari di sorgente. Perché non si verifichi perdita di informazione, è necessario aumentare la velocità di segnalazione del fattore $n/k$ in modo da trasmettere, nello stesso intervallo di tempo, $n$ simboli invece di $k$. (Il rapporto $k/n$ è detto \emph{code rate}.)
+
+Una forma elementare di codice a blocco è il codice a ripetizione. Esso consiste nel trasmettere $2m+1$ volte ciascun simbolo binario di sorgente (è quindi un codice a blocco di tipo $(2m+1,1)$) in modo che il ricevitore possa decidere a maggioranza.
+
+Vi sono poi dei codici che consentono di individuare e correggere gli errori, e sono detti per l'appunto \emph{a correzione d'errore}. A questo scopo possono essere utilizzati dei bit di parità. Un blocco di $k^2$ simboli di sorgente viene disposto ordinatamente in una matrice, alla quale si aggiungono una riga e una colonna, contenenti rispettivamente i bit di parità per ciascuna colonna e per ciascuna riga. Si ottiene così una matrice di lato $k+1$: si tratta quindi di un codice a blocco di tipo $\bigl((k+1)^2,k^2\bigr)$.
+%
+\begin{center}\begin{tabular}{cccc|c}
+ 1 & 0 & 1 & 0 & 0 \\
+ \textcolor{red}{0} & 1 & 0 & 1 & \textcolor{red}{1} \\
+ 1 & 0 & 0 & 0 & 1 \\
+ 0 & 0 & 1 & 1 & 0 \\
+\midrule
+ \textcolor{red}{1} & 1 & 0 & 0 & 0
+\end{tabular}\end{center}
+
+La ridondanza così introdotta può essere usata per la correzione di singoli errori (e va usato perciò in sistemi dove la probabilità di errore è relativamente bassa). Infatti se un blocco contiene un solo simbolo errato, quest'ultimo è individuato dall'intersezione della riga e della colonna aventi bit di parità non consistente.
+
+\paragraph{Trasmettitore.}
+Ha il compito di convertire il segnale elettrico all'uscita del trasduttore (o il segnale numerico all'uscita del codificatore) in un segnale adatto a essere trasmesso sul canale di comunicazione disponibile. Fondamentalmente esso effettua due operazioni: \emph{amplifica} e \emph{modula} il segnale.
+
+L'amplificazione si rende necessaria per consentire al segnale di giungere al ricevitore con potenza sufficiente a essere riconosciuto correttamente. È normale infatti che il segnale sia attenuato durante il suo tragitto lungo il canale.
+
+L'operazione di modulazione, ad esempio nel caso di un segnale trasmesso via onde radio, consiste nel far variare ampiezza, fase o frequenza di una sinusoide in funzione del segnale da trasmettere.
+
+\begin{figure}[b]
+\centering
+\subfloat{\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(61,18)
+\put(11,12){\small{Sorgente}}
+\put(5,1){\framebox(30,16){\small{analogica di}}}
+\put(11,4){\small{informazione}}
+\put(35,9){\vector(1,0){10}}
+\put(49,8){$a(t)$}
+\end{picture}}} \quad
+\subfloat{\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(61,18)
+\put(11,12){\small{Sorgente}}
+\put(5,1){\framebox(30,16){\small{numerica di}}}
+\put(11,4){\small{informazione}}
+\put(35,9){\vector(1,0){10}}
+\put(50,8){$a_i$}
+\end{picture}}}
+\caption{Il trasmettitore di occupa di trasformare il segnale di uscita della sorgente di comunicazione (numerica o digitale) in un segnale che può essere trasmesso sul canale a disposizione.}
+\end{figure}
+
+Nel caso della modulazione d'ampiezza (\emph{Amplitute Modulation}, \textsmaller{AM}), il segnale trasmesso sarà nella forma:
+%
+\[x\gp{AM}(t) = Aa(t)\cos(2\pi f_0t+\theta)\]
+%
+mentre per la modulazione di frequenza (\textsmaller{FM}) e fase (\textsmaller{PM}) si avrà rispettivamente:
+%
+\begin{gather*}
+f(t) = f_0 + k_\text{f}\,a(t)\\
+\theta(t) = \theta_0 + k_\text{p}\,a(t).
+\end{gather*}
+La modulazione in frequenza implica, poi, un processo di traslazione in frequenza del segnale. Questo si rende necessario sia per far sì che il segnale occupi la banda che il gestore delle telecomunicazioni ha allocato all'utente stesso, sia per motivi di ordine pratico. Infatti, le dimensioni dell'antenna utilizzata devono essere comparabili%
+\footnote{La situazione ideale si ha quando l'antenna è lunga la metà della lunghezza d'onda. In tal modo, l'antenna ``risuona'' esattamente alla frequenza $f$. Antenne più corte sono ancora buone, benché meno efficienti: se così non fosse la radio \textsmaller{AM} (540--1600\unit{kHz}) necessiterebbe un'antenna di $300$ metri!}
+con quelle della lunghezza d'onda $\lambda$. Il valore di quest'ultima è pari allo spazio percorso dall'onda in un tempo pari a un periodo: $\lambda=c\cdot T = c/f$, dove $c\approx 3\cdot 10^8\unit{m/s}$ è la velocità della luce e $f$ è la frequenza dell'onda.
+Se si vogliono contenere le dimensioni dell'apparecchio trasmittente, bisogna allora cambiare la frequenza del segnale e trasmettere a frequenze opportune. Un segnale di frequenza $f=10\unit{kHz}=10^4\unit{Hz}$ richiederebbe ad esempio un'antenna dalle dimensioni spropositate:
+%
+\[\lambda = \frac{c}{f} = \frac{3\cdot 10^8\unit{m/s}}{10^4\unit{s^{-1}}} = 30\unit{km}\,!\]
+
+I discorsi fatti si riferiscono al caso di \emph{modulazione analogica}. Si possono avere anche \emph{modulazioni di tipo numerico} (o digitale).
+
+Nel caso che il sistema di comunicazione sia numerico, in uscita alla sorgente si avrà un sequenza $a_i$ di simboli appartenenti a un opportuno alfabeto $\mathcal{A}=\{m_0,\dots,m_{M-1}\}$ costituito da $M$ elementi. Il trasmettitore si occupa allora di associare a ciascuno dei possibili simboli un diverso segnale:
+%
+\[m_0 \longrightarrow s_0(t),\quad m_1 \longrightarrow s_1(t),\quad \dots,\quad m_{M-1} \longrightarrow s_{M-1}(t).\]
+%
+Per esempio, può associare ai simboli impulsi di diversa ampiezza, come avviene nel caso di una segnalazione di tipo \acs{PAM} (vedi paragrafo~\ref{sec:sistema-pam-binario} a pag.~\pageref{sec:sistema-pam-binario}):
+%
+\[s\gp{T}(t) = \sum_i a_ig\gp{T}(t-iT), \quad a_i\in\mathcal{A}.\]
+%
+In ogni caso, i segnali effettivamente trasmessi sul canale sono di tipo analogico.
+
+\paragraph{Canale.}
+Il \emph{canale fisico} è il mezzo trasmissivo utilizzato per la trasmissione del segnale. Può essere di svariati tipi:
+%
+\begin{itemize}
+\item cavo elettrico: coppia bifilare (cavo telefonico, kHz), cavo coassiale (antenna televisore, MHz), guida d'onda (radar, GHz);
+\item spazio libero;
+\item fibra ottica\dots
+\end{itemize}
+
+Il \emph{canale di comunicazione} è una porzione (spettrale o temporale) di un certo canale fisico. Su uno stesso canale fisico possono infatti coesistere diversi canali di comunicazione. Per esempio%
+\margincomment{Si parla rispettivamente di \textit{multiplazione a suddivisione di frequenza} (\textsmaller{FDM}) o \textit{di tempo} (\textsmaller{TDM}).} è possibile allocare sullo stesso canale fisico diversi segnali passa banda, ognuno dei quali occupa una certa porzione spettrale o è anche possibile avere più comunicazioni gestendo il canale a suddivisione di tempo.
+\pagebreak%revisione
+
+La distorsione prodotta dal canale sul segnale trasmesso può quasi sempre assimilarsi a quella prodotta da un \ac{SLS}. Se le caratteristiche del canale variano nel tempo (come ad esempio per stazioni radio mobili o un canale radio che sfrutta la propagazione per riflessione ionosferica) il modello di canale è invece un sistema lineare non stazionario. Noi faremo l'ipotesi che il canale sia lineare stazionario, e sarà dunque caratterizzato da una risposta impulsiva $c(t)$.
+%
+\begin{figure}
+\centering
+\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(98,18)
+\put(1,11){\vector(1,0){14}}
+\put(4,13){$s\gp{T}(t)$}
+\put(15,7){\framebox(27,10){\small{Filtro di canale}}}
+\put(42,11){\vector(1,0){14}}
+\put(45,13){$s\gp{R}(t)$}
+\put(56,7){\framebox(26,10){\small{Combinatore}}}
+\put(82,11){\vector(1,0){14}}
+\put(85,13){$r(t)$}
+\put(69,1){\vector(0,1){6}}
+\put(71,2){$w(t)$}
+\end{picture}}
+\caption{Schema generale di un canale di trasmissione.}
+\end{figure}
+
+Un altro elemento fondamentale, purtroppo ineliminabile, di qualunque sistema di comunicazione è rappresentato dal rumore termico. Esso è generato dal moto casuale dei portatori di carica presenti nel mezzo trasmissivo e nei dispositivi utilizzati (amplificatori, filtri, antenne\dots). Naturalmente sono presenti anche disturbi di altro tipo, come rumore captato dalle antenne, le interferenze prodotte dai segnali trasmessi sullo stesso canale da altri utenti, eccetera.
+Il rumore può combinarsi con il segnale utile sostanzialmente in due modi:
+\begin{itemize}
+\item tramite \emph{combinazione additiva}, come avviene nel caso di cavi coassiali e in genere di segnali elettrici, oppure
+\item tramite \emph{combinazione moltiplicativa}, come avviene invece per le fibre ottiche.
+\end{itemize}
+Normalmente si fa l'ipotesi che il contributo \emph{complessivo} delle sorgenti di rumore, riportato all'ingresso del ricevitore, sia un processo gaussiano che si \emph{somma} al contributo dovuto al segnale trasmesso:
+%
+\[r(t) = s\gp{R}(t) + w(t).\]
+%
+Nel nostro \emph{modello di rumore}, il combinatore sarà quindi un semplice sommatore. Più precisamente, il nostro modello di rumore sarà un processo \ac{SSL} di tipo \emph{gaussiano bianco additivo}%
+\footnote{Si parla perciò di \emph{Additive White Gaussian Noise}, \textsmaller{AWGN}.}
+a \emph{valor medio nullo}, dove l'aggettivo \emph{bianco} sta a indicare che il rumore è uniformemente distribuito su tutte le frequenze (nel caso reale lo è almeno sulla banda occupata dal segnale), ossia che la densità spettrale di potenza è \emph{costante} su tutto l'asse delle frequenze. Schematizzando:
+%
+\begin{equation}\label{eq:awgn}
+w(t) := \begin{cases}
+  \text{gaussiano \ac{SSL}}\\
+  \eta_w=0\\
+  S_w(f) = \frac{N_0}{2}.\end{cases}
+\end{equation}
+
+Nelle ipotesi fatte che il filtro di canale sia assimilabile a un \ac{SLS} e che il rumore di combini sol segnale in modo additivo, il canale che useremo come modello è schematizzato nella figura seguente figura.
+%
+\begin{figure}
+\centering
+\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(69,18)
+\put(1,11){\vector(1,0){14}}
+\put(4,13){$s\gp{T}(t)$}
+\put(15,7){\framebox(20,10){$c(t)$}}
+\put(35,11){\vector(1,0){14}}
+\put(38,13){$s\gp{R}(t)$}
+\put(51,11){\circle{4}}
+\put(49.82,10.28){$\scriptstyle{+}$}
+\put(53,11){\vector(1,0){14}}
+\put(56,13){$r(t)$}
+\put(51,1){\vector(0,1){8}}
+\put(53,3){$w(t)$}
+\end{picture}}
+\caption{Modello del nostro canale di trasmissione.}
+\label{fig:canale-di-trasmissione}
+\end{figure}
+
+
+\paragraph{Ricevitore.}
+Il ricevitore \emph{amplifica} il segnale ricevuto e ne estrae il messaggio trasmesso. Per fare ciò, svolge un'operazione di demodulazione, inversa a quella di modulazione effettuata dal trasmettitore o, meglio, ``coerente''. Per esempio, nel caso di modulazione analogica, la demodulazione deve avvenire con la stessa frequenza e fase dell'oscillazione in trasmissione.
+
+\paragraph{Decodificatore.}
+Viene utilizzato nei sistemi numerici di comunicazione per estrarre dalla sequenza di simboli ricevuti il segnale numerico applicato al codificatore, eliminando le ridondanze introdotte dal codificatore.
+
+\paragraph{Trasduttore di uscita.}
+Converte il segnale (elettrico) ricevuto in un segnale adatto a essere utilizzato dall'utente finale. Un altoparlante, una stampante, uno schermo televisivo sono esempi di trasduttore di ricezione.
+
+
+\section{Sistemi numerici di comunicazione}
+
+Un sistema numerico di comunicazione presenta caratteristiche abbastanza diverse da quelle di un sistema analogico, in virtù della particolare natura dei segnali numerici, rappresentabili come sequenze di valori discreti appartenenti a un alfabeto finito.
+
+\begin{figure}[b]
+\centering
+\framebox{\begin{pspicture*}(-6.7,-1)(6.8,1)
+  \uput[r](-6.4,0){\psframebox[linewidth=0.5pt]{\parbox{2.2cm}{\centering\small{Sorgente di informazione numerica}}}}
+  \psline[linewidth=0.5pt]{->}(-3.8,0)(-2.8,0)
+  \uput[u](-3.4,0){$a_i$}
+  \uput[d](-3.4,0){$T$}
+  \uput[r](-3,0){\psframebox[linewidth=0.5pt]{\parbox{2.2cm}{\centering\small{Trasmettitore} \tiny{(modulazione numerica)}}}}
+  \psline[linewidth=0.5pt]{->}(-0.4,0)(0.2,0)
+  \uput[r](0,0){\psframebox[linewidth=0.5pt]{\parbox{2.2cm}{\centering\small{Canale}}}}
+  \psline[linewidth=0.5pt]{->}(2.6,0)(3.2,0)
+  \uput[r](3,0){\psframebox[linewidth=0.5pt]{\parbox{2.2cm}{\centering\small{Ricevitore} \tiny{(demodulazione numerica)}}}}
+  \psline[linewidth=0.5pt]{->}(5.6,0)(6.4,0)
+  \uput[u](6,0){$\hat{a}_i$}
+\end{pspicture*}}
+\caption{Schema a blocchi di un sistema numerico di comunicazione.}
+\label{fig:sistema-numerico-di-comunicazione}
+\end{figure}
+
+In conseguenza di ciò, i sistemi di comunicazione di tipo numerico presentano innumerevoli vantaggi nei confronti dei sistemi analogici, tra i quali vi è la possibilità di rigenerare il segnale, separandolo dal rumore, di controllare la ridondanza, eccetera.
+
+Il\margincomment{Cose non dette dal prof, ma estratte da~\citep[pagg.~13--14]{b:Dandrea}.} principale svantaggio dei sistemi numerici è invece costituito dalla maggiore banda richiesta, a parità di segnale analogico di sorgente. Si osservi infatti che la frequenza minima di campionamento di un segnale analogico di banda $B$ è $2B$. D'altra parte, se ogni campione del segnale viene codificato con $n$ cifre binarie, in un intervallo di tempo pari all'intervallo di campionamento $1/(2B)$ devono esser trasmetti $n$ simboli binari. Pertanto, nel caso di \acs{PAM} binaria, la velocità di segnalazione è pari a $2Bn$. Poiché la banda minima di un canale numerico è pari alla metà della velocità di segnalazione, si conclude che il canale deve avere una banda $Bn$. La banda minima occupata dal segnale numerico è perciò $n$ volte quella del corrispondente segnale analogico (che poteva essere ovviamente inviato con banda $B$).
+
+Analizziamo ora la struttura di un sistema numerico di comunicazione.
+
+\paragraph{Sorgente.}
+Faremo riferimento a una sorgente che emette una sequenza $a_i$ di simboli appartenenti all'alfabeto $\mathcal{A}=\{m_0,m_1,\dots,m_{M-1}\}$ di dimensione $M$. Il valore $T$, l'\emph{intervallo di segnalazione}, è il tempo che intercorre tra le emissioni di due simboli consecutivi. Il suo reciproco $1/T$, rappresenta la \emph{velocità o frequenza di segnalazione} e viene misurata in \emph{baud} o in \emph{simboli al secondo}. 
+
+La sequenza $a_i$ dei simboli emessi è un processo aleatorio a tempo discreto, per il quale vale l'ipotesi di stazionarietà (in senso stretto). Calcoliamone gli indici classici. Si definisce \emph{probabilità di massa} dei simboli o \emph{probabilità ``a priori''}, la probabilità che $a_i$ sia uguale al $k$-esimo simbolo dell'alfabeto:
+%
+\[\Pr_k \triangleq \Pr[a_i=m_k].\]
+%
+Ovviamente la sommatoria di tutte le probabilità deve dare $1$:
+%
+\[\sum_{k=0}^{M-1}\Pr_k = 1.\]
+
+La funzione densità di probabilità è data da un'insieme di delta di Dirac centrate sui valori $m_k$ ciascuna di area pari a $\Pr_k$:
+%
+\[f_{ai}(a) = \sum_{k=0}^{M-1}\Pr_k\delta(a-m_k).\]
+%
+Il valor medio del processo $a_i$ è allora
+%:
+\begin{align*}
+\eta_a &= \E[a_i] = \int_{-\infty}^{+\infty} a\cdot f_{ai}(a)\ud a =
+          \int_{-\infty}^{+\infty} a\sum_{k=0}^{M-1}\Pr_k\delta(a-m_k)\ud a\\
+       &= \sum_{k=0}^{M-1}\Pr_k \int_{-\infty}^{+\infty} a\delta(a-m_k)\ud a =
+          \sum_{k=0}^{M-1} m_k\Pr_k
+\end{align*}
+%
+e in modo analogo si dimostra che la sua potenza media istantanea può essere calcolata come:
+%
+\[P_a = \E[a_i^2] = \sum_{k=0}^{M-1}\abs{m_k}^2\Pr_k.\]
+%
+La varianza del processo è:
+%
+\[\sigma_a^2 = P_a-\eta_a^2.\]
+
+La funzione di autocorrelazione $R_a(m)$ del processo discreto è definita come la correlazione tra il simbolo $i$-esimo e il simbolo $(i+m)$-esimo. Inoltre, poiché il processo $a_i$ è \ac{SSS} è allora anche stazionario in autocorrelazione, quindi:
+%
+\[R_a(i+m,i) = \E[a_{i+m}\cdot a_i] = R_a(m).\]
+
+Definendo
+%
+\[\Pr_{k,l} = \Pr[a_i=m_k,a_j=m_l]\]
+
+\[R_a(m) = R_a(i+m,i) = \E[a_{i+m}\cdot a_i] = \sum_{k=0}^{M-1}\sum_{l=0}^{M-1}m_{k+m}m_l\Pr_{k+m,l}\]
+
+Noi faremo riferimento ai simboli della sorgente che siano equiprobabili, cioè
+
+\[\Pr_k = \frac{1}{M}\quad\text{per ogni }k=0,1,\dots,M-1\]
+
+Facendo corrispondere i simboli ai numeri in modo che i simboli siano antipodali (se esiste un simbolo cui è associato $n$ allora esisterà un altro simbolo associato a $-n$: se sono equiprobabili allora $\eta_a=0$), allora i simboli della sorgente sono incorrelati se la funzione di autocovarianza è una delta di Kronecker $\delta[n]$
+
+\[C_a(m) = \E[a_i^2]\delta(m) = \sigma_a^2\delta(m)\]
+\[R_a(m) = \E[a_i^2]\delta(m) = \sigma_a^2\delta(m)\]
+
+
+
+\paragraph{Trasmettitore.}
+Compito di
+\begin{itemize}
+	\item amplificazione
+	\item modulazione numerica
+\end{itemize}
+
+Modulazione numerica: associa un segnale distinto a ciascun elemento dell'alfabeto.
+%
+\[m_0 \longrightarrow s_0(t),\quad m_1 \longrightarrow s_1(t),\quad \dots,\quad m_{M-1} \longrightarrow s_{M-1}(t).\]
+%
+Questi segnali possono essere passa basso o passa banda.
+In base al tipo si segnale $s_k(t)$ avremo sistemi di telecomunicazione numerica di tipo bassa basso (o in banda base) e sistemi di telecomunicazione numerica di tipo in banda passante.
+
+\begin{figure}
+\caption{}
+\end{figure}
+
+\paragraph{Canale.}
+Facciamo riferimento alla figura~\ref{fig:canale-di-trasmissione}.
+
+il canale avrà una sua risposta impulsiva $c(t)$, che introduce un disturbo: segnale aleatorio gaussiano bianco.
+
+il canale è un canale non distorcente nella banda del segnale
+
+\[c(t) = \alpha \delta(t-\tau)\]
+
+ovvero il canale introdurrà un'attenuazione $\alpha<0$ e un ritardo $\tau$.
+
+componente utile del segnale:
+%
+\[s\gp{R} = \alpha s\gp{T}(t-\tau)\]
+
+il segnale uscente dal canale sarà:
+%
+\[r(t) = \alpha s\gp{T}(t-\tau)+w(t)\]
+in cui teniamo in considerazione il disturbo.
+
+\paragraph{Ricevitore e decisore.}
+Ha il compito di
+\begin{itemize}
+	\item amplificare
+	\item demodulare il segnale
+\end{itemize}
+Demodulare il segnale: decidere a ogni istante $k$-esimo qual è il segnale trasmesso tra gli $M$ possibili, ovvero decidere qual è il $k$-esimo simbolo emesso dalla sorgente.
+
+Ad esempio con $k=5$ arriverà
+%
+\[r_5(t) = \alpha s\gp{R5}(t)+w(t).\]
+%
+Bisogna isolare $s\gp{R5}(t)$ e tramutarlo di nuovo in simbolo.
+
+In sintesi, il ricevitore funziona da decisore, interpreta il segnale analogico e lo tramuta in digitale.
+
+
+\section{Sistemi di comunicazione in banda base*}
+
+Un\margincomment{Cfr.~\citep[pagg.~69--70]{b:Dandrea}.} sistema di comunicazione in banda base è sostanzialmente costituito da un trasmettitore, da un canale \emph{bassa basso} di comunicazione e da un ricevitore. Il trasmettitore si occupa di trasformare l'informazione di uscita dalla sorgente in un segnale elettrico, e di fornire allo stesso la necessaria potenza, provvedendo inoltre a limitare l'emissione fuori banda ai valori previsti dalle normative.
+Il ricevitore ha il compito di amplificare il segnale e di eliminare la potenza di rumore al di fuori della banda del segnale. Deve inoltre provvedere alla corretta sagomatura degli impulsi da applicare al campionatore.
+
+Le risposte in frequenza degli amplificatori di trasmissione e ricezione devono essere scelte in modo da contenere l'occupazione di banda, ridurre l'effetto del rumore e consentire una corretta ricostruzione del segnale, eventualmente compensando le distorsioni introdotte dal canale. A questo proposito si osservi che, per eliminare le distorsioni introdotte dal canale, basta fare in modo che il segnale $z(t)$ all'uscita dell'amplificatore di ricezione sia, a meno del rumore, una replica del segnale $s\gp{T}(t)$ applicato al filtro di trasmissione, cioè:
+%
+\[z(t) = As\gp{T}(t-t_0)+n(t)\]
+%
+dove $A$ e $t_0$ sono due costanti legate al sistema di comunicazione. Si deduce facilmente che la condizione di assenza di distorsione implica che la risposta in frequenza complessiva del sistema di comunicazione sia ideale sulla banda $B$ del segnale $s\gp{T}(t)$ e cioè:
+%
+\[G(f) = \begin{cases}A\e^{-\j2\pi ft_0}&\text{per }\abs{f}\leq B\\0&\text{altrove.}\end{cases}\]
+
+
+\section{Sistema di comunicazione \acs{PAM} binario}
+\label{sec:sistema-pam-binario}
+
+Un sistema di comunicazione di tipo \ac{PAM} (ossia ``Modulazione d'ampiezza a impulso'') ha come caratteristica fondante il fatto che il segnale è costituito da una ripetizione infinita di impulsi di ampiezza diversa a seconda dall'informazione da trasmettere.
+
+\paragraph{Sorgente.}
+%
+\begin{figure}[b]
+\centering
+\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(65,14)
+\put(5,1){\framebox(30,12){\small{Sorgente binaria}}}
+\put(35,7){\vector(1,0){13}}
+\put(54,9){$a_i$}
+\put(54,2){$T_\mathrm{b}$}
+\end{picture}}
+\caption{In un sistema \ac{PAM} di tipo binario la sorgente emette una sequenza di bit $a_i$.}
+\end{figure}
+%
+In un sistema \ac{PAM} di tipo binario i simboli emessi dalla sorgente sono, per l'appunto, dei bit (è per questo che si è indicato l'intervallo di segnalazione con il pedice ``b''), ossia:
+%
+\[a_i \in \mathcal{A}=\{m_0,m_1\}.\]
+%
+La rappresentazione grafica dei simboli di un alfabeto è detta ``costellazione'' dell'alfabeto. Indicheremo le probabilità di massa dei simboli rispettivamente con $P_0$ e $P_1$. Ovviamente in un \ac{PAM} binario $P_0 = 1-P_1$.
+
+Nella trattazione dei sistemi \ac{PAM} faremo le seguenti ipotesi:
+\begin{itemize}
+\item I simboli sono \emph{antipodali} e valgono $-1$ e $+1$. La costellazione dell'alfabeto usato è riportata nella figura~\ref{fig:costellazione-pam-binario}.
+%
+\begin{figure}
+\centering
+\framebox{\begin{pspicture*}(-4,-0.7)(4.2,0.7)
+  \uput[u](-2.5,0){$m_0$}
+  \uput[u](2.5,0){$m_1$}
+  \uput[d](-2.5,0){$-1$}
+  \uput[d](2.5,0){$+1$}
+  \psline[linewidth=0.5pt]{->}(-3.8,0)(3.9,0)
+  \psline[linewidth=0.5pt](0,-0.05)(0,0.05)
+  \pscircle*(-2.5,0){1.5pt}
+  \pscircle*(2.5,0){1.5pt}
+\end{pspicture*}}
+\caption{Costellazione dei simboli di un sistema \ac{PAM} binario.}
+\label{fig:costellazione-pam-binario}
+\end{figure}
+%
+\item I simboli $a_i$ emessi dalla sorgente sono equiprobabili:
+      \[P_0 = P_1 = 1/2.\]
+\item I simboli sono incorrelati:
+	  \[C_a(m) = R_a(m) = \sigma_a^2\delta[m] = \delta[m].\]
+\end{itemize}
+
+Come già accennato, la sequenza in uscita dalla sorgente può essere vista come un processo a tempo discreto (supposto stazionario): se ne può perciò calcolare il valor medio, potenza e varianza. Per simboli binari antipodali e equiprobabili:
+%
+\begin{align*}
+\eta_a &= \E[a_i] = \sum_{k=0}^{1}m_kP_k = -1\cdot\frac{1}{2} + 1\cdot\frac{1}{2} = 0\\
+P_a = \sigma_a^2 &= \E[a_i^2] = \sum_{k=0}^{1}\abs{m_k}^2P_k = (-1)^2\cdot\frac{1}{2}+(1)^2\cdot\frac{1}{2} = 1.
+\end{align*}
+
+\paragraph{Trasmettitore.}
+Il segnale trasmesso $s\gp{T}(t)$ viene generato modificando, tramite gli $a_i$, l'ampiezza della \emph{portante},%
+%
+\begin{figure}[b!]
+\centering
+\subfloat[]{\framebox{\begin{pspicture*}(-0.7,-0.8)(3.3,2.3)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-0.5,-0.6)(3,1.8)
+  \uput[d](2.9,0){$t$}
+  \uput[r](0,1.6){$g\gp{T}(t)$}
+  \uput[l](-0.1,0.9){$\scriptstyle{1}$}
+  \psline[linewidth=1pt](0,0.9)(1.2,0.9)
+  \psline[linewidth=0.5pt](1.2,0.9)(1.2,-0.05)
+  \psline[linewidth=0.5pt](2.4,0.05)(2.4,-0.05)
+  \uput[d](1.2,0){$T_\mathrm{b}/2$}
+  \uput[u](2.4,0){$T_\mathrm{b}$}
+\end{pspicture*}}} \quad
+\subfloat[]{\framebox{\begin{pspicture*}(-2.4,-2)(10.8,1.8)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.1,-1.8)(10.5,1.6)
+  \uput[d](10.4,0){$t$}
+  \uput[r](0,1.4){$s\gp{T}(t)$}
+  \uput[l](-0.1,0.9){$\scriptstyle{1}$}
+  \psline[linewidth=1pt](0,0.9)(1.2,0.9)
+  \psline[linewidth=0.5pt](1.2,0.9)(1.2,-0.05)
+  \psline[linewidth=0.5pt](2.4,-0.05)(2.4,0.9)
+  \psline[linewidth=1pt](2.4,0.9)(3.6,0.9)
+  \psline[linewidth=0.5pt](3.6,0.9)(3.6,-0.05)
+  \psline[linewidth=0.5pt](4.8,0.05)(4.8,-0.9)
+  \psline[linewidth=1pt](4.8,-0.9)(6,-0.9)
+  \psline[linewidth=0.5pt](6,-0.9)(6,0.05)
+  \psline[linewidth=0.5pt](7.2,-0.05)(7.2,0.9)
+  \psline[linewidth=1pt](7.2,0.9)(8.4,0.9)
+  \psline[linewidth=0.5pt](8.4,0.9)(8.4,-0.05)
+  \uput[d](1.2,0){$T_\mathrm{b}/2$}
+  \uput[d](2.4,0){$T_\mathrm{b}$}
+  \uput[u](4.8,0){$2T_\mathrm{b}$}
+  \uput[d](7.2,0){$3T_\mathrm{b}$}
+  \uput[d](-0.6,-1.1){$a_i=$}
+  \uput[d](0.6,-1.1){$1$}
+  \uput[d](3,-1.1){$1$}
+  \uput[d](5.4,-1.1){$-1$}
+  \uput[d](7.8,-1.1){$1$}
+  \uput[d](9.6,0.8){$\cdots$}
+  \uput[d](-1.2,0.8){$\cdots$}
+  \uput[d](9.6,-1.1){$\cdots$}
+\end{pspicture*}}}
+\caption{In alto, la risposta impulsiva del filtro in trasmissione $g\gp{T}(t)$. La portante è una sequenza infinita di impulsi $g\gp{T}(t)$. La trasmissione delle informazioni avviene modulando in ampiezza tali impulsi secondo i valori $a_i$.}
+\label{fig:pam-binario-trasmettitore-portante}
+\end{figure}
+%
+costituita da una sequenza infinita di impulsi $g\gp{T}(t)$ (vedi figura~\ref{fig:pam-binario-trasmettitore-portante}). Uno schema del trasmettitore è riportato nella figura~\ref{fig:pam-binario-trasmettitore-a}. Si può altresì modellizzare l'uscita della sorgente come una successione di impulsi di Dirac di area $a_i$. Allora, se il trasmettitore è costituito da un filtro avente risposta impulsiva $g\gp{T}(t)$ (vedi figura~\ref{fig:pam-binario-trasmettitore-a}), il \emph{segnale \ac{PAM} in trasmissione}, ossia l'uscita del \emph{filtro in trasmissione} $g\gp{T}(t)$, è:
+%
+\[s\gp{T}(t) = \sum_i a_ig\gp{T}(t-iT_\mathrm{b}).\]
+
+\begin{figure}
+\centering
+\subfloat[]{\framebox{\begin{pspicture*}(-7.1,-1.4)(5.8,0.8)
+  \uput[r](-6.8,0){\psframebox[linewidth=0.5pt]{\parbox{2cm}{\centering\small{Sorgente binaria}}}}
+  \psline[linewidth=0.5pt]{->}(-4.4,0)(-2.4,0)
+  \uput[u](-3.6,0){$a_i$}
+  \uput[d](-3.6,0){$T_\mathrm{b}$}
+  \uput[r](-2.6,0){\psframebox[linewidth=0.5pt]{\parbox{2.2cm}{\centering\small{Modulazione d'ampiezza}}}}
+  \psline[linewidth=0.5pt]{->}(-1.2,-1.1)(-1.2,-0.5)
+  \uput[r](-1.1,-0.8){$\sum_i g\gp{T}(t-iT_\mathrm{b})$}
+  \psline[linewidth=0.5pt]{->}(0,0)(0.9,0)
+  \uput[r](1,0){$s\gp{T}(t) = \sum_i a_ig\gp{T}(t-iT_\mathrm{b})$}
+\end{pspicture*}}  \label{fig:pam-binario-trasmettitore-a}} \\
+\subfloat[]{\framebox{\begin{pspicture*}(-7.1,-1)(5.8,1.2)
+  \uput[r](-6.8,0){\psframebox[linewidth=0.5pt]{\parbox{1.8cm}{\centering\small{Sorgente binaria}}}}
+  \psline[linewidth=0.5pt]{->}(-4.6,0)(-1.4,0)
+  \uput[u](-3,0){$\sum_i a_i\delta(t-iT_\mathrm{b})$}
+  \uput[r](-1.6,0){\psframebox[linewidth=0.5pt]{\parbox{1.2cm}{\centering $g\gp{T}(t)$}}}
+  \psline[linewidth=0.5pt]{->}(0,0)(0.9,0)
+  \uput[r](1,0){$s\gp{T}(t) = \sum_i a_ig\gp{T}(t-iT_\mathrm{b})$}
+\end{pspicture*}}  \label{fig:pam-binario-trasmettitore-b}}
+\caption{Trasmettitore di un sistema \ac{PAM} binario.}
+\end{figure}
+
+Il segnale $s\gp{T}(t)$ applicato al canale di comunicazione è costituito da una ripetizione infinita di \emph{impulsi }$g\gp{T}(t)$\emph{ modulati in ampiezza} dai simboli $a_i$. Come vedremo, l'andamento di $g\gp{T}(t)$ determina le caratteristiche del segnale trasmesso e, in particolare, la sua banda che, nell'ipotesi di simboli indipendenti, coincide con quella di $g\gp{T}(t)$.
+
+\paragraph{Caratterizzazione del segnale trasmesso.}
+Energia media trasmessa per simbolo. Energia trasmessa per il simbolo $m_k$:
+%
+\[E_k = \int_{-\infty}^{+\infty}\abs{s_k(t)}^2\ud t\]
+
+Energia media trasmessa per simbolo è la media statistica dell'energia
+%
+\[\overline{E}\gp{T} \triangleq \sum_{k=0}^{M-1} E_k\Pr_k.\]
+
+\[s_0(t) = -g\gp{T}(t), s_1(t) = g\gp{T}(t)\]
+
+\[E_0 = \int_{-\infty}^{+\infty}\abs{s_0(t)}^2\ud t = \int_{-\infty}^{+\infty}g^2\gp{T}(t)\ud t = E_{g\gp{T}}\]
+%
+analogamente
+%
+\[E_1 = E_{g\gp{T}}\]
+%
+Quindi
+%
+\[\overline{E}\gp{T} = E_{g\gp{T}}\Pr_0 + E_{g\gp{T}}\Pr_1 = (\Pr_0+\Pr_1)\,E_{g\gp{T}} = E_{g\gp{T}}\]
+
+Energia media trasmessa per bit:
+\[\overline{E}_{\textrm{\textsmaller{T}}_\mathrm{b}} = \overline{E}\gp{T} = E_{g_\mathrm{T}}\]
+
+Banda del segnale trasmesso
+
+\[s\gp{T}(t) = \sum_i a_ig\gp{T}(t-iT_\mathrm{b})\]
+%
+Se $a_i$ è un processo aleatorio a tempo discreto, allora $s\gp{T}(t)$ è un processo aleatorio a tempo continuo.
+
+Valor medio del segnale trasmesso:
+
+\begin{align*}
+\eta_{s\gp{T}} &= \E[s\gp{T}(t)] = \E\Biggl[\sum_ia_ig\gp{T}(t-iT_\mathrm{b})\Biggr]\\
+             &= \sum_i\E[a_i]g\gp{T}(t-iT_\mathrm{b}) = 0
+\end{align*}
+perché sono equiprobabili
+
+Densità spettrale di potenza
+
+\[S_{s\gp{T}}(f) = \frac{\E[a_i^2]}{T_\mathrm{b}}\cdot\abs{G\gp{T}(f)}^2\]
+
+poiché $\E[a_i^2] = P_a = \sigma_a^2$
+
+\[S_{s\gp{T}}(f) = \frac{\sigma_a^2}{T_\mathrm{b}}\cdot\abs{G\gp{T}(f)}^2\]
+
+\begin{align*}
+S\gp{T}(f) = \TCF[s\gp{T}(t)] &= \sum_ia_iG\gp{T}(f)\e^{-\j2\pi fiT_\mathrm{b}}\\
+                                    &= G\gp{T}(f)\sum_ia_i\e^{-\j2\pi fiT_\mathrm{b}}
+\end{align*}
+
+\[\abs{S\gp{T}(f)}^2 = \abs{G\gp{T}(f)}^2\cdot\mathcal{J}(f)\]
+
+Quindi la banda del segnale trasmesso $B\gp{T}$ coincide con la banda di $g\gp{T}(t)$
+
+\[B\gp{T} = B_{g\gp{T}}\]
+
+Efficienza in banda del segnale trasmesso:
+%
+\[\rho\gp{T} \triangleq\frac{R_\mathrm{b}}{B\gp{T}} = \frac{1}{T_\mathrm{b}\cdot B\gp{T}}\]
+%
+dove con $R_\mathrm{b}$ si intende la velocità di informazione (bit/sec), quindi: $R_\mathrm{b} = 1/T_\mathrm{b}$.
+
+
+\paragraph{Canale.}
+%
+\begin{figure}
+\centering
+\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(69,18)
+\put(1,11){\vector(1,0){14}}
+\put(4,13){$s\gp{T}(t)$}
+\put(15,7){\framebox(20,10){$c(t)$}}
+\put(35,11){\vector(1,0){14}}
+\put(38,13){$s\gp{R}(t)$}
+\put(51,11){\circle{4}}
+\put(49.82,10.28){$\scriptstyle{+}$}
+\put(53,11){\vector(1,0){14}}
+\put(56,13){$r(t)$}
+\put(51,1){\vector(0,1){8}}
+\put(53,3){$w(t)$}
+\end{picture}}
+\caption{Canale di trasmissione.}
+\end{figure}
+%
+Se definiamo l'impulso ricevuto
+%
+\[g\gp{TC}(t) = g\gp{T}(t) \otimes c(t),\]
+%
+il segnale \ac{PAM} in ricezione è
+%
+\[s\gp{R}(t) = s\gp{T}(t)\otimes c(t) = \sum_ia_ig\gp{T}(t-iT_\mathrm{b})\otimes c(t) = \sum_ia_ig\gp{TC}(t-iT_\mathrm{b}).\]
+
+Posto:
+%
+\[g\gp{TC}(t) = g\gp{T}(t)\otimes c(t),\]
+%
+il \emph{segnale \ac{PAM} in ricezione}, ovvero il segnale all'ingresso del \emph{filtro in ricezione} $g\gp{R}(t)$, è dato da:
+%
+\[s\gp{R}(t) = \sum_i a_ig\gp{TC}(t-iT_\mathrm{b}).\]
+
+Energia dell'impulso in ricezione:
+
+\[\overline{E}\gp{R} = E_{g\gp{TC}}\]
+
+La banda del segnale ricevuto è:
+%
+\[S_{s\gp{R}}(f) = \frac{\sigma_a^2}{T_\mathrm{b}}\cdot\abs{G\gp{TC}(f)}^2\]
+
+\[G\gp{TC}(f) = G\gp{T}(f)\cdot C(f)\]
+
+\[B_{s\gp{R}} = B_{g\gp{TC}} = \begin{cases}B\gp{C}&\text{ se }B\gp{C}\leq B_{g\gp{T}}\\
+                                            B_{g\gp{T}}&\text{ se }B\gp{C}>B_{g\gp{T}}\end{cases}\]
+
+Noi supporremo che $B\gp{C}>B_{g\gp{T}}$, quindi $B_{s\gp{R}} = B_{g\gp{T}}$.
+
+Efficienza in banda del segnale ricevuto:
+%
+\[\rho\gp{R} \triangleq\frac{R_\mathrm{b}}{B_{s\gp{R}}}\]
+
+Il segnale ricevuto:
+%
+\[r(t) = s\gp{R}+w(t) = \sum_ia_ig\gp{TC}(t-iT_\mathrm{b}) + w(t)\]
+%
+dove $w(t)$ è un processo gaussiano bianco, a valor medio nullo ($\eta_w=0$) e con densità spettrale di potenza costante ($S_w(f)=N_0/2$).
+
+
+\paragraph{Ricevitore.}
+Se $g\gp{R}(t)$ è la risposta impulsiva del filtro in ricezione. Infine, indicando la risposta impulsiva complessiva del sistema \ac{PAM} con
+%
+\begin{figure}
+\centering
+\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(111,21)
+\put(1,11){\vector(1,0){14}}
+\put(4,13){$r(t)$}
+\put(15,7){\framebox(20,10){$g\gp{R}(t)$}}
+\put(35,11){\line(1,0){14}}
+\put(38,13){$z(t)$}
+\put(49,11){\circle*{1}}
+\put(44,4){$t_k=t_0+kT_\mathrm{b}$}
+\put(61,11){\line(-2,1){10}}
+\put(51,16){\circle*{1}}
+\put(61,11){\vector(1,0){14}}
+\put(64,13){$z_k$}
+\put(75,7){\framebox(20,10){Decisore}}
+\put(95,11){\vector(1,0){14}}
+\put(98,13){$\hat{a}_k$}
+\end{picture}}
+\caption{La decisione viene fatta simbolo a simbolo, perché abbiamo ipotizzato che i simboli siano incorrelati.}
+\label{}
+\end{figure}
+%
+\[g(t) = g\gp{TC}(t)\otimes g\gp{R}(t),\]
+%
+il segnale $z(t)$ all'uscita del filtro in ricezione $g\gp{R}(t)$ può scriversi nella forma:
+%
+\[z(t) = \sum_i a_ig(t-iT_\mathrm{b})+n(t) = z\gp{R}(t)+n(t)\]
+%
+essendo
+%
+\begin{align*}
+z\gp{R}(t) &\triangleq s\gp{R}(t)\otimes g\gp{R}(t)\\
+n(t) &\triangleq w(t)\otimes g\gp{R}(t)
+\end{align*}
+%
+il contributo in uscita dovuto al rumore: resta un processo gaussiano a media nulla $\eta_n=\eta_w\cdot G\gp{R}(0)=0$.
+
+Dobbiamo
+\begin{itemize}
+\item limitare il rumore presente all'ingresso solo nella banda del segnale utile $s\gp{R}(t)$
+\item immunizzare il segnale utile rispetto al rumore rimanente in banda
+\end{itemize}
+
+L'energia media del segnale di uscita è 
+\[\overline{E}=E_g.\]
+
+La densità spettrale di potenza è
+\[S_{z\gp{R}}(f) = \frac{\sigma_a^2}{T_\mathrm{b}}\cdot\abs{G(f)}^2\]
+
+La banda è:
+%
+\[B_{z\gp{R}} = B_{g\gp{TC}} = B_{s\gp{R}}\]
+
+Efficienza in banda del segnale in uscita (o \emph{del sistema)}:
+%
+\[\rho \triangleq\frac{R_\mathrm{b}}{B_{z\gp{R}}} = \rho\gp{R} \overset{*}{=} \rho\gp{T}\]
+%
+l'uguaglianza $*$ è valida se $B\gp{C}>B_{g\gp{T}}$.
+
+La densità spettrale di potenza è
+\[S_n(f) = S_w(f)\cdot\abs{G\gp{R}(f)}^2 = \frac{N_0}{2}\cdot\abs{G\gp{R}(f)}^2\]
+
+La varianza è:
+%
+\begin{align*}
+\sigma_n^2 = P_n &= \int_{-\infty}^{+\infty}S_n(f)\ud f\\
+                 &= \frac{N_0}{2}\int_{-\infty}^{+\infty}\abs{G\gp{R}(f)}^2\ud f\\
+                 &= \frac{N_0}{2}\int_{-\infty}^{+\infty}g^2\gp{R}(t)\ud t\\
+                 &= \frac{N_0}{2}E_{g\gp{R}} = \sigma_n^2
+\end{align*}
+
+
+\begin{figure}
+\centering
+\subfloat[]{\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(140,22)
+\put(1,7){\framebox(20,10){Sorg. bin.}}
+\put(21,11){\vector(1,0){4}}
+\put(25,7){\framebox(13,10){$g\gp{T}(t)$}}
+\put(38,11){\vector(1,0){4}}
+\put(42,7){\framebox(13,10){$c(t)$}}
+\put(55,11){\vector(1,0){10}}
+\put(56,13){$s\gp{R}(t)$}
+\put(67,11){\circle{4}}
+\put(65.82,10.28){$\scriptstyle{+}$}
+\put(69,11){\vector(1,0){10}}
+\put(71,13){$r(t)$}
+\put(67,1){\vector(0,1){8}}
+\put(69,3){$w(t)$}
+\put(79,7){\framebox(13,10){$g\gp{R}(t)$}}
+\put(92,11){\line(1,0){10}}
+\put(94,13){$z(t)$}
+\put(102,11){\circle*{1}}
+\put(98,4){$\scriptstyle{t_k=t_0+kT_\mathrm{b}}$}
+\put(110,11){\line(-2,1){6}}
+\put(104,14){\circle*{1}}
+\put(110,11){\vector(1,0){6}}
+\put(110,13){$z_k$}
+\put(116,7){\framebox(13,10){Decis.}}
+\put(129,11){\vector(1,0){8}}
+\put(131,13){$\hat{a}_k$}
+\end{picture}}} \\
+\subfloat[]{\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(140,22)
+\put(1,7){\framebox(20,10){Sorg. bin.}}
+\put(21,11){\vector(1,0){4}}
+\put(25,7){\framebox(13,10){$g\gp{T}(t)$}}
+\put(38,11){\vector(1,0){4}}
+\put(42,7){\framebox(13,10){$c(t)$}}
+\put(56,13){$s\gp{R}(t)$}
+\put(55,11){\vector(1,0){11}}
+\put(66,7){\framebox(13,10){$g\gp{R}(t)$}}
+\put(79,11){\vector(1,0){10}}
+\put(80,13){$z\gp{R}(t)$}
+\put(91,11){\circle{4}}
+\put(89.82,10.28){$\scriptstyle{+}$}
+\put(93,11){\line(1,0){9}}
+\put(94,13){$z(t)$}
+\put(91,1){\vector(0,1){8}}
+\put(82,3){$n(t)$}
+\put(102,11){\circle*{1}}
+\put(98,4){$\scriptstyle{t_k=t_0+kT_\mathrm{b}}$}
+\put(110,11){\line(-2,1){6}}
+\put(104,14){\circle*{1}}
+\put(110,11){\vector(1,0){6}}
+\put(110,13){$z_k$}
+\put(116,7){\framebox(13,10){Decis.}}
+\put(129,11){\vector(1,0){8}}
+\put(131,13){$\hat{a}_k$}
+\end{picture}}} \\
+\subfloat[Schema equivalente del sistema \ac{PAM}.]{\framebox{\setlength{\unitlength}{1mm}
+\begin{picture}(136,22)
+\put(1,7){\framebox(30,10){Sorgente binaria}}
+\put(33,14){$\scriptstyle{\sum_ia_i\delta(t-iT_\mathrm{b})}$}
+\put(31,11){\vector(1,0){25}}
+\put(56,7){\framebox(13,10){$g(t)$}}
+\put(69,11){\vector(1,0){11}}
+\put(71,13){$z\gp{R}(t)$}
+\put(82,11){\circle{4}}
+\put(80.82,10.28){$\scriptstyle{+}$}
+\put(84,11){\line(1,0){9}}
+\put(85,13){$z(t)$}
+\put(82,1){\vector(0,1){8}}
+\put(73,3){$n(t)$}
+\put(93,11){\circle*{1}}
+\put(89,4){$\scriptstyle{t_k=t_0+kT_\mathrm{b}}$}
+\put(101,11){\line(-2,1){6}}
+\put(95,14){\circle*{1}}
+\put(101,11){\vector(1,0){6}}
+\put(101,13){$z_k$}
+\put(107,7){\framebox(18,10){Decisore}}
+\put(125,11){\vector(1,0){8}}
+\put(127,13){$\hat{a}_k$}
+\end{picture}}}
+\caption{La decisione viene fatta simbolo a simbolo, perché abbiamo ipotizzato che i simboli siano incorrelati.}
+\end{figure}
+
+
+
+Agli istanti di campionamento $t_k = t_0+kT_\mathrm{b}$ si trova:
+%
+\begin{align}
+\notag
+z(t_k) &= a_kg(t_0) + \sum_{i\neq k}a_ig\bigl(t_0+(k-i)T_\mathrm{b}\bigr) + n(t_k)
+\intertext{o}
+\label{eq:segnale-pam-in-ricezione}
+z_k &= a_kg(t_0) + \sum_{i\neq k}a_ig(t_{k-i}) + n_k
+\end{align}
+%
+essendo $z_k = z(t_k)$, $t_{k-i}=t_k-iT_\mathrm{b}$ e $n_k = n(t_k)$. Si osservi che solo il primo addendo al secondo membro della~\eqref{eq:segnale-pam-in-ricezione} dipende dal simbolo sotto decisione $a_k$, mentre gli altri ne sono indipendenti e rappresentano quindi un disturbo che si somma al \emph{segnale utile}. In particolare, il secondo addendo rappresenta l'\emph{interferenza intersimbolica}, in inglese \ac{ISI}, così denominata in quanto prodotta dagli altri simboli, mentre il terzo addendo, che rappresenta il \emph{disturbo dovuto al rumore termico}, è una variabile aleatoria gaussiana a media nulla e varianza
+%
+\[\sigma^2_n = \frac{N_0}{2}\int_{-\infty}^{+\infty}\abs{G\gp{R}(f)}^2\ud f.\]
+
+[[[Servendosi dei campioni $z(kT)$, il decisore effettua infine la stima del $k$-esimo simbolo trasmesso seguendo la regola
+%
+\[\hat{a}_k = \begin{cases}+1&\text{se }z(kT_\mathrm{b})\geq0\\-1&\text{se }z(kT_\mathrm{b})<0.\end{cases}\]
+%
+Si sceglie, quindi, come \emph{soglia di decisione} il valore $\lambda=0$. In assenza di interferenza intersimbolica e con simboli equiprobabili e indipendenti, questa scelta rende minima la probabilità di errore ed è quindi ottima.
+
+Approfondiamo ora le caratteristiche di un sistema \ac{PAM} binario e i diversi aspetti di progettazione finalizzati a migliorarne le prestazioni.
+
+
+\begin{itemize}
+\item Il rumore $w(t)$ all'ingresso del ricevitore è una realizzazione di un processo a media nulla, gaussiano, bianco e stazionario con densità spettrale di potenza $N_0/2$.
+\item Il canale e i filtri utilizzati nel sistema di comunicazione non introducono alcun ritardo e sono quindi non causali. Questa\margincomment{.} ipotesi non ha alcuna conseguenza sul dimensionamento del sistema di comunicazione, poiché i ritardi effettivamente presenti in una realizzazione pratica vengono comunque compensati dal circuito di recupero del sincronismo di campionamento.
+\end{itemize}
+]]]
+
+\subsection{Interferenza intersimbolica}
+
+Come si è già accennato, e come indica chiaramente la~\eqref{eq:segnale-pam-in-ricezione}, per migliorare le prestazioni di un sistema \ac{PAM} è necessario ridurre il disturbo prodotto dall'interferenza intersimbolica e dal rumore termico. In questo paragrafo si mostrerà che, fissato il sistema di comunicazione (ossia il canale e i filtri di trasmissione e ricezione), è possibile agire sul ritardo di campionamento $t_0$ per \emph{ridurre} l'\ac{ISI} e che una opportuna scelta della risposta in frequenza del sistema consente, almeno in linea teorica, di \emph{annullarne} completamente l'effetto agli istanti di campionamento.
+
+
+Il valore ottimo di $t_0$, cioè quello che minimizza l'\ac{ISI}, dipende naturalmente dal canale e dai filtri di trasmissione e ricezione impiegati. La scelta di $t_0$ non ha invece alcuna influenza sul contributo dovuto al rumore termico $n(t)$, essendo quest'ultimo un processo stazionario.
+%
+Il valore ottimo $t_0$ viene valutato modulo $T$.
+
+Nella pratica, in conseguenza della tempo-varianza del canale e dell'invecchiamento dei componenti, la scelta del ritardo ottimo di campionamento non può essere fatta una volta per tutte all'atto dell'installazione del ricevitore, ma viene affidata a un sistema adattativo, che ricava il sincronismo di simbolo direttamente dal segnale ricevuto.
+
+Nel caso di una \ac{PAM} a $M$ livelli, la scelta di $t_0$ avviene esattamente come nel caso binario.
+
+\paragraph{Condizione di Nyquist.}
+Riconsideriamo l'espressione del segnale in ricezione agli istanti di campionamento:
+%
+\begin{equation}\label{eq:segnale-pam-in-ricezione-2}
+z_k = a_kg(t_0) + \sum_{i\neq k}a_ig\bigl(t_0+(k-i)T_\mathrm{b}\bigr) + n_k.
+\end{equation}
+%
+Almeno da un punto di vista teorico, è possibile scegliere $g\gp{TC}(t)$ e $g\gp{R}(t)$ in modo che il sistema di comunicazione sia \emph{ideale}, cioè che l'interferenza intersimbolica sia nulla e il contributo dovuto al rumore termico sia minimo.
+
+Per annullare l'\ac{ISI} agli istanti di campionamento $t_0+kT_\mathrm{b}$, è sufficiente che $g(t)$ sia un \emph{impulso di Nyquist} traslato in $t_0$:
+%
+\[g(t) = g\gp{N}(t-t_0)\]
+%
+dove si definisce l'impulso di Nyquist $g\gp{N}(t)$, così caratterizzato:
+%
+\begin{equation}\label{eq:condizione-di-nyquist-tempo}
+g\gp{N}(mT_\mathrm{b}) = \begin{cases}1&\text{per }m=0\\0&\text{altrimenti.}\end{cases}
+\end{equation}
+%
+In tal modo, infatti, i termini per $i\neq k$ nella~\eqref{eq:segnale-pam-in-ricezione-2} sono tutti nulli, poiché $g\gp{N}\bigl((k-i)T_\mathrm{b}\bigr)$ è nullo per $k\neq i$.
+La~\eqref{eq:condizione-di-nyquist-tempo} rappresenta la \emph{condizione di Nyquist nel tempo} agli istanti $kT_\mathrm{b}$. Applicando alla funzione $g\gp{N}(t)$ la relazione
+%
+\[T\sum_k x(kT)\e^{-\j2\pi fkT} = \sum_m X\biggl(f-\frac{m}{T}\biggr),\]
+%
+si ottiene la condizione di Nyquist espressa in termini spettrali:
+%
+\begin{equation}\label{eq:condizione-di-nyquist-frequenza}
+T_\mathrm{b} = \sum_m G\gp{N}\biggl(f-\frac{m}{T_\mathrm{b}}\biggr).
+\end{equation}
+
+\paragraph{Impulsi di Nyquist a banda limitata a coseno rialzato.}
+Poiché la~\eqref{eq:condizione-di-nyquist-frequenza} non può essere soddisfatta da funzioni di banda inferiore a $1/(2T_\mathrm{b})$, si conclude che le \emph{funzioni di Nyquist} (cioè quelle che non creano \ac{ISI}) devono avere banda non inferiore a $1/(2T_\mathrm{b})$ che, per questo, viene detta \emph{banda di Nyquist}. In altri termini, affinché non si abbia interferenza intersimbolica al campionatore, è necessario (ma non sufficiente) che la banda del segnale ricevuto, e quindi quella del canale di comunicazione, sia almeno pari alla metà della frequenza di segnalazione.
+
+La funzione $G\gp{N}(f)$ di banda minima che soddisfa la~\eqref{eq:condizione-di-nyquist-frequenza} è una funzione rettangolare in frequenza di banda $1/(2T_\mathrm{b})$. Purtroppo, per l'estrema ripidità dei fianchi, essa non risulta facilmente sintetizzabile nemmeno in forma approssimata, e inoltre errori di temporizzazione anche molto piccoli danno luogo a elevatissimi valori di interferenza intersimbolica residua. Per contenere l'\ac{ISI} residua entro valori accettabili e, al contempo, rendere più semplice la sintesi dei filtri di trasmissione e ricezione, si è soliti fare ricorso a funzioni del tipo a \emph{coseno rialzato}, così definite per la particolare sagomatura in frequenza che le%
+\margincomment{Non dovrebbe essere necessario per l'esame ricordarsi l'espressione analitica generale qui riportata.}
+caratterizza:
+%
+\[G\gp{N}(f;\alpha)=\begin{cases}
+T_\mathrm{b}&\text{per }\abs{f}\leq\dfrac{1-\alpha}{2T_\mathrm{b}}\\
+\dfrac{T_\mathrm{b}}{2}\Biggl(1+\cos\dfrac{\pi T_\mathrm{b}}{\alpha}\biggl(\abs{f}-\dfrac{1-\alpha}{2T_\mathrm{b}}\biggr)\Biggr) &\text{per } \dfrac{1-\alpha}{2T_\mathrm{b}}<\abs{f}\leq\dfrac{1+\alpha}{2T_\mathrm{b}}\\
+0&\text{per }\abs{f}>\dfrac{1+\alpha}{2T_\mathrm{b}}.
+\end{cases}\]
+%
+Dove $\alpha$ è un parametro compreso tra $0$ e $1$, detto \emph{rolloff}, che fissa la banda dell'impulso.
+La quantità $\alpha/(2T_\mathrm{b})$ rappresenta l'eccesso di banda dell'impulso, cioè la differenza tra la banda $(1+\alpha)/(2T_\mathrm{b})$ di quest'ultimo e la banda di Nyquist $1/(2T_\mathrm{b})$. Spesso l'eccesso di banda è misurato in percento rispetto alla banda di Nyquist, ad esempio se $\alpha=1$ l'eccesso di banda è del $100\%$. Si osservi infine che l'area sottesa dalla $G\gp{N}(f)$ è unitaria qualunque sia il valore del rolloff e di conseguenza risulta $g\gp{N}(0)=1$.
+
+\paragraph{Caso a rolloff nullo.}
+Per $\alpha=0$, $G\gp{N}(f)$ è una $\textop{rect}$ di banda $1/(2T_\mathrm{b})$ e ampiezza $T_\mathrm{b}$. Si può vedere facendo la prova che è un impulso di Nyquist in quanto
+\[\sum_m G\gp{N}\biggl(f-\frac{m}{T_\mathrm{b}}\biggr) = T_\mathrm{b}\]
+
+Se la banda della rect fosse inferiore a $1/(2T_\mathrm{b}$ non si riuscirebbe più a rispettare la condizione di Nyquist. Pertanto, se si vuole trasmettere informazione con un rate $T_\mathrm{b}$ si deve usare una banda maggiore o uguale alla banda minima $B_\mathrm{m} = 1/(2T_\mathrm{b})$.
+
+\begin{figure}
+\centering
+\framebox{\begin{pspicture*}(-5.7,-0.8)(5.9,2)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-5.5,-0.6)(5.6,1.8)
+  \uput[d](5.5,0){$t$}
+  \uput[l](0,1.6){$g\gp{N}(t;\alpha=0)$}
+  \uput[r](0.2,1.1){$\scriptstyle{1}$}
+  \infixtoRPN{0.6*sin(90*x)/x}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{-5.2}{5.2}{\RPN}
+  \psline[linewidth=0.5pt](-4,-0.05)(-4,0.05)
+  \psline[linewidth=0.5pt](-2,-0.05)(-2,0.05)
+  \psline[linewidth=0.5pt](2,-0.05)(2,0.05)
+  \psline[linewidth=0.5pt](4,-0.05)(4,0.05)
+  \uput[d](-4,0){$-2T_\mathrm{b}$}
+  \uput[d](-2,0){$-T_\mathrm{b}$}
+  \uput[d](2,0){$T_\mathrm{b}$}
+  \uput[d](4,0){$2T_\mathrm{b}$}
+\end{pspicture*}}
+\caption{Caso a rolloff nullo.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\framebox{\begin{pspicture*}(-5.7,-0.8)(5.9,2)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-5.5,-0.6)(5.6,1.8)
+  \uput[d](5.5,0){$f$}
+  \uput[l](0,1.6){$G\gp{N}(f;\alpha=0)$}
+  \uput[r](0.2,1.1){$\scriptstyle{T_\mathrm{b}}$}
+  \psline[linewidth=0.5pt](-4,-0.05)(-4,0.05)
+  \psline[linewidth=0.5pt](-2,-0.05)(-2,0.05)
+  \psline[linewidth=0.5pt](2,-0.05)(2,0.05)
+  \psline[linewidth=0.5pt](4,-0.05)(4,0.05)
+  \uput[d](-4,0){$-2T_\mathrm{b}$}
+  \uput[d](-2,0){$-T_\mathrm{b}$}
+  \uput[d](2,0){$T_\mathrm{b}$}
+  \uput[d](4,0){$2T_\mathrm{b}$}
+\end{pspicture*}}
+\caption{Caso a rolloff nullo.}
+\end{figure}
+
+
+\paragraph{Caso a rolloff unitario.}
+Il grafico risulta essere un pezzo di coseno traslato verso l'alto di $T_\mathrm{b}/2$ e troncato in $[-1/T_\mathrm{b},1/T_\mathrm{b}]$. Sempre graficamente si vede che soddisfa la condizione di Nyquist.
+
+\[G\gp{N}(f;1) = \frac{T_\mathrm{b}}{2}\bigl(1+\cos(\pi fT_\mathrm{b})\bigr)\cdot\rect[f]{T_\mathrm{b}}{2}\]
+
+Nel tempo:
+%
+\begin{align*}
+g\gp{N}(t;1) &= \frac{T_\mathrm{b}}{2}\Biggl(\frac{2}{T_\mathrm{b}}\sinc\biggl(t\frac{2}{T_\mathrm{b}}\biggr)\otimes
+                                              \biggl(\delta(t)+
+                                              \frac{1}{2}\delta\biggl(t-\frac{T_\mathrm{b}}{2}\biggr)+
+                                              \frac{1}{2}\delta\biggl(t+\frac{T_\mathrm{b}}{2}\biggr)\biggr)\Biggr)\\
+               &= \sinc\biggl(\frac{t}{T_\mathrm{b}/2}\biggr) +
+                  \frac{1}{2}\sinc\biggl(\frac{t-T_\mathrm{b}/2}{T_\mathrm{b}/2}\biggr) +
+                  \frac{1}{2}\sinc\biggl(\frac{t+T_\mathrm{b}/2}{T_\mathrm{b}/2}\biggr)
+\end{align*}
+
+\begin{figure}
+\centering
+\framebox{\begin{pspicture*}(-5.7,-0.8)(5.9,2)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-5.5,-0.6)(5.6,1.8)
+  \uput[d](5.5,0){$t$}
+  \uput[l](0,1.6){$g\gp{N}(t;\alpha=1)$}
+  \uput[r](0.2,1.1){$\scriptstyle{1}$}
+  \infixtoRPN{0.3*sin(180*x)/x}
+  \psplot[linewidth=0.5pt,plotstyle=curve]{-5.2}{-1}{\RPN}
+  \psplot[linewidth=0.5pt,plotstyle=curve,plotpoints=50]{-1}{1}{\RPN}
+  \psplot[linewidth=0.5pt,plotstyle=curve]{1}{5.2}{\RPN}
+  \infixtoRPN{0.15*sin(180*x+180)/(x+1)}
+  \psplot[linewidth=0.5pt,plotstyle=curve]{-5.2}{-2}{\RPN}
+  \psplot[linewidth=0.5pt,plotstyle=curve,plotpoints=50]{-2}{0}{\RPN}
+  \psplot[linewidth=0.5pt,plotstyle=curve]{0}{5.2}{\RPN}
+  \infixtoRPN{0.15*sin(180*x-180)/(x-1)}
+  \psplot[linewidth=0.5pt,plotstyle=curve]{-5.2}{0}{\RPN}
+  \psplot[linewidth=0.5pt,plotstyle=curve,plotpoints=50]{0}{2}{\RPN}
+  \psplot[linewidth=0.5pt,plotstyle=curve]{2}{5.2}{\RPN}
+  \infixtoRPN{0.3*sin(180*x)/x + 0.15*sin(180*x-180)/(x-1) + 0.15*sin(180*x+180)/(x+1)}
+  \psplot[linewidth=1pt,plotstyle=curve]{-5.2}{5.2}{\RPN}
+  \psline[linewidth=0.5pt](-4,-0.05)(-4,0.05)
+  \psline[linewidth=0.5pt](-3,-0.05)(-3,0.05)
+  \psline[linewidth=0.5pt](-2,-0.05)(-2,0.05)
+  \psline[linewidth=0.5pt](2,-0.05)(2,0.05)
+  \psline[linewidth=0.5pt](3,-0.05)(3,0.05)
+  \psline[linewidth=0.5pt](4,-0.05)(4,0.05)
+  \uput[d](-4,0){$-2T_\mathrm{b}$}
+  \uput[u](-3,0){$-\frac{3}{2}T_\mathrm{b}$}
+  \uput[d](-2,0){$-T_\mathrm{b}$}
+  \uput[d](2,0){$T_\mathrm{b}$}
+  \uput[u](3,0){$\frac{3}{2}T_\mathrm{b}$}
+  \uput[d](4,0){$2T_\mathrm{b}$}
+\end{pspicture*}}
+\caption{Caso a rolloff unitario.}
+\end{figure}
+
+Lo smorzamento dei lobi laterali dell'impulso dipende dal valore del rolloff che, viceversa, influenza molto debolmente l'andamento del lobo centrale. Per valori di $\alpha\geq 0.5$ lo smorzamento è abbastanza accentuato e questo, oltre a ridurre a pochi intervalli di segnalazione la durata effettiva dell'impulso, e quindi a semplificare la sintesi dei filtri di trasmissione e ricezione, implica ovviamente valori contenuti per l'interferenza intersimbolica residua dovuta a errori di temporizzazione. A piccoli valori di rolloff corrisponde invece una situazione più critica dal punti di vista degli errori di temporizzazione, a causa di un minore smorzamento dei lobi laterali.
+
+
+\paragraph{Prestazioni e probabilità di errore in assenza di \ac{ISI}.}
+La valutazione delle prestazioni di un sistema numerico di comunicazione viene generalmente effettuata in termini di \emph{probabilità di errore}. Essa può essere misurata sperimentalmente come frazione delle decisioni errate sul totale dei simboli emessi, ovvero valutata per via teorica come probabilità dell'evento \emph{errore di decisione}.
+
+In quest'ultimo caso si fa ricorso al teorema delle probabilità totali, che consente di esprimere la probabilità dell'evento \emph{errore di decisione} tramite le probabilità di errore condizionate ai valori $m_i$ assunti dai simboli emessi. Se $P_k = \Pr[a_i=m_k]$ rappresentano le probabilità a priori di emissione dei simboli, si trova facilmente:
+%
+\[P(e) = \sum_{k=0}^{M-1}\Pr[e \mid a_i=m_k]\cdot P_k.\]
+
+
+\paragraph{Massimizzazione del rapporto segnale rumore.}
+Per ridurre il più possibile il rapporto segnale rumore è necessario che il filtro in ricezione sia \emph{adattato} all'impulso ricevuto:
+%
+\[G\gp{R}(f) = G^*\gp{TC}(f).\]
+
+Indicato con $E_\mathrm{b}/N_0$ il rapporto tra l'energia per simbolo binario valutata all'ingresso del filtro in ricezione e la densità spettrale di potenza monolatera di rumore, la probabilità di errore di un sistema binario è espressa dalla:
+%
+\[P(e) = Q\Biggl(\!\!\sqrt{\frac{2E_\mathrm{b}}{N_0}}\Biggr).\]
+
+
+
+\section{Sistema di comunicazione \acs{PAM} \texorpdfstring{$M$}{M}-ario}
+
+I simboli $a_i$ sono indipendenti e assumono i valori appartenenti a un certo alfabeto $\mathcal{A} = \{m_0,m_1,\dots,m_{M-1}\}$ costituito da un numero pari $M$ di elementi. Se i simboli sono antipodali allora viene scelto:
+%
+\[\mathcal{A} = \{\pm1,\pm2,\dots,\pm(M-1)\}\]
+%
+ossia $m_i = 2i+1-M$, per $i=0,\dots,M-1$.
+
+\dots
+
+La regola di decisione utilizzata può porsi nella forma:
+%
+\[\hat{a}_k=\begin{cases}\end{cases}\]
+%
+dove $\lambda_i$ sono le \emph{soglie di decisione}. Se i simboli sono equiprobabili le soglie di decisione vengono scelte secondo la regola:
+%
+\[\lambda_i = \frac{m_i+m_{i+1}}{2},\quad\text{per }i=0,1,\dots,(M-2).\]
+%
+In assenza di interferenza intersimbolica e con simboli equiprobabili e indipendenti, questa scelta rende minima la probabilità di errore ed è quindi ottima.
+
+

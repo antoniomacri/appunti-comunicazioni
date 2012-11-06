@@ -1,0 +1,1509 @@
+\chapter{Analisi di segnali aperiodici}
+\label{cha:segnali-aperiodici}
+
+
+\section{Dalla serie all'integrale di Fourier}
+
+Nel capitolo precedente si è visto come sia possibile rappresentare un qualsiasi segnale periodico come una opportuna sovrapposizione di segnali periodici elementari (sinusoidi) con ampiezza, periodo e fase opportuni. Ma dato che per la maggior parte i fenomeni naturali non sono periodici, sorge la questione se sia possibile effettuare una scomposizione simile anche per segnali aperiodici.
+
+Si consideri il segnale aperiodico
+%
+\begin{equation}\label{eq:rect-aperiodica}
+x(t) = \vrect\biggl(\frac{t}{T}\biggr).
+\end{equation}
+%
+Periodicizzandolo con periodo di ripetizione $T_0$, si genera un segnale particolare detto \emph{treno di impulsi rettangolari}:
+%
+\begin{equation}\label{eq:rect-periodicizzata}
+x_p(t) = \sum_{n=-\infty}^{+\infty} \rect{t-nT_0}{T}
+\end{equation}
+%
+che, trattandosi di un segnale periodico, può essere studiato tramite la \ac{TSF}. Il segnale aperiodico $x(t)$ può essere considerato come un caso limite del segnale periodico $x_p(t)$ facendo tendere all'infinito il periodo di ripetizione. In questo modo, infatti, per $T_0\to\infty$ si ``allontanano'' dall'origine tutte le repliche del segnale lasciando invariata unicamente quella per $n=0$, che coincide con $x(t)$.
+
+\begin{figure}
+\centering
+\framebox{\begin{pspicture*}(-5.5,-0.6)(5.5,2)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-5.3,-0.2)(5.2,1.8)
+  \uput[l](0,1.5){$x_p(t)$}
+  \uput[d](5.1,0){$t$}
+  \psline[linewidth=0.5pt](-4.5,-0.05)(-4.5,0.8)
+  \psline[linewidth=1pt](-4.5,0.8)(-2.5,0.8)
+  \psline[linewidth=0.5pt](-2.5,-0.05)(-2.5,0.8)
+  \psline[linewidth=0.5pt](-1,-0.05)(-1,0.8)
+  \psline[linewidth=1pt](-1,0.8)(1,0.8)
+  \psline[linewidth=0.5pt](1,-0.05)(1,0.8)
+  \psline[linewidth=0.5pt](2.5,-0.05)(2.5,0.8)
+  \psline[linewidth=1pt](2.5,0.8)(4.5,0.8)
+  \psline[linewidth=0.5pt](4.5,-0.05)(4.5,0.8)
+  \uput[u](0.3,0.8){$\scriptstyle{1}$}
+  \uput[d](-3.5,0){$\scriptstyle{-T_0}$}
+  \uput[d](-1,0){$\scriptstyle{-T/2}$}
+  \uput[d](1,0){$\scriptstyle{T/2}$}
+  \uput[d](3.5,0){$\scriptstyle{T_0}$}
+  \psline[linewidth=0.5pt](-3.5,-0.05)(-3.5,0.05)
+  \psline[linewidth=0.5pt](3.5,-0.05)(3.5,0.05)
+\end{pspicture*}}
+\caption{Rappresentazione grafica del segnale periodico ottenuto per periodicizzazione della funzione rettangolo di eq.~\eqref{eq:rect-aperiodica}.}
+\end{figure}
+
+Le considerazioni fatte valgono ovviamente per un qualsiasi segnale aperiodico $x(t)$. Se $x_p(t)$ ne è la periodicizzazione allora è vero in generale che
+%
+\begin{equation}\label{eq:da-periodico-ad-aperiodico}
+x(t) = \lim_{T_0\to\infty} x_p(t).
+\end{equation}
+
+Rappresentando il segnale $x_p(t)$ mediante la serie di Fourier, si scrive:
+%
+\begin{equation}\label{eq:antitrasformata-x-p}
+x_p(t) = \sum_{n=-\infty}^{+\infty} X_n \e^{\,\j2\pi nf_0 t}
+\end{equation}
+%
+nella quale $f_0=1/T_0$. I coefficienti della serie sono dati dalla:
+%
+\begin{equation}\label{eq:spettro-x-p}
+X_n = \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x_p(t) \e^{-\j2\pi nf_0t}\ud t.
+\end{equation}
+
+All'aumentare del periodo di ripetizione $T_0$ diminuisce proporzionalmente la frequenza fondamentale $f_0$ e quindi la distanza tra due armoniche consecutive (che è proprio $f_0$). Ciò determina un \emph{infittimento} dello spettro del segnale. Dalla eq.~\eqref{eq:spettro-x-p} si nota inoltre che l'ampiezza dei coefficienti tende a ridursi all'aumentare di $T_0$. Al limite per $T_0\to\infty$, quindi, lo spettro si infittisce progressivamente appiattendosi sull'asse delle ascisse.
+
+Per ovviare al problema della riduzione delle ampiezze delle righe spettrali, si definisce, per ciascuna delle frequenze armoniche $nf_0$, una sorta di ``coefficiente di Fourier modificato'':
+%
+\begin{equation}\label{eq:coefficienti-modificati}
+X(nf_0) \triangleq T_0X_n = \int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}} x_p(t) \e^{-\j2\pi nf_0t}\ud t.
+\end{equation}
+%
+Alla luce di ciò, si può riscrivere l'equazione~\eqref{eq:antitrasformata-x-p} come:
+%
+\begin{equation}
+x_p(t) = \sum_{n=-\infty}^{+\infty} X(nf_0)\e^{\,\j2\pi nf_0t} \cdot f_0
+\end{equation}
+%
+e definendo%
+\footnote{Non si tratta di una vera e propria definizione: in maniera euristica, si può dire che la variabile continua $f$ è, in un certo senso, il limite della variabile discreta $nf_0$ quando $f_0\to0$.}
+la variabile continua $f=\lim_{f_0\to0}nf_0$, se si effettua ad ambo i membri il limite per $T_0\to\infty$, l'equazione precedente si trasforma nell'espressione della \acf{ATCF}:
+%
+\begin{center}\begin{tabular}{lm{5cm}}
+ \framebox[.50\linewidth]{$\displaystyle{x(t)=\int_{-\infty}^{+\infty}X(f)\e^{\,\j2\pi ft}\ud f}$} &
+ \begin{flushleft}\textsc{Antitrasformata Continua di Fourier\\(equazione di sintesi)}\end{flushleft}
+\end{tabular}\end{center}
+
+Il segnale aperiodico $x(t)$ è dunque rappresentabile attraverso il cosiddetto \emph{integrale di Fourier}.
+
+L'espressione della $X(f)$ si ottiene passando al limite per $T_0\to\infty$ nell'eq.~\eqref{eq:coefficienti-modificati} dei coefficienti di Fourier modificati. Giungiamo così la formulazione della \acf{TCF}:
+%
+\begin{center}\begin{tabular}{lm{5cm}}
+ \framebox[.50\linewidth]{$\displaystyle{X(f)=\int_{-\infty}^{+\infty}x(t)\e^{-\j2\pi ft}\ud t}$} &
+ \begin{flushleft}\textsc{Trasformata Continua di Fourier\\(equazione di analisi)}\end{flushleft}
+\end{tabular}\end{center}
+
+Mentre un segnale periodico può essere rappresentato, mediante serie di Fourier, con componenti sinusoidali ad ampiezza finita e a frequenze multiple di un'unica frequenza fondamentale, i segnali aperiodici sono rappresentabili, tramite integrale di Fourier, come sovrapposizione di componenti sinusoidali di ampiezza infinitesima $X(f)\ud f$ e di frequenza $f$ variabile con continuità su tutto l'asse reale.
+
+In altre parole, il segnale aperiodico è visto come un segnale periodico di \emph{periodo illimitato} e quindi con \emph{frequenza fondamentale infinitamente piccola}, passando dall'insieme discreto di armoniche all'insieme continuo di componenti frequenziali.
+
+La corrispondenza biunivoca tra segnale aperiodico e la sua \ac{TCF} viene indicata mediante la scrittura:
+%
+\[x(t)\quad\xLeftrightarrow{\TCF}\quad X(f).\]
+%
+La trasformata e l'antitrasformata continue sono anche indicate con la notazione:
+%
+\[X(f)=\TCF\big[x(t)\big],\quad x(t)=\ATCF\big[X(f)\big].\]
+
+Infine, essendo la $X(f)$ una funzione complessa (di variabile reale), è comodo rappresentarla mediante il suo spettro di ampiezza ($\abs{X(f)}$) e di fase ($\angle X(f)$).
+
+
+\section{Proprietà della Trasformata Continua di Fourier}
+
+\subsection{Criteri di esistenza}
+
+Due criteri consentono di affermare se esista o meno la trasformata continua di Fourier di un dato segnale $x(t)$.
+La prima condizione sufficiente afferma che se $x(t)$ ha energia finita
+%
+\[E_x = \int_{-\infty}^{+\infty}\abs{x(t)}^2\ud t<\infty\]
+%
+allora esiste la sua trasformata $X(f)$ e il segnale è rappresentabile mediante l'integrale di Fourier.
+
+Il secondo criterio sufficiente (meno restrittivo) è detto \emph{Criterio di Dirichlet}, e può essere enunciato come segue.
+
+\begin{criterio}[di Dirichelet]
+Se
+\begin{enumerate}
+\item $x(t)$ è assolutamente sommabile
+      \[\int_{-\infty}^{+\infty}\abs{x(t)}\ud t < \infty,\]
+\item $x(t)$ presenta un numero finito di discontinuità di prima specie e un numero finito di massimi e minimi in un qualunque intervallo finito $[t_1,t_2]$ (con $t_1$ e $t_2$ fissati arbitrariamente),
+\end{enumerate}
+allora il segnale è rappresentabile come integrale di Fourier (cioè come antitrasformata della sua trasformata di Fourier) e nei punti di discontinuità l'integrale di Fourier converge alla semisomma dei limiti destro e sinistro del segnale.
+\end{criterio}
+
+\subsection{Simmetrie degli spettri}
+Se poniamo $R(f)=\Re\{X(f)\}$, $I(f)=\Im\{X(f)\}$, possiamo rappresentare la $X(f)$ in forma algebrica come
+\begin{equation}\label{eq:trasformata-parte-reale-e-immaginaria}
+X(f) = R(f)+\j I(f).
+\end{equation}
+Similmente, se $A(f)=\abs{X(f)}$ e $\Phi(f)=\angle X(f)$, allora si può scrivere
+\[X(f) = A(f)\e^{\,\j\varPhi(f)}.\]
+
+\begin{proprieta}[Simmetria Hermitiana]
+\label{prp:simmetria-hermitiana}
+Se%
+\margincomment{Questa proprietà e le seguenti potrebbero esser dimostrate in modo analogo alle corrispondenti proprietà della \ac{TSF}, tuttavia il professore si è rifatto al~\cite{b:luise}, dove sono contenute dimostrazioni diverse, qui riportate.}
+$x(t)$ è una funzione reale, allora la sua trasformata $X(f)$ è Hermitiana, ossia:
+\begin{equation}\label{eq:simmetria-hermitiana}
+X(f) = X^*(-f).
+\end{equation}
+\end{proprieta}
+\begin{proof}
+Poiché per ipotesi $x(t)$ è una funzione reale, le parti $R(f)$ e $I(f)$ dell'equazione~\eqref{eq:trasformata-parte-reale-e-immaginaria} si possono ottenere immediatamente dall'espressione della \ac{TCF}:
+\begin{align}
+R(f) &= \Re\biggl\{\int_{-\infty}^{+\infty}x(t)\e^{-\j2\pi ft}\ud t\biggr\} =
+        \int_{-\infty}^{+\infty}x(t)\cos(2\pi ft)\ud t      \label{eq:trasformata-parte-reale}\\
+I(f) &= \Im\biggl\{\int_{-\infty}^{+\infty}x(t)\e^{-\j2\pi ft}\ud t\biggr\} =
+        -\int_{-\infty}^{+\infty}x(t)\sin(2\pi ft)\ud t.    \label{eq:trasformata-parte-immaginaria}
+\end{align}
+Da queste espressioni si ricava immediatamente che:
+\[R(f) = R(-f) \text{\quad e\quad} I(f) =-I(-f)\]
+ovvero la parte reale della trasformata di un segnale reale è una funzione pari della frequenza, mentre la parte immaginaria ne è una funzione dispari. Da ciò, la tesi:
+\[X(-f) = R(-f)+\j I(-f) = R(f)-\j I(f) = X^*(f). \qedhere\]
+\end{proof}
+
+Queste proprietà si riflettono anche su ampiezza e fase: lo spettro di ampiezza è una funzione pari, mentre la fase è dispari:
+\[A(-f) = \sqrt{R^2(-f)+I^2(-f)}=\sqrt{R^2(f)+I^2(f)} = A(f)\]
+\[\Phi(-f) = \tan^{-1}\Biggl(\frac{I(-f)}{R(-f)}\Biggr)=\tan^{-1}\Biggl(\frac{-I(f)}{R(f)}\Biggr)=
+             -\tan^{-1}\Biggl(\frac{I(f)}{R(f)}\Biggr) = -\Phi(f).\]
+
+\subsection{Segnali pari e dispari}
+
+\begin{proprieta}[segnali reali e pari]
+Se $x(t)$ è un segnale reale e pari, allora anche la sua trasformata è reale e pari:
+\[X(f) = X(-f) =X^*(f).\]
+\end{proprieta}
+\begin{proof}
+Possiamo procedere nel seguente modo:
+\begin{align*}
+ X(f) &= \TCF[x(t)] = \TCF[x(-t)] = \int_{-\infty}^{+\infty}x(-t)\e^{-\j2\pi ft}\ud t\\
+    &= \int_{-\infty}^{+\infty}x(t')\e^{\,\j2\pi ft'}\ud t'= \int_{-\infty}^{+\infty}x(t')\e^{-\j2\pi(-f)t'}\ud t'=X(-f)
+\end{align*}
+avendo effettuato la sostituzione $t'=-t$. Di conseguenza, la \ac{TCF} trovata è una funzione pari e inoltre, unendo questo risultato alla~\eqref{eq:simmetria-hermitiana}, si ottiene
+\[X(f)=X^*(f) \quad\Leftrightarrow\quad R(f)+\j I(f) = R(f)-\j I(f)\]
+da cui:
+\[I(f) = -I(f) = 0\]
+ossia la parte reale della trasformata è una funzione pari, mentre la parte immaginaria è (insieme pari e dispari, cioè) nulla.
+
+Si poteva giungere allo stesso risultato anche a partire dalle relazioni~\eqref{eq:trasformata-parte-reale} e~\eqref{eq:trasformata-parte-immaginaria}. Per la simmetria hermitiana, infatti, la funzione integrale nella~\eqref{eq:trasformata-parte-reale} è pari \emph{nella frequenza} (in quanto il coseno è pari). Inoltre, nella~\eqref{eq:trasformata-parte-immaginaria} compare come funzione integranda una funzione reale e dispari (in quanto è il prodotto di una funzione reale e pari con una funzione reale e dispari) \emph{nel tempo}, il cui integrale su tutto l'asse dei tempi è nullo.
+\end{proof}
+
+\begin{proprieta}[segnali reali e dispari]
+Se $x(t)$ è un segnale reale e dispari, allora la sua trasformata è immaginaria e dispari:
+\[X(f)= -X(-f) = -X^*(f).\]
+\end{proprieta}
+\begin{proof}
+Anche in questo caso si possono fare ragionamenti a partire dalle relazioni~\eqref{eq:trasformata-parte-reale} e~\eqref{eq:trasformata-parte-immaginaria}, oppure si può procedere in questo modo:
+\begin{align*}
+ X(f) &= \TCF[x(t)] = \TCF[-x(-t)] = -\int_{-\infty}^{+\infty}x(-t)\e^{-\j2\pi ft}\ud t\\
+      &= -\int_{-\infty}^{+\infty}x(t')\e^{\,\j2\pi ft'}\ud t' = -\int_{-\infty}^{+\infty}x(t')\e^{-\j2\pi(-f)t'}\ud t'=-X(-f).
+\end{align*}
+avendo effettuato il cambio di variabile $t'=-t$. Pertanto, la trasformata trovata è una funzione dispari. Inoltre, considerando anche la~\eqref{eq:simmetria-hermitiana}, si ottiene
+\[X(f)=-X^*(f) \quad\Leftrightarrow\quad R(f)+\j I(f) = -R(f)+\j I(f)\]
+da cui:
+\[R(f) = -R(f) = 0\]
+ossia la parte reale della trasformata è nulla, mentre la parte immaginaria (e quindi la trasformata, coincidente con la sua parte immaginaria) è dispari.
+\end{proof}
+
+
+\section{Teoremi sulla Trasformata Continua di Fourier}
+\label{sec:teoremi-sulla-TCF}
+I teoremi dei quali gode la \ac{TCF} sono estremamente utili nel calcolo delle trasformate dei segnali.
+
+\subsection{Linearità}
+\begin{teorema}[della linearità]
+Si considerino i segnali $x_1(t)$ e $x_2(t)$ e siano $X_1(f)$ e $X_2(f)$ le rispettive trasformate. Allora
+\[x(t)=ax_1(t)+bx_2(t) \quad\xLeftrightarrow{\TCF}\quad X(f)=aX_1(f)+bX_2(f).\]
+\end{teorema}
+\begin{proof}
+Basta applicare la definizione di trasformata e sfruttare la proprietà di linearità dell'integrale.
+\end{proof}
+
+
+\subsection{Dualità}
+\begin{teorema}[della dualità]
+Si considerino il segnale temporale $X(t)$ e il segnale $x(f)$ nel dominio della frequenza. Se $X(f)$ è la trasformata di $x(t)$, allora:
+\[X(t)\quad\xLeftrightarrow{\TCF}\quad x(-f).\]
+\end{teorema}
+\begin{proof}
+Se nella definizione di antitrasformata di $x(t)$ si scambiano formalmente le variabili $t$ ed $f$ si ottiene:
+\begin{equation*}
+x(f) = \int_{-\infty}^{+\infty}X(t)\e^{\,\j2\pi tf}\ud t
+\end{equation*}
+ed effettuando un cambio di variabile, sostituendo $f$ con $-f$, si ottiene:
+\begin{equation*}
+x(-f) = \int_{-\infty}^{+\infty}X(t)\e^{-\j2\pi tf}\ud t.   \qedhere
+\end{equation*}
+\end{proof}
+
+\begin{esempio}
+Si supponga di voler calcolare la trasformata del segnale $x(t)=A\sinc(Bt)$. Poiché:
+\[\rect{t}{T} \quad\xLeftrightarrow{\TCF}\quad T\sinc(fT),\]
+utilizzando il teorema della dualità è possibile scrivere:
+\[T\sinc(Tt) \quad\xLeftrightarrow{\TCF}\quad\vrect\biggl(-\frac{f}{T}\biggr).\]
+Se scriviamo la $x(t)$ come
+\begin{align*}
+x(t)&=A\sinc(Bt) = \frac{A}{B}B\sinc(Bt),
+\end{align*}
+allora, antitrasformando:
+\begin{align*}
+X(f)&=\frac{A}{B}\vrect\biggl(-\frac{f}{B}\biggr) = \frac{A}{B}\vrect\biggl(\frac{f}{B}\biggr).
+\end{align*}
+\end{esempio}
+
+
+\subsection{Ritardo}
+Il segnale $x(t-t_0)$ corrisponde al segnale $x(t)$ anticipato o ritardato, ossia traslato lungo l'asse
+temporale. L'operazione di traslazione corrisponde a un ritardo se $t_0>0$ e a un anticipo se $t_0<0$.
+\begin{teorema}[del ritardo]
+Si dimostra che:
+\[x(t-t_0) \quad\xLeftrightarrow{\TCF}\quad X(f)\e^{-\j2\pi ft_0}.\]
+\end{teorema}
+\begin{proof}
+Sia $y(t)=x(t-t_0)$, allora:
+\begin{align*}
+Y(f)&= \int_{-\infty}^{+\infty}x(t-t_0)\e^{-\j2\pi ft}\ud t\\
+\intertext{e con il cambiamento di variabile $\alpha=t-t_0$, si ricava:}
+	&= \int_{-\infty}^{+\infty}x(\alpha)\e^{-\j2\pi f(t_0+\alpha)}\ud \alpha\\
+	&= \e^{-\j2\pi ft_0}\int_{-\infty}^{+\infty}x(\alpha)\e^{-\j2\pi f\alpha}\ud \alpha=
+	   X(f)\e^{-\j2\pi ft_0}.     \qedhere
+\end{align*}
+\end{proof}
+
+Questa proprietà mostra chiaramente che un ritardo temporale modifica lo spettro di fase della trasformata del
+segnale ma non cambia il suo spettro d'ampiezza.
+\begin{equation*}
+\begin{cases}\abs{Y(f)}=\abs{X(f)}\\ \angle Y(f)=\angle X(f)-2\pi ft_0\end{cases}
+\end{equation*}
+Come si nota, lo sfasamento introdotto dal ritardo varia linearmente con la frequenza.
+
+\begin{esempio}
+Calcolare la trasformata del segnale
+\[y(t)=\vrect\biggl(\frac{t-t_0}{T}\biggr).\]
+Poiché $y(t)$ è un segnale ritardato, vale $y(t)=x(t-t_0)$ con $x(t)=\vrect(t/T)$, e quindi:
+\[Y(f)=X(f)\e^{-\j2\pi ft_0}=T\sinc(fT)\e^{-\j2\pi ft_0}.\]
+\end{esempio}
+
+
+\subsection{Cambiamento di scala}
+Se due segnali $y(t)$ e $x(t)$ sono legati dalla relazione
+\[y(t)=x(\alpha t)\]
+con $\alpha\neq 0$, allora il segnale $y(t)$ è una versione rallentata o accelerata del segnale di partenza $x(t)$ (la forma dei due segnali è comunque la stessa). Il coefficiente $\alpha$ agisce infatti dilatando o contraendo la funzione sull'asse temporale: si parla perciò di \textit{cambiamento della scala temporale}. Più precisamente, moltiplicando la variabile $t$ per $\alpha$ si producono i seguenti effetti:
+\begin{itemize}
+\item se $\abs{\alpha}>1$ si ottiene una \emph{compressione} della scala dei tempi (il segnale viene accelerato);
+\item se $\abs{\alpha}<1$ si ottiene una \emph{dilatazione} della scala dei tempi (il segnale viene rallentato);
+\item se $\alpha<0$, infine, si ottiene l'\emph{inversione} della scala dei tempi (il segnale subisce un ribaltamento rispetto all'asse delle ordinate).
+\end{itemize}
+
+\begin{teorema}[del cambiamento di scala]
+Per $\alpha\neq 0$, vale la trasformata:
+\[y(t)=x(\alpha t)\quad\xLongleftrightarrow{\TCF}\quad Y(f)=\frac{1}{\abs{\alpha}} X\biggl(\frac{f}{\alpha}\biggr).\]
+\end{teorema}
+\begin{proof}
+La trasformata del segnale $y(t)$ si calcola come:
+\begin{align}\label{eq:trasformanda-cambiamento-scala}
+Y(f)&= \int_{-\infty}^{+\infty}x(\alpha t)\e^{-\j2\pi ft}\ud t.
+\end{align}
+Se $\alpha>0$, tramite il cambiamento di variabile $\alpha t=t'$, l'equazione precedente diventa:
+\begin{align*}
+Y(f)&= \int_{-\infty}^{+\infty}x(t')\e^{-\j2\pi ft'/\alpha}\frac{\ud t'}{\alpha}\\
+	&= \frac{1}{\alpha}\int_{-\infty}^{+\infty}x(t')\e^{-\j2\pi(f/\alpha)t'}\ud t'=
+	   \frac{1}{\alpha}X\biggl(\frac{f}{\alpha}\biggr).
+\end{align*}
+Se invece $\alpha<0$, partendo sempre dalla~\ref{eq:trasformanda-cambiamento-scala} ed effettuando il cambiamento di variabile $\alpha t=t'$, si ottiene
+\begin{align*}
+Y(f)&= -\int_{-\infty}^{+\infty}x(t')\e^{-\j2\pi f(t'/\alpha)}\frac{\ud t'}{\alpha}
+\end{align*}
+dove il segno $-$ tiene conto dell'inversione degli estremi di integrazione.%
+\footnote{Ogni volta che si fa un cambio di variabile in un integrale, bisogna effettuare tre sostituzioni: nella funzione integranda (ossia all'\,``interno'' dell'integrale), nel termine differenziale (per cui in questo caso $\ud t$ diventa $\ud t'/\alpha$) e negli estremi di integrazione (in questo caso, se $t$ va da $-\infty$ a $+\infty$, poiché $\alpha<0$ allora $t'=\alpha t$ va da $+\infty$ a $-\infty$, da cui il segno ``meno'' per ``raddrizzare'' l'integrale).}
+Proseguendo si giunge al risultato:
+\begin{align*}
+Y(f) &= -\frac{1}{\alpha}\int_{-\infty}^{+\infty}x(t')\e^{-\j2\pi(f/\alpha)t'}\ud t'=
+	   -\frac{1}{\alpha}X\biggl(\frac{f}{\alpha}\biggr).
+\end{align*}
+%
+In entrambi i casi ($\alpha>0$ e $\alpha<0$) il risultato ottenuto può essere scritto come:
+\begin{align*}
+Y(f)&=\frac{1}{\abs{\alpha}} X\biggl(\frac{f}{\alpha}\biggr).     \qedhere
+\end{align*}
+\end{proof}
+
+Si nota che una \emph{dilatazione} dell'asse dei tempi comporta una compressione dell'asse delle frequenze così come una \emph{compressione} dell'asse dei tempi comporta una dilatazione dell'asse delle frequenze.
+
+\begin{esempio}
+Calcolare la trasformata del segnale
+\[y(t)=\vrect\biggl(\frac{t}{2T}\biggr).\]
+Se $x(t) = \vrect(t/T)$, allora $y(t) = x(\alpha t)$, con $\alpha=1/2$. Per il teorema del cambiamento di scala si trova:
+\[Y(f) = \frac{1}{\abs{\alpha}} X\biggl(\frac{f}{\alpha}\biggr) = 2T\sinc(2fT).\]
+
+\begin{figure}
+\centering
+\subfloat{\framebox{\begin{pspicture*}(-2.4,-0.8)(2.6,2.7)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.2,-0.6)(2.3,2.5)
+  \uput[d](2.2,0){$t$}
+  \uput[l](1.5,2.1){$y(t)$}
+  \uput[l](1.5,1.6){$x(t)$}
+  \psline[linewidth=0.8pt](1.5,2.1)(2,2.1)
+  \psline[linewidth=0.8pt,linestyle=dashed,dash=3pt 3pt](1.5,1.6)(2,1.6)
+  \psline[linewidth=1pt](-1.6,0)(-1.6,0.8)
+  \psline[linewidth=1pt](-1.6,0.8)(1.6,0.8)
+  \psline[linewidth=1pt](1.6,0)(1.6,0.8)
+  \psline[linewidth=1pt,linestyle=dashed,dash=3pt 3pt](-0.8,0)(-0.8,0.8)
+  \psline[linewidth=1pt,linestyle=dashed,dash=3pt 3pt](0.8,0)(0.8,0.8)
+  \uput[l](0,1.05){$\scriptstyle{1}$}
+  \uput[d](-1.6,0){$\scriptstyle{-T}$}
+  \uput[d](-0.8,0){$\scriptstyle{-T/2}$}
+  \uput[d](0.8,0){$\scriptstyle{T/2}$}
+  \uput[d](1.6,0){$\scriptstyle{T}$}
+\end{pspicture*}}} \quad
+\subfloat{\framebox{\begin{pspicture*}(-3.7,-0.8)(3.9,2.7)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-3.5,-0.6)(3.6,2.5)
+  \uput[d](3.5,0){$f$}
+  \uput[l](2.9,2.1){$Y(f)$}
+  \uput[l](2.9,1.6){$X(f)$}
+  \psline[linewidth=0.8pt](2.9,2.1)(3.4,2.1)
+  \psline[linewidth=0.8pt,linestyle=dashed,dash=3pt 3pt](2.9,1.6)(3.4,1.6)
+  \uput[l](-0.3,1.15){$\scriptstyle{1}$}
+  \infixtoRPN{0.4*sin(300*x)/x}
+  \psplot[linewidth=1pt,plotstyle=curve]{-3.2}{-1}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=100]{-1}{1}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve]{1}{3.2}{\RPN}
+  \infixtoRPN{0.4*sin(150*x)/x}
+  \psplot[linewidth=1pt,linestyle=dashed,dash=3pt 3pt,plotstyle=curve]{-3.2}{3.2}{\RPN}
+\end{pspicture*}}}
+\caption{Esempio di applicazione del teorema del cambiamento di scala.}
+\end{figure}
+\end{esempio}
+
+\subsection{Modulazione}
+Analizziamo la modulazione di un segnale con oscillazioni di vario tipo: cosinusoidali o sinusoidali, con o senza fase e infine con un esponenziale complesso.
+
+\begin{teorema}[della modulazione con coseno]
+Se $X(f)$ è la \ac{TCF} di $x(t)$, allora:
+\[y(t) = x(t)\cos(2\pi f_0t) \quad\xLongleftrightarrow{\TCF}\quad Y(f)=\frac{X(f-f_0)+X(f+f_0)}{2}.\]
+\end{teorema}
+\begin{proof}
+Bisogna scrivere il coseno tramite le formule di Eulero:
+\begin{align*}
+Y(f)&=\int_{-\infty}^{+\infty}x(t)\cos(2\pi f_0t)\e^{-\j2\pi ft}\ud t\\
+	&=\int_{-\infty}^{+\infty}x(t)\Biggl[\frac{\e^{\,\j2\pi f_0t}+\e^{-\j2\pi f_0t}}{2}\Biggr]\e^{-\j2\pi ft}\ud t\\
+	&=\frac{1}{2}\int_{-\infty}^{+\infty}x(t)\left(\e^{\,\j2\pi f_0t}+\e^{-\j2\pi f_0t}\right)\e^{-\j2\pi ft}\ud t\\
+	&=\frac{1}{2}\int_{-\infty}^{+\infty}x(t)\e^{\,\j2\pi f_0t}\e^{-\j2\pi ft}\ud t+
+	  \frac{1}{2}\int_{-\infty}^{+\infty}x(t)\e^{-\j2\pi f_0t}\e^{-\j2\pi ft}\ud t\\
+	&=\frac{1}{2}\int_{-\infty}^{+\infty}x(t)\e^{-\j2\pi (f-f_0)t}\ud t+
+	  \frac{1}{2}\int_{-\infty}^{+\infty}x(t)\e^{-\j2\pi (f+f_0)t}\ud t\\
+	&=\frac{1}{2}X(f-f_0)+\frac{1}{2}X(f+f_0).  \qedhere
+\end{align*}
+\end{proof}
+
+Come prima conclusione, è immediato notare che moltiplicando un segnale analogico per un fattore esponenziale complesso $\e^{\,\j2\pi f_0t}$, la sua trasformata viene traslata lungo l'asse frequenziale intorno alla frequenza $f_0$. Questa proprietà (che dimostreremo esplicitamente più avanti) è nota come \textit{proprietà di traslazione (o ritardo) in frequenza}. Tornando alla modulazione con coseno, se
+%
+\[y(t) = x(t) \cos(2\pi f_0t),\]
+%
+allora $y(t)$ viene detto \emph{segnale modulato}, mentre $x(t)$ è il \emph{segnale modulante} e $\cos(2\pi f_0t)$ è l'\emph{oscillazione} utilizzata. Lo spettro del segnale modulato $y(t)$ è una versione duplicata e traslata dello spettro del segnale di partenza (il segnale modulante) attorno alle frequenze $-f_0$ e $f_0$.
+
+\begin{esempio}
+\label{es:modulazione}
+Calcolare la trasformata del segnale
+\[y(t) = \rect{t}{T}\cos(2\pi f_0t).\]
+Possiamo applicare il teorema della modulazione a $x(t)=\vrect(t/T)$, ricavando:
+\begin{align*}
+Y(f)&=\frac{X(f-f_0)+X(f+f_0)}{2}\\
+	&=\frac{T}{2}\sinc\bigl(T(f-f_0)\bigr)+\frac{T}{2}\sinc\bigl(T(f+f_0)\bigr).
+\end{align*}
+		
+\begin{figure}
+\centering
+\framebox{\begin{pspicture*}(-6.5,-0.8)(6.5,2.4)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-6.2,-0.6)(6.2,2.2)
+  \uput[d](6.1,0){$f$}
+  \uput[r](0,2){$Y(f)$}
+  \uput[l](0,1.6){$\scriptstyle{T/2}$}
+  \psline[linewidth=0.5pt](-0.05,1.6)(0.05,1.6)
+  \uput[d](-2.5,0){$\scriptstyle{-f_0}$}
+  \psline[linewidth=0.5pt](-2.5,-0.05)(-2.5,0.05)
+  \uput[d](2.5,0){$\scriptstyle{f_0}$}
+  \psline[linewidth=0.5pt](2.5,-0.05)(2.5,0.05)
+  \infixtoRPN{0.3*sin(300*(x+2.5))/(x+2.5) + 0.3*sin(300*(x-2.5))/(x-2.5)}
+  \psplot[linewidth=0.8pt,plotstyle=curve,plotpoints=500]{-5.8}{5.8}{\RPN}
+\end{pspicture*}}
+\caption{Trasformata continua di Fourier del segnale dell'esempio~\ref{es:modulazione}.}
+\end{figure}
+\end{esempio}
+
+\begin{teorema}[della modulazione con seno]
+Vale la trasformata:
+\[y(t) = x(t)\sin(2\pi f_0t) \quad\xLeftrightarrow{\TCF}\quad Y(f)=\frac{X(f-f_0)-X(f+f_0)}{2\j}.\]
+\end{teorema}
+\begin{proof}
+La dimostrazione è analoga al caso precedente (ed è per questo motivo omessa).
+\end{proof}
+
+\begin{teorema}[della modulazione con fase generica]
+Si dimostra che
+\[y(t) = x(t)\cos(2\pi f_0t+\varphi) \quad\xLeftrightarrow{\TCF}\quad Y(f) = \frac{\e^{\,\j\varphi}}{2}X(f-f_0)+\frac{\e^{-\j\varphi}}{2}X(f+f_0).\]
+\end{teorema}
+\begin{proof}
+Come nei casi precedenti, la dimostrazione procede utilizzando le formule di Eulero:
+\begin{align*}
+Y(f)&= \int_{-\infty}^{+\infty}x(t)\cos(2\pi f_0t+\varphi)\e^{-\j2\pi ft}\ud t\\
+    &= \int_{-\infty}^{+\infty}x(t)\left[\frac{\e^{\,\j(2\pi f_0t+\varphi)}+
+       \e^{-\j(2\pi f_0t+\varphi)}}{2}\right]\e^{-\j2\pi ft}\ud t\\
+	&= \frac{1}{2}\int_{-\infty}^{+\infty}x(t)\e^{\,\j(2\pi f_0t+\varphi)}\e^{-\j2\pi ft}\ud t+
+	   \frac{1}{2}\int_{-\infty}^{+\infty}x(t)\e^{-\j(2\pi f_0t+\varphi)}\e^{-\j2\pi ft}\ud t\\
+	&= \frac{1}{2}\int_{-\infty}^{+\infty}x(t)\e^{\,\j[2\pi (f_0-f)t+\varphi]}\ud t+
+	   \frac{1}{2}\int_{-\infty}^{+\infty}x(t)\e^{-\j[2\pi (f_0+f)+\varphi]}\ud t\\
+    &= \frac{\e^{\,\j\varphi}}{2}\int_{-\infty}^{+\infty}x(t)\e^{-\j2\pi (f-f_0)t}\ud t+
+       \frac{\e^{-\j\varphi}}{2}\int_{-\infty}^{+\infty}x(t)\e^{-\j2\pi (f+f_0)}\ud t\\
+	&= \frac{\e^{\,\j\varphi}}{2}X(f-f_0)+\frac{\e^{-\j\varphi}}{2}X(f+f_0).   \qedhere
+\end{align*}
+\end{proof}
+
+\begin{teorema}[della modulazione con esponenziale complesso]
+Si dimostra che:
+\[y(t)=x(t)\e^{\,\j2\pi f_0t} \quad\xLeftrightarrow{\TCF}\quad Y(f)=X(f-f_0).\]
+\end{teorema}
+\begin{proof}
+Si applica la definizione di trasformata:
+\begin{align*}
+Y(f)&= \int_{-\infty}^{+\infty}x(t)\e^{\,\j2\pi f_0t}\e^{-\j2\pi ft}\ud t\\
+	&= \int_{-\infty}^{+\infty}x(t)\e^{-\j2\pi(f-f_0)t}\ud t =
+	   X(f-f_0).   \qedhere
+\end{align*}
+\end{proof}
+
+Il teorema della modulazione con esponenziale complesso può essere letto come il \emph{teorema del ritardo in frequenza}
+\[X(f-f_0)\Longleftrightarrow x(t)\e^{\,\j2\pi f_0t}\]
+in analogia con il \emph{teorema del ritardo (temporale)} già visto
+\[x(t-t_0)\Longleftrightarrow X(f)\e^{-\j2\pi ft_0}.\]
+
+
+\subsection{Teoremi di integrazione e derivazione}
+\label{sec:teoremi-derivazione-integrazione}
+
+Nell'elaborazione di segnali a tempo continuo si effettuano spesso operazioni di derivazione temporale dei segnali stessi.
+
+\begin{teorema}[della derivazione]
+\label{thm:teorema-derivazione}
+Se $x(t)$ è derivabile, l'operazione di derivazione nel dominio del tempo corrisponde nel dominio della frequenza a un prodotto:
+\[y(t)=\frac{\ud}{\ud t}x(t) \quad\xLeftrightarrow{\TCF}\quad Y(f) = \j2\pi fX(f).\]
+\end{teorema}
+\begin{proof}
+Si calcola:
+\begin{align*}
+y(t)&= \frac{\ud}{\ud t}x(t) = \frac{\ud}{\ud t}\int_{-\infty}^{+\infty}X(f)\e^{\,\j2\pi ft}\ud f\\
+	&= \int_{-\infty}^{+\infty}X(f)\left[\frac{\ud}{\ud t}\e^{\,\j2\pi ft}\right]\ud f\\
+	&= \int_{-\infty}^{+\infty}\bigl(X(f)\,\j2\pi f\bigr)\e^{\,\j2\pi ft}\ud f
+\end{align*}
+ossia $Y(f)=\j2\pi f X(f)$ è la trasformata continua di Fourier del segnale $y(t)$.
+\end{proof}
+
+L'operazione di derivata temporale di un segnale si traduce, nel dominio della frequenza, in una semplice operazione algebrica, e cioè in un'alterazione di tutte le componenti frequenziali secondo un fattore $\j2\pi f$ proporzionale al valore della frequenza stessa. Oltre a uno sfasamento di $\pm\pi/2$ (a seconda del segno di $f$), l'operazione di derivata comporta in particolare una \emph{esaltazione delle componenti alle alte frequenze}, mentre si annulla la componente in continua (la derivata di una costante è zero).
+
+Il duale del teorema della derivazione è il \emph{teorema dell'integrazione}.
+
+\begin{teorema}[dell'integrazione]
+\label{thm:teorema-integrazione-incompleto}
+Si dimostra che:
+\[y(t)=\int_{-\infty}^{t}x(\alpha)\ud\alpha \quad\xLeftrightarrow{\TCF}\quad Y(f)=\frac{X(f)}{\j2\pi f}\]
+purché sia
+\[X(0)=0.\]
+\end{teorema}
+\begin{proof}
+Se $y(t)$ è l'integrale della $x(t)$, allora $x(t)$ è la derivata della $y(t)$ e perciò, per il teorema della derivazione, si ha
+\begin{equation}\label{eq:trasformata-di-derivata-2}
+X(f)=\j2\pi fY(f).
+\end{equation}
+Di conseguenza:
+\begin{equation}\label{eq:trasformata-di-integrale}
+Y(f) = \frac{X(f)}{\j2\pi f}.
+\end{equation}
+
+Dal punto di vista puramente algebrico quest'ultima relazione è però equivalente alla~\eqref{eq:trasformata-di-derivata-2} solo per $f\neq 0$. Quando $f=0$, affinché la~\eqref{eq:trasformata-di-derivata-2} possa essere verificata, si deve avere $X(0)=0$, altrimenti l'uguaglianza è impossibile e la $Y(f)$ tenderebbe a infinito (non sarebbe definita in $f=0$). Affinché invece
+\[\lim_{f\to 0} Y(f)=\frac{X(f)}{\j2\pi f} < \infty\]
+deve essere
+\[X(f)|_{f=0}=0.\]
+
+L'uguaglianza $X(0)=0$ equivale ad affermare che il segnale $x(t)$ sottende area nulla, infatti:
+\[X(0)=\int_{-\infty}^{+\infty}x(t)\ud t.\]
+Alternativamente, questa condizione può essere espressa dicendo che la funzione $y(t)$ deve tendere a zero per $t\to\infty$:
+\begin{equation}
+\lim_{t\to+\infty}y(t) = \int_{-\infty}^{+\infty}x(\alpha)\ud\alpha = X(0).
+\end{equation}
+
+Si noti che se la funzione $y(t)$ tendesse a un valore non nullo, la sua energia non sarebbe finita e in generale potrebbe non esistere la sua trasformata di Fourier.
+\end{proof}
+
+Dualmente al teorema di derivazione, il teorema dell'integrazione mostra come integrando un segnale siano \emph{esaltate le componenti a bassa frequenza} del suo spettro e attenuate quelle ad alta frequenza.
+
+Dei due teoremi seguenti si omettono le dimostrazioni, analoghe a quelle dei teoremi~\ref{thm:teorema-derivazione} e~\ref{thm:teorema-integrazione-incompleto}.
+
+\begin{teorema}[della derivazione in frequenza]
+Vale la trasformazione:
+\[Y(f)=\frac{\ud}{\ud f}X(f) \quad\xLeftrightarrow{\TCF}\quad y(t)=-\j2\pi t\,x(t).\]
+\end{teorema}
+
+\begin{teorema}[dell'integrazione in frequenza]
+Vale la trasformazione:
+\[Y(f)=\int_{-\infty}^{f}X(\alpha)\ud\alpha  \quad\xLeftrightarrow{\TCF}\quad y(t)=\frac{x(t)}{-\j2\pi t}.\]
+\end{teorema}
+
+
+\subsection{Prodotto di convoluzione}
+
+Dati due segnali $x(t)$ e $y(t)$, il prodotto di convoluzione
+\[z(t)=x(t)\otimes y(t)\]
+è definito mediante il seguente integrale (\textit{integrale di convoluzione}):
+\[z(t)=\int_{-\infty}^{+\infty}x(\tau)\,y(t-\tau)\ud \tau.\]
+
+Il prodotto di convoluzione ha un'importanza cardinale nella teoria dei sistemi lineari stazionari (vedi il capitolo~\ref{cha:sistemi-lineari} a partire da pag.~\pageref{cha:sistemi-lineari}) e sta alla base della teoria del filtraggio lineare.
+
+Consideriamo di avere le funzioni $x(\tau)$ e $y(\tau)$ fatte come rappresentato nella figura~\ref{fig:prodotto-convoluzione} in alto.
+Il grafico della $y(-\tau)$ si ottiene dal grafico della $y(\tau)$ ribaltandolo rispetto all'asse delle ordinate. La $y(-\tau +t)$ avrà il grafico della $y(-\tau)$ traslato di un certo valore specificato da $t$ (dato che stiamo
+considerando la $y$ nel dominio della variabile $\tau$, $t$ è un semplice parametro).
+%
+\begin{figure}
+\centering
+\subfloat[]{\framebox{\begin{pspicture*}(-3.1,-1.2)(3.1,1.7)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.9,-0.7)(2.8,1.3)
+  \uput[d](2.7,0){$\tau$}
+  \uput[r](0,1.1){$x(\tau)$}
+  \infixtoRPN{35*sin(400*x)/(400*x)}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=200]{-2.6}{2.5}{\RPN}
+\end{pspicture*}}}  \quad
+\subfloat[]{\framebox{\begin{pspicture*}(-3.1,-1.3)(3.1,1.6)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.9,-1)(2.8,1.3)
+  \uput[d](2.7,0){$\tau$}
+  \uput[r](0,1.1){$y(\tau)$}
+  \infixtoRPN{1.5*(10*x+1)/(1+(10*x+1)^2)}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=50]{-2.6}{-0.8}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=150]{-0.8}{0.8}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=50]{0.8}{2.5}{\RPN}
+\end{pspicture*}}}\\
+\subfloat[]{\framebox{\begin{pspicture*}(-3.1,-1.3)(3.1,1.6)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.9,-1)(2.8,1.3)
+  \uput[d](2.7,0){$\tau$}
+  \uput[r](0,1.1){$y(-\tau)$}
+  \infixtoRPN{1.5*(10*(-x)+1)/(1+(10*(-x)+1)^2)}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=50]{-2.4}{-0.8}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=150]{-0.8}{0.8}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=50]{0.8}{2.4}{\RPN}
+\end{pspicture*}}}  \quad
+\subfloat[]{\framebox{\begin{pspicture*}(-3.1,-1.3)(3.1,1.6)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.9,-1)(2.8,1.3)
+  \uput[d](2.7,0){$\tau$}
+  \uput[r](0,1.1){$y(-\tau+t)$}
+  \infixtoRPN{1.5*(10*(1-x)+1)/(1+(10*(1-x)+1)^2)}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=50]{-2.4}{0.2}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=100]{0.2}{1.8}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=50]{1.8}{2.4}{\RPN}
+\end{pspicture*}}}
+\caption{Per calcolare il prodotto di convoluzione tra le due funzioni $x(t)$ e $y(t)$, si applicano alla $y(t)$ le trasformazioni grafiche rappresentate nelle due figure in basso.}
+\label{fig:prodotto-convoluzione}
+\end{figure}
+
+Calcolare l'integrale di convoluzione all'istante $\bar{t}$, ossia calcolare $z(\bar{t})$, tra i due segnali significa pertanto eseguire l'integrale da $-\infty$ a $+\infty$ del risultato del prodotto tra il primo segnale ($x$) e il secondo segnale ($y$) ribaltato (di $-\tau$) e traslato di $+\bar{t}$. Per determinare l'andamento della $z(t)$ su tutto l'asse dei tempi, basta eseguire questa procedura per ogni $t$. In realtà, in molti casi si semplifica di molto se si fanno considerazioni sui grafici.
+
+\begin{teorema}[di convoluzione]
+La \ac{TCF} di un segnale $z(t)$ ottenuto come convoluzione tra due segnali
+\[z(t) = x(t)\otimes y(t)\]
+è il prodotto delle  singole trasformate:
+\[Z(f) = X(f)\,Y(f).\]
+\end{teorema}
+\begin{proof}
+Si considera la:
+\begin{align*}
+Z(f) &= \int_{-\infty}^{+\infty} z(t)\e^{-\j2\pi ft}\ud t
+\intertext{e si sostituisce alla $z(t)$ la sua espressione come integrale di convoluzione tra $x(t)$ e $y(t)$, ricavando:}
+     &= \int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} x(\tau)\,y(t-\tau)\ud\tau\,\e^{-\j2\pi ft}\ud t\\
+     &= \int_{-\infty}^{+\infty}x(\tau)\int_{-\infty}^{+\infty}y(t-\tau)\e^{-\j2\pi ft}\ud t\ud\tau\\
+     &= \int_{-\infty}^{+\infty}x(\tau)\,Y(f)\e^{-\j2\pi f\tau}\ud\tau\\
+     &= Y(f)\int_{-\infty}^{+\infty}x(\tau)\e^{-\j2\pi f\tau}\ud\tau = Y(f)\,X(f).  \qedhere
+\end{align*}
+\end{proof}
+
+\paragraph{Proprietà del prodotto di convoluzione.} Il prodotto di convoluzione gode delle proprietà commutativa,
+distributiva e associativa.
+\begin{itemize}
+\item \emph{Commutativa:} \qquad $x(t)\otimes y(t)=y(t)\otimes x(t)$\medskip\newline
+Infatti:
+\begin{align*}
+y(t)\otimes x(t) &= \int_{-\infty}^{+\infty}y(\alpha)\,x(t-\alpha)\ud\alpha
+\intertext{ed effettuando il cambio di variabile $t-\alpha = \beta$:}
+   &= \int_{-\infty}^{+\infty}y(t-\beta)\,x(\beta)\ud\beta = \int_{-\infty}^{+\infty}x(\beta)\,y(t-\beta)\ud\beta\\
+   &= x(t)\otimes y(t).
+\end{align*}
+
+\item \emph{Distributiva:} \qquad $x(t)\otimes [y(t)+z(t)]=x(t)\otimes y(t)+x(t)\otimes z(t)$\medskip\newline
+Basta rifarsi alla proprietà di linearità dell'integrale:
+\begin{align*}
+x(t)\otimes [y(t)+z(t)]&=\int_{-\infty}^{+\infty}x(\alpha)\,[y(t-\alpha)+z(t-\alpha)]\ud\alpha \\
+   &=\int_{-\infty}^{+\infty}x(\alpha)\,y(t-\alpha)\ud\alpha+\int_{-\infty}^{+\infty}x(\alpha)\,z(t-\alpha)\ud\alpha \\
+   &=x(t)\otimes y(t)+x(t)\otimes z(t).
+\end{align*}
+
+\item \emph{Associativa:} \qquad $x(t)\otimes [y(t)\otimes z(t)]=[x(t)\otimes y(t)]\otimes z(t)$\medskip\newline
+Per dimostrarlo si sfrutta la \ac{TCF} della convoluzione:
+\begin{align*}
+\TCF\big[x(t)\otimes [y(t)\otimes z(t)]\big] &= X(f)\,\big[Y(f)\,Z(f)\big] = \big[X(f)\,Y(f)\big]\,Z(f)
+\end{align*}
+e si antitrasforma la relazione ottenuta.
+\end{itemize}
+
+\begin{teorema}[del prodotto]
+La \ac{TCF} di un prodotto
+\[z(t)=x(t)\,y(t)\]
+è uguale al prodotto di convoluzione tra le singole trasformate:
+\[Z(f)=X(f)\otimes Y(f).\]
+\end{teorema}
+\begin{proof}
+Infatti:
+\begin{align*}
+Z(f)&=\int_{-\infty}^{+\infty}x(t)\,y(t)\e^{-\j2\pi ft}\ud t\\
+    &=\int_{-\infty}^{+\infty}\left[\int_{-\infty}^{+\infty}X(\alpha)\e^{\j2\pi\alpha t}\ud \alpha \right]y(t)\e^{-\j2\pi ft}\ud t\\
+	&=\int_{-\infty}^{+\infty}X(\alpha)\left[\int_{-\infty}^{+\infty}y(t)\e^{-\j2\pi (f-\alpha)t}\ud t\right]\ud\alpha\\
+	&=\int_{-\infty}^{+\infty}X(\alpha)\,Y(f-\alpha)\ud \alpha\\
+	&=X(f)\otimes Y(f).  \qedhere
+\end{align*}
+\end{proof}
+
+Il teorema del prodotto è il duale del teorema della convoluzione. Se esistono trasformata e antitrasformata,
+conviene passare da un dominio all'altro in modo da ottenere un semplice prodotto anziché un integrale di
+convoluzione.
+
+
+\section{Trasformate di Fourier Generalizzate}
+\label{sec:trasformata-generalizzata}
+
+\subsection{Funzione impulsiva generalizzata o \texorpdfstring{``delta''}{''delta''} di Dirac}
+Consideriamo%
+\margincomment{Di questo paragrafo il Martorella si è limitato a dire che la $\delta(t)$ è definita come la derivata della funzione gradino, che soddisfa le due relazioni
+\begin{align*}
+&\displaystyle{\delta(t) \triangleq \lim_{\epsilon\to0} \delta_\epsilon(t)}\\
+&\displaystyle{\u(t) = \int_{-\infty}^{t} \!\!\!\delta(\alpha)\ud \alpha}
+\end{align*}
+e che non è una vera e propria funzione.}
+la funzione \emph{gradino unitario}, introdotta già a pagina~\pageref{sub:gradino}:
+%
+\[\u(t)=\begin{cases}1&t\geq 0\\0&t<0.\end{cases}\]
+
+Se calcoliamo la derivata prima della funzione rispetto al tempo
+%
+\[\frac{\ud}{\ud t}\u(t)=\begin{cases} 0 & \text{per } t\neq 0\\ \nexists & \text{per } t=0\end{cases}\]
+%
+troviamo che, a causa della discontinuità di prima specie, la funzione non è derivabile per $t=0$. Si potrebbe pensare di ovviare a questo problema operando come per una qualsiasi discontinuità eliminabile, ossia \emph{ridefinendo} la derivata e associando un valore nullo nel punto di non derivabilità. Si otterrebbe in tal caso:
+%
+\[\frac{\ud}{\ud t}\u(t)=0 \quad\text{per ogni } t.\]
+
+Ma questo approccio non è corretto poiché l'applicazione dell'integrale alla funzione ``derivata'' appena ridefinita non restituisce il segnale di partenza (il gradino), ma una funzione che è nulla ovunque.
+
+Per cercare una soluzione alla questione osserviamo innanzitutto che la funzione gradino è un'astrazione matematica, in quanto i segnali fisici non possono presentare discontinuità. Una migliore approssimazione di una funzione gradino \emph{reale} è la $\u_\epsilon(t)$:
+%
+\[\u_\epsilon(t) = \begin{cases}0 & t<-\epsilon\\
+                                   \bigl(1+\frac{t}{\epsilon}\bigr)/2 & -\epsilon <t<\epsilon\\
+                                   1 & t>\epsilon.\end{cases}\]
+
+\begin{figure}[b]
+\centering
+\framebox{\begin{pspicture*}(-4.3,-0.6)(4.3,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-4.1,-0.4)(4,1.7)
+  \psline[linewidth=1pt](-1,0)(1,1)
+  \psline[linewidth=1pt](-1,0)(-2.5,0)
+  \psline[linewidth=1pt](1,1)(2.5,1)
+  \psline[linewidth=0.5pt](-0.05,1)(0.05,1)
+  \psline[linewidth=0.5pt](1,-0.05)(1,0.05)
+  \psline[linewidth=0.5pt](-1,-0.05)(-1,0.05)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](-2.5,0)(-3.5,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](2.5,1)(3.5,1)
+  \uput[l](0,1.5){$\u_\epsilon(t)$}
+  \uput[d](3.9,0){$t$}
+  \uput[l](0,1){$\scriptstyle{1}$}
+  \uput[d](-1,0){$\scriptstyle{-\epsilon}$}
+  \uput[d](1,0){$\scriptstyle{+\epsilon}$}
+\end{pspicture*}}
+\caption{La funzione gradino può essere approssimata con una ``rampa'' con tempo di salita sufficientemente piccolo.}
+\label{fig:gradino-come-rampa}
+\end{figure}
+
+Il segnale $\u_{\epsilon}(t)$ è adesso ovunque derivabile, e la sua derivata
+\[\delta_\epsilon(t)=\frac{\ud}{\ud t}\u_\epsilon(t) = \frac{1}{2\epsilon}\rect{t}{2\epsilon}\]
+è un rettangolo di base $2\epsilon$ e altezza $1/(2\epsilon)$ (e perciò di area unitaria).
+
+\begin{figure}
+\centering
+\framebox{\begin{pspicture*}(-4.3,-0.6)(4.3,1.9)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-4.1,-0.4)(4,1.7)
+  \psline[linewidth=1pt](-1,0.8)(1,0.8)
+  \psline[linewidth=0.5pt](1,0.8)(1,0)
+  \psline[linewidth=0.5pt](-1,0.8)(-1,0)
+  \psline[linewidth=1pt](-1,0)(-2.5,0)
+  \psline[linewidth=1pt](1,0)(2.5,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](-2.5,0)(-3.5,0)
+  \psline[linewidth=1pt,linestyle=dashed,dash=2pt 2pt](2.5,0)(3.5,0)
+  \uput[l](0,1.5){$\delta_\epsilon(t)$}
+  \uput[d](3.9,0){$t$}
+  \uput[u](0.4,0.75){$\scriptstyle{1/2\epsilon}$}
+  \uput[d](-1,0){$\scriptstyle{-\epsilon}$}
+  \uput[d](1,0){$\scriptstyle{+\epsilon}$}
+\end{pspicture*}}
+\caption{Derivata della funzione ``rampa'' rappresentata nella figura~\ref{fig:gradino-come-rampa}.}
+\end{figure}
+
+Ora si può ottenere il segnale originario $\u(t)$ integrando il segnale $\delta(t)$:
+\[\u_\epsilon(t) = \int_{-\infty}^{t}\delta_\epsilon(\alpha)\ud \alpha.\]
+
+Riducendo il parametro $\epsilon$ si riduce il tempo di salita del segnale, ottenendo cioè un'approssimazione sempre più precisa del gradino ideale. Si può scrivere:
+\[\u(t) = \lim_{\epsilon\to 0} \u_\epsilon(t)\]
+da cui segue
+\begin{equation}\label{eq:gradino-come-lim-di-int}
+\u(t) = \lim_{\epsilon\to 0} \int_{-\infty}^{t} \delta_\epsilon(\alpha)\ud \alpha.
+\end{equation}
+
+Considerando il comportamento del segnale $\delta _{\epsilon}$ notiamo che per $\epsilon\to 0$ la sua durata tende a valori sempre più piccoli mentre la sua ampiezza tende a valori sempre più grandi.
+L'aumento di tale valore avviene in maniera inversamente proporzionale a $\epsilon$ poiché l'area (o, meglio, l'integrale) del rettangolo deve sempre essere unitaria (unitaria in quanto abbiamo considerato all'inizio un gradino unitario e l'integrale deve essere uguale al valore del ``salto'' della funzione gradino).
+
+Ora, se definissimo la $\delta(t)$ come
+\begin{equation}
+\label{eq:delta-come-limite}
+\delta(t) \triangleq \lim_{\epsilon\to0} \delta_\epsilon(t)
+\end{equation}
+e pensassimo al contempo che sia la derivata della funzione gradino, andremmo incontro a una inconsistenza. Infatti, la $\delta(t)$ definita in eq.~\eqref{eq:delta-come-limite} è una funzione che vale $0$ dovunque tranne che in $t=0$. Ma affinché sia la derivata del gradino, il suo integrale dovrebbe essere non nullo (ma unitario, nello specifico). Una funzione che possiede entrambe queste caratteristiche non esiste (una qualsiasi funzione matematica nulla dovunque tranne che in un punto ha integrale nullo).
+
+In realtà il limite della successione di funzioni $\delta_\epsilon(t)$ \emph{non} è una funzione nel senso ordinario dell'analisi matematica. Non è corretto quindi affermare che $\delta(t)$ è il limite della successione $\delta_\epsilon(t)$.
+
+\begin{figure}[b]
+\centering
+\framebox{\begin{pspicture*}(-4.3,-0.6)(4.3,1.7)
+  \psaxes[linewidth=0.4pt,labels=none,ticks=none]{->}(0,0)(-4.1,-0.4)(4,1.5)
+  \psline[linewidth=1pt]{->}(0,0)(0,1)
+  \uput[l](0,1.3){$\delta(t)$}
+  \uput[d](3.9,0){$t$}
+  \uput[r](0,1){$\scriptstyle{1}$}
+\end{pspicture*}}
+\caption{Grafico dell'\,``impulso di Dirac'' $\delta(t)$. Si noti che il numero $1$ \emph{non} rappresenta un valore sull'asse delle ordinate, bensì l'area sottesa dall'impulso.}
+\end{figure}
+
+Tuttavia, per estensione, si definisce la \emph{funzione generalizzata impulso unitario} o \emph{``delta'' di Dirac} come:
+\begin{equation}\label{eq:definizione-delta}
+\u(t) = \int_{-\infty}^{t} \delta(\alpha)\ud \alpha
+\end{equation}
+che la identifica come la derivata della funzione gradino, fondendo in un certo senso le equazioni~\eqref{eq:gradino-come-lim-di-int} e~\eqref{eq:delta-come-limite}. In ogni caso, si ribadisce che la delta di Dirac \emph{assume un significato solo quando se ne consideri una qualche proprietà di carattere integrale}, come d'altronde nella definizione stessa~\eqref{eq:definizione-delta}.
+
+Ogniqualvolta si incontra una funzione impulsiva $\delta(t)$, questa può essere intesa sì come limite della successione $\delta_\epsilon(t)$, come nella~\eqref{eq:delta-come-limite}, ma non direttamente: l'operazione di limite deve essere eseguita fuori dal segno di integrale stesso, come nella~\eqref{eq:gradino-come-lim-di-int}.
+Per esempio, in presenza di un caso pratico come l'integrale
+\[I = \int_{-\infty}^{+\infty} x(t)\delta(t)\ud t\]
+si dovrebbe procedere scrivendolo come:
+\[I = \lim_{\epsilon\to0}\int_{-\infty}^{+\infty} x(t)\delta_\epsilon(t)\ud t.\]
+
+
+\subsection{Proprietà della \texorpdfstring{``delta''}{''delta''} di Dirac generalizzata}
+Analizziamo%
+\margincomment{Il passaggio col limite all'interno dell'integrale lo ha fatto il prof, ma in teoria, per quanto detto nei capoversi precedenti, non ha senso\dots}
+ora alcune proprietà della delta di Dirac. Dimostriamo innanzitutto che l'integrale della $\delta(t)$ è unitario:
+\begin{align*}
+\int_{-\infty}^{+\infty}\delta (t)\ud t &= \int_{-\infty}^{+\infty}
+                                           \lim_{\epsilon\to 0}\frac{1}{2\epsilon}\rect{t}{2\epsilon}\ud t\\
+    &= \lim_{\epsilon\to 0}\frac{1}{2\epsilon}
+        \underbrace{\int_{-\infty}^{+\infty}\rect{t}{2\epsilon}\ud t}_{2\epsilon} = 1.
+\end{align*}
+
+Una delle proprietà fondamentali della delta di Dirac è la \emph{proprietà campionatrice}: tale è la sua importanza che si potrebbe definire la $\delta(t)$ proprio sfruttando questa sua proprietà.
+
+\begin{proprieta}[campionatrice]
+Dato un segnale $x(t)$ continuo in $t=0$ si ha che
+\[\int_{-\infty}^{+\infty}x(t)\delta(t) \ud t=x(0).\]
+\end{proprieta}
+\begin{proof}
+Si può scrivere:\margincomment{...e lo stesso discorso vale anche qui.}
+\begin{align*}
+\int_{-\infty}^{+\infty}x(t)\delta(t)\ud t &= \int_{-\infty}^{+\infty}x(t)\lim_{\epsilon\to 0}
+                                               \frac{1}{2\epsilon}\rect{t}{2\epsilon}\ud t\\
+    &= \lim_{\epsilon\to 0}\frac{1}{2\epsilon}\int_{-\infty}^{+\infty}x(t)\rect{t}{2\epsilon}\ud t\\
+    &= \lim_{\epsilon\to 0}\frac{1}{2\epsilon}\int_{-\epsilon}^{+\epsilon}x(t)\ud t\\
+\intertext{e per il teorema della media integrale (applicabile in quanto la funzione è continua in $t=0$) esiste un $\bar{t}$ appartenente all'intervallo $(-\epsilon,+\epsilon)$ tale che:}
+    &= \lim_{\epsilon\to 0}\frac{1}{2\epsilon}2\epsilon x(\bar{t}).\\
+\intertext{Dato che $-\epsilon\leq \bar{t}\leq\epsilon$ e $\epsilon\to0$, ne risulta che anche $\bar{t}\to0$ e quindi:}
+    &= \lim_{\epsilon\to 0}x(\bar{t}) = x(0).    \qedhere
+\end{align*}
+\end{proof}
+
+Tutte le successive proprietà derivano dalla proprietà campionatrice. Come già precisato, esse valgono a patto di considerare la $\delta(t)$ all'interno di un integrale.
+
+\begin{proprieta}[di parità]
+La delta di Dirac è una funzione pari:
+\[\delta(t) = \delta(-t).\]
+\end{proprieta}
+\begin{proof}
+Basta effettuare il cambio di variabile $t'=-t$, ottenendo:
+\begin{align*}
+\int_{-\infty}^{+\infty}x(t)\delta(-t)\ud t &= \int_{-\infty}^{+\infty}x(-t')\delta(t')\ud t' = x(0).  \qedhere
+\end{align*}
+\end{proof}
+
+La proprietà campionatrice può essere estesa considerando la funzione impulsiva traslata $\delta(t-t_0)$.
+
+\begin{proprieta}[campionatrice traslata]
+\label{prp:campionatrice-traslata}
+Vale la seguente relazione:
+\[\int_{-\infty}^{+\infty}x(t)\delta(t-t_0)\ud t=x(t_0).\]
+\end{proprieta}
+\begin{proof}
+Si effettua il cambio di variabile $t'=t-t_0$:
+\begin{align*}
+\int_{-\infty}^{+\infty}x(t)\delta(t-t)\ud t &= \int_{-\infty}^{+\infty}x(t'+t_0)\delta(t')\ud t' = x(t_0).  \qedhere
+\end{align*}
+\end{proof}
+
+Dalla~\ref{prp:campionatrice-traslata} deriva la proprietà seguente. È da intendersi nel senso che, dopo un'operazione di integrazione, i termini ad ambo i membri danno lo stesso risultato.
+
+\begin{proprieta}\label{prp:funzione-per-delta}
+Vale la relazione:
+\[x(t)\delta(t-t_0) = x(t_0)\delta(t-t_0).\]
+\end{proprieta}
+\begin{proof}
+\begin{align*}
+ \int_{-\infty}^{+\infty}x(t_0)\delta(t-t_0)\ud t &= x(t_0)\int_{-\infty}^{+\infty}\delta(t-t_0)\ud t = x(t_0)\\
+    &= \int_{-\infty}^{+\infty}x(t)\delta(t-t_0)\ud t.  \qedhere
+\end{align*}
+\end{proof}
+
+
+\begin{proprieta}[elemento neutro]
+La delta di Dirac è l'elemento neutro dell'integrale di convoluzione:
+\[x(t)\otimes\delta(t) = x(t).\]
+\end{proprieta}
+\begin{proof}
+Si sfrutta la proprietà campionatrice:
+\begin{align*}
+x(t)\otimes\delta(t) &= \int_{-\infty}^{+\infty}x(\alpha)\delta(t-\alpha)\ud \alpha = x(t).  \qedhere
+\end{align*}
+\end{proof}
+
+\begin{proprieta}
+\[x(t)\otimes\delta(t-t_0) = x(t-t_0).\]
+\end{proprieta}
+\begin{proof}
+Per la proprietà campionatrice:
+\begin{equation*}
+\int_{-\infty}^{+\infty}x(\alpha)\delta\big((t-t_0)-\alpha\big)\ud\alpha =
+ \int_{-\infty}^{+\infty}x(\alpha)\delta\big(\alpha-(t-t_0)\big)\ud\alpha = x(t-t_0).  \qedhere
+\end{equation*}
+\end{proof}
+
+\begin{proprieta}
+Dato un $a\neq 0$, si ha:
+\[\delta(at)=\frac{1}{\abs{a}}\delta(t) \quad\text{ ossia }\quad \int_{-\infty}^{+\infty}x(t)\delta(at)\ud t=\frac{x(0)}{\abs{a}}.\]
+\end{proprieta}
+\begin{proof}
+Se $a>0$ allora, ponendo $at=\alpha$, scriviamo:
+\begin{align*}
+ \int_{-\infty}^{+\infty}x(t)\delta(at)\ud t =
+  \int_{-\infty}^{+\infty}x\left(\frac{\alpha}{a}\right)\delta(\alpha)\frac{\ud\alpha}{a}=\frac{x(0)}{a}.
+\end{align*}
+Se invece $a<0$, ponendo sempre $at=\alpha$, bisogna tener conto dell'inversione di segno degli estremi di integrazione:
+\begin{align*}
+ \int_{-\infty}^{+\infty}x(t)\delta(at)\ud t =
+  -\int_{-\infty}^{+\infty}x\left(\frac{\alpha}{a}\right)\delta(\alpha)\frac{\ud\alpha}{a}=-\frac{x(0)}{a}.
+\end{align*}
+In entrambi i casi, per $a\neq 0$, vale la seguente:
+\begin{equation*}
+\int_{-\infty}^{+\infty}x(t)\delta(at)\ud t=\frac{x(0)}{\abs{a}}.  \qedhere
+\end{equation*}
+\end{proof}
+
+\subsection{Trasformata di Fourier della delta di Dirac generalizzata}
+\begin{teorema}
+Si dimostra che:
+\[\delta(t)\quad\xLeftrightarrow{\TCF}\quad 1.\]
+\end{teorema}
+\begin{proof}
+Si sfrutta la proprietà campionatrice:
+\begin{equation*}
+ \int_{-\infty}^{+\infty}\delta(t)\e^{-\j2\pi ft}\ud t = \left.\e^{-\j2\pi ft}\right|_{t=0} = 1.  \qedhere
+\end{equation*}
+\end{proof}
+ 
+La%
+\margincomment{Tre capoversi estratti da~\cite{b:luise} a pag.~128.}
+peculiarità della funzione $\delta(t)$ è riflessa anche nella peculiarità della sua trasformata: in pratica, lo spettro della funzione $\delta(t)$ contiene componenti a qualunque frequenza arbitrariamente grande, e tutte con la medesima ampiezza.
+
+La trasformata $\Delta(f)$ del segnale \emph{generalizzato} $\delta(t)$ può anche essere ricavata con un procedimento al limite a partire dalla trasformata $\Delta_\epsilon(f)=\sinc(2\epsilon  f)$ della funzione ordinaria $\delta_\epsilon(t)$: lo spettro ``piatto'' della $\delta(t)$ deve intendersi come limite di una \textop{sinc} con periodo crescente tendente a infinito ($\epsilon\to0$), che dunque si avvicina a una funzione costante pari al valore che la \textop{sinc} stessa assume per $f=0$.
+
+Questo risultato mostra che l'introduzione delle funzioni generalizzate permette di calcolare la trasformata di Fourier di un segnale a \emph{energia infinita} come il segnale costante. Evidentemente, questa trasformata deve intendersi in senso \emph{generalizzato} visto che contiene una funzione generalizzata.
+
+\subsection{Trasformata della funzione \texorpdfstring{$1/t$}{1/t}}
+Una trasformata notevole che è imparentata con le trasformate generalizzate, è quella del segnale $x(t)=1/t$.
+
+\begin{teorema}
+Si dimostra che è valida la seguente trasformata:
+\[x(t)=\frac{1}{t}\quad\xLeftrightarrow{\TCF}\quad X(f)=-\j\pi\sgn(f).\]
+\end{teorema}
+\begin{proof}
+Procediamo con il calcolo applicando la definizione della trasformata:
+\begin{align*}
+X(f) & = \int_{-\infty}^{+\infty}\frac{1}{t}\e^{-\j2\pi ft}\ud t\\
+     & = \int_{-\infty}^{+\infty}\frac{1}{t}[\cos(2\pi ft)-\j\sin(2\pi ft)]\ud t\\
+     & = \int_{-\infty}^{+\infty}
+         \underbrace{\frac{1}{t}\cos(2\pi ft)}_{C(t)}\ud t -\j\int_{-\infty}^{+\infty}\frac{1}{t}\sin(2\pi ft)\ud t
+\end{align*}
+dove abbiamo definito la funzione $C(t)$ per svolgere alcune considerazioni su di essa. Si tratta di una funzione dispari, che viene integrata tra $-\infty$ e $+\infty$: intuitivamente si capisce come quest'integrale sia nullo. A rigore bisogna però tener presente a discontinuità in $t=0$. La funzione $\cos(2\pi ft)/t$ è infatti infinita nell'origine, e non ammette integrale generalizzato ordinario. Dell'integrale generalizzato nella trasformata bisogna considerare il cosiddetto \emph{valore principale di Cauchy} (\textsmaller{VPC}), ossia quel valore che si ottiene considerando sempre intervalli di integrazione simmetrici attorno al punto di singolarità (eventualmente all'infinito), cioè, nel nostro caso:
+\begin{equation*}
+\mathrm{VPC}\biggl[\int_{-\infty}^{+\infty}C(t)\ud t\biggr] = 
+   \lim_{T\to 0}\biggl[\int_{-\infty}^{-T}C(t)\ud t+\int_{T}^{+\infty}C(t)\ud t \biggr]=0
+\end{equation*}
+che è nullo proprio per la antisimmetria della funzione integranda. Tornando alla trasformata, si ricava:
+\[X(f) = -\j\int_{-\infty}^{+\infty}\frac{\sin(2\pi ft)}{t}\ud t = -\j2\pi f\int_{-\infty}^{+\infty}\sinc(2ft)\ud t.\]
+
+Ricordando che
+\[\int_{-\infty}^{+\infty}y(t)\ud t=Y(0)\]
+e che
+\[\sinc(2Bt)\quad\xLeftrightarrow{\TCF}\quad \frac{1}{2B}\rect{f}{2B}\]
+si ottiene
+\[\int_{-\infty}^{+\infty}\sinc(2Bt)\ud t=\left.\frac{1}{2B}\rect{f}{2B}\right|_{f=0}=\frac{1}{2B}.\]
+In realtà bisogna tenere in conto anche il caso $B<0$, che non deve alterare l'espressione della trasformata perché la
+funzione $\sinc(\cdot)$ è pari. Se $B<0$ si ha:
+\begin{align*}
+\int_{-\infty}^{+\infty}\sinc(2Bt)\ud t=\int_{-\infty}^{+\infty}\sinc\left(-2|B|t\right)\ud t
+=\int_{-\infty}^{+\infty}\sinc\left(2|B|t\right)\ud t=\frac{1}{2|B|}
+\end{align*}
+che vale anche per $B>0$. In conclusione si ricava la trasformata notevole cercata:
+\[X(f)=-\frac{\j2\pi f}{2|f|} = -\j\pi\sgn(f)\]
+che deve intendersi ancora in senso \emph{generalizzato} per l'aver considerato i valori principali di Cauchy degli integrali coinvolti nella trasformazione.
+\end{proof}
+
+
+\subsection{Trasformata della funzione gradino}
+Consideriamo di nuovo il segnale gradino unitario ideale $\u(t)$; è immediato verificare. che la sua trasformata di Fourier in senso ordinario non esiste. Alla luce dei risultati ottenuti con le funzioni generalizzate, si dimostra che è possiamo calcolare questa trasformata per altra via.
+
+\begin{teorema}
+\[\u(t) \quad\xLeftrightarrow{\TCF}\quad U(f)=\frac{1}{2}\delta(f)+\frac{1}{\j2\pi f}\]
+\end{teorema}
+\begin{proof}
+Si può esprimere il gradino tramite la funzione ``segno'':
+\[\u(t) = \frac{1}{2}[1+\sgn(t)] = \frac{1}{2}+\frac{1}{2}\sgn(t).\]
+
+Ricordando che
+\[\frac{1}{t}\quad\xLeftrightarrow{\TCF}\quad -\j\pi\sgn(f)\]
+per il teorema della dualità:
+\[-\j\pi\sgn(t) \quad\xLeftrightarrow{\TCF}\quad -\frac{1}{f}.\]
+In definitiva, poiché:
+\[\frac{1}{2} \quad\xLeftrightarrow{\TCF}\quad \frac{1}{2}\delta(f)
+    \quad\text{ e }\quad
+  \sgn(t) \quad\xLeftrightarrow{\TCF}\quad \frac{1}{\j\pi f},\]
+si ottiene la tesi:
+\[U(f) = \frac{1}{2}\delta(f)+\frac{1}{\j2\pi f}.  \qedhere\]
+\end{proof}
+
+
+\subsection{Teorema dell'integrazione completo}
+Utilizzando i risultati ottenuti è ora possibile rimuovere l'ipotesi $X(0)=0$ che è alla base dell'applicabilità del teorema di integrazione nella sua forma ``incompleta'' ricavata nel paragrafo~\ref{sec:teoremi-derivazione-integrazione} (a pag.~\pageref{sec:teoremi-derivazione-integrazione}).
+
+\begin{teorema}[dell'integrazione completo]
+\[y(t)=\int_{-\infty}^{t}x(\alpha)\ud\alpha
+  \quad\xLeftrightarrow{\TCF}\quad
+  Y(f)=\frac{X(0)}{2}\delta(f)+\frac{X(f)}{\j2\pi f}\]
+\end{teorema}
+\begin{proof}
+Applicando la definizione di integrale di convoluzione si può scrivere:
+\[y(t)=x(t)\otimes \u(t)=\int_{-\infty}^{+\infty}x(\alpha)\u(t-\alpha)\ud\alpha=\int_{-\infty}^{t}x(\alpha)\ud\alpha.\]
+Andando a trasformare (e applicando la proprietà~\eqref{prp:funzione-per-delta} a pag.~\pageref{prp:funzione-per-delta}) si ottiene:
+\[Y(f)=X(f)\,U(f)=X(f)\biggl[\frac{\delta(f)}{2}+\frac{1}{\j2\pi f}\biggr]=\frac{X(0)}{2}\delta(f)+\frac{X(f)}{\j2\pi f}.\qedhere\]
+\end{proof}
+
+Il termine aggiuntivo comprende una funzione generalizzata, e naturalmente scompare nell'ipotesi di applicabilità del teorema incompleto, cioè quando $X(0)=0$. Se invece il segnale $x(t)$ non sottende area nulla, la funzione integrale $y(t)$ non tende a zero quando $t\to\infty$, bensì verso il valore finito $X(0)$. Il secondo termine rende conto allora della ``componente continua'' (cioè del valore medio diverso da zero) pari a $X(0)/2$ che è presente per questo in $y(t)$.
+
+
+\subsection{Trasformata della \texorpdfstring{$\delta(t-t_0)$}{''delta'' di Dirac ritardata}}
+Come visto nei paragrafi precedenti, la funzione generalizzata $\delta(t)$ permette di calcolare trasformate di Fourier non esistenti in senso ordinario. Altri risultati utili di questo tipo si possono ottenere applicando i teoremi del ritardo e della traslazione in frequenza alle trasformate generalizzate già ottenute. Vediamoli.
+
+Il teorema del ritardo applicato alla $\delta(t)$ afferma che
+\begin{equation}\label{eq:trasformata-delta-ritardata}
+\delta(t-t_0) \quad\xLeftrightarrow{\TCF}\quad \e^{-\j2\pi ft_0}
+\end{equation}
+e la dimostrazione utilizza semplicemente la proprietà campionatrice:
+\[\int_{-\infty}^{+\infty}\delta(t-t_0)\e^{-\j2\pi ft}\ud t = \e^{-\j2\pi ft_0}.\]
+D'altro canto, per dualità (e considerando che la $\delta(t)$ è una funzione pari):
+\begin{equation}\label{eq:antitrasformata-delta-ritardata}
+\e^{-\j2\pi f_0t} \quad\xLeftrightarrow{\TCF}\quad \delta(f-f_0).
+\end{equation}
+
+Anche i teoremi stessi del ritardo e della modulazione possono esser rivisti alla luce delle trasformate generalizzate. Infatti, se
+%
+\[x(t-t_0) = x(t) \otimes \delta(t-t_0)\]
+%
+allora trasformando ambo i membri si ottiene:
+%
+\[\TCF[x(t-t_0)] = X(f)\e^{-\j2\pi ft_0}.\]
+Analogamente, risulta:
+%
+\[x(t)\e^{\,\j2\pi f_0t} \quad\xLeftrightarrow{\TCF}\quad X(f-f_0).\]
+
+
+\subsection{Trasformate generalizzate di sinusoidi e cosinusoidi}
+La relazione generalizzata~\eqref{eq:antitrasformata-delta-ritardata} consente di calcolare trasformate continue di Fourier per segnali periodici in generale e per oscillazioni sinusoidali e cosinusoidali in particolare.
+
+\paragraph{Trasformata di un coseno.}
+Si consideri un'oscillazione cosinusoidale nella forma:
+\[x(t)=A\cos(2\pi f_0t).\]
+La relativa trasformata continua di Fourier vale:
+\begin{align*}
+X(f) & = \int_{-\infty}^{+\infty}A\cos(2\pi f_0t)\e^{-\j2\pi ft}\ud t\\
+     & = \frac{A}{2}\int_{-\infty}^{+\infty}\e^{\,\j2\pi f_0t}\e^{-\j2\pi ft}\ud t +
+         \frac{A}{2}\int_{-\infty}^{+\infty}\e^{-\j2\pi f_0t}\e^{-\j2\pi ft}\ud t\\
+     & = \frac{A}{2}\int_{-\infty}^{+\infty}\e^{-\j2\pi(f-f_0)t}\ud t +
+         \frac{A}{2}\int_{-\infty}^{+\infty}\e^{-\j2\pi(f+f_0)t}\ud t\\
+     & = \frac{A}{2}\delta(f-f_0)+\frac{A}{2}\delta(f+f_0).
+\end{align*}
+
+Graficamente, questa trasformata viene rappresentata con due impulsi di area $A/2$ centrati in $f_0$ e $-f_0$, con fase costantemente nulla.
+
+\begin{figure}[t!]
+\centering
+\subfloat{\framebox{\begin{pspicture*}(-3,-0.6)(3,2)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.8,-0.2)(2.7,1.8)
+  \uput[l](0,1.55){$\abs{X(f)}$}
+  \uput[d](2.6,0){$f$}
+  \psline{->}(-0.8,-0.05)(-0.8,0.8)
+  \psline{->}(0.8,-0.05)(0.8,0.8)
+  \uput[u](-0.8,0.7){$\scriptstyle{A/2}$}
+  \uput[u](0.8,0.7){$\scriptstyle{A/2}$}
+  \uput[d](-0.8,0){$\scriptstyle{-f_0}$}
+  \uput[d](0.8,0){$\scriptstyle{f_0}$}
+\end{pspicture*}}} \quad
+\subfloat{\framebox{\begin{pspicture*}(-3,-1.2)(3,1.4)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.8,-1.0)(2.7,1.2)
+  \uput[r](0,0.95){$\angle X(f)$}
+  \uput[d](2.6,0){$f$}
+  \pscircle*(-0.8,0.0){1pt}
+  \pscircle*(0.8,0.0){1pt}
+\end{pspicture*}}}\\
+\subfloat{\framebox{\begin{pspicture*}(-3,-0.6)(3,2)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.8,-0.2)(2.7,1.8)
+  \uput[l](0,1.55){$\abs{X(f)}$}
+  \uput[d](2.6,0){$f$}
+  \psline{->}(-0.8,-0.05)(-0.8,0.8)
+  \psline{->}(0.8,-0.05)(0.8,0.8)
+  \uput[u](-0.8,0.7){$\scriptstyle{A/2}$}
+  \uput[u](0.8,0.7){$\scriptstyle{A/2}$}
+  \uput[d](-0.8,0){$\scriptstyle{-f_0}$}
+  \uput[d](0.8,0){$\scriptstyle{f_0}$}
+\end{pspicture*}}} \quad
+\subfloat{\framebox{\begin{pspicture*}(-3,-1.2)(3,1.4)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-2.8,-1.0)(2.7,1.2)
+  \uput[r](0,0.95){$\angle X(f)$}
+  \uput[d](2.6,0){$f$}
+  \psline(-0.8,-0.05)(-0.8,0.7)\pscircle*(-0.8,0.7){1pt}
+  \psline(0.8,0.05)(0.8,-0.7)\pscircle*(0.8,-0.7){1pt}
+  \uput[u](-0.8,0.6){$\scriptstyle{\pi/2}$}
+  \uput[d](0.8,-0.6){$\scriptstyle{-\pi/2}$}
+  \uput[d](-0.8,0){$\scriptstyle{-f_0}$}
+  \uput[u](0.8,0){$\scriptstyle{f_0}$}
+\end{pspicture*}}}
+\caption{Spettro di un coseno (in alto) e di un seno (in basso).}
+\end{figure}
+
+\paragraph{Trasformata di un seno.}
+Presa un'oscillazione sinusoidale
+\[x(t)=A\sin(2\pi f_0t)\]
+la sua trasformata è:
+\begin{align*}
+X(f) & = \int_{-\infty}^{+\infty}A\sin(2\pi f_0t)\e^{-\j2\pi ft}\ud t\\
+     & = \frac{A}{2\j}\int_{-\infty}^{+\infty}\e^{-\j2\pi(f-f_0)t}\ud t -
+         \frac{A}{2\j}\int_{-\infty}^{+\infty}\e^{-\j2\pi(f+f_0)t}\ud t\\
+     & = \frac{A}{2\j}\delta(f-f_0)-\frac{A}{2\j}\delta(f+f_0)\\
+     & = \frac{A}{2}\biggl[\e^{-\j\pi/2}\delta(f-f_0)+\e^{\,\j\pi/2}\delta(f+f_0)\biggr].
+\end{align*}
+
+
+\subsection{Biunivocità della trasformata continua di Fourier}
+Se $X(f)$ è la trasformata continua di Fourier di un segnale $x(t)$ ottenuta tramite l'equazione di analisi
+\[X(f)=\int_{-\infty}^{+\infty}x(t)\e^{-\j2\pi ft}\ud t,\]
+il segnale $x(t)$ è ottenibile in maniera univoca applicando l'equazione di sintesi:
+\[x(t)=\int_{-\infty}^{+\infty}X(f)\e^{\,\j2\pi ft}\ud f.\]
+Infatti, si ha:
+\begin{align*}
+\ATCF[X(f)]
+ &= \int_{-\infty}^{+\infty}X(f)\e^{\,\j2\pi ft}\ud f
+\intertext{e scrivendo la $X(f)$ come trasformata di $x(t)$, otteniamo:}
+ &= \int_{-\infty}^{+\infty} \biggl[\int_{-\infty}^{+\infty}x(\alpha)\e^{-\j2\pi f\alpha}\ud\alpha\biggr]\e^{\,\j2\pi ft}\ud f\\
+ &= \int_{-\infty}^{+\infty}x(\alpha) \int_{-\infty}^{+\infty}\e^{-\j2\pi f(\alpha-t)}\ud f\ud\alpha\\
+ &= \int_{-\infty}^{+\infty}x(\alpha)\delta(\alpha-t)\ud\alpha = x(t).
+\end{align*}
+
+
+\section{Periodicizzazione di segnali aperiodici e formule di Poisson}
+\label{sec:relazione-tcf-tsf-e-formule-di-poisson}
+
+Riconsideriamo la periodicizzazione di un segnale aperiodico trattata nel paragrafo~\ref{sec:periodicizzazione} (a pag.~\pageref{sec:periodicizzazione}). Sia $y(t)$ il segnale ottenuto per periodicizzazione con periodo $T_0$ del segnale $x(t)$ secondo la formula~\eqref{eq:periodicizzazione}. Il segnale $y(t)$ può essere sviluppato in serie di Fourier, come un qualsiasi segnale periodico.
+
+\begin{teorema}
+Tra i coefficienti $Y_n$ dello sviluppo in serie del segnale periodico $y(t)$ e la trasformata $X(f)$ del segnale base aperiodico $x(t)$ vale la relazione:
+\begin{equation}\label{eq:relazione-trasformata-serie-continua}
+Y_n=\frac{1}{T_0}X\biggl(\frac{n}{T_0}\biggr).
+\end{equation}
+\end{teorema}
+\begin{proof}
+Si scrive $Y_n$ mediante la relazione di analisi della \ac{TSF}:
+\begin{align*}
+Y_n & = \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\sum_{k=-\infty}^{+\infty}x(t-kT_0)\e^{-\j2\pi nf_0t}\ud t\\
+    & = \frac{1}{T_0}\sum_{k=-\infty}^{+\infty}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t-kT_0)\e^{-\j2\pi nf_0t}\ud t\\
+\intertext{effettuando il cambiamento di variabile $\alpha=t-kT_0$:}
+    & = \frac{1}{T_0}\sum_{k=-\infty}^{+\infty}\int_{-\frac{T_0}{2}-kT_0}^{+\frac{T_0}{2}-kT_0}x(\alpha)
+        \e^{-\j2\pi nf_0\alpha}\ud\alpha\cdot \underbrace{\e^{-\j2\pi nf_0kT_0}}_{1}.\\
+\intertext{La funzione integranda a secondo membro non dipende dall'indice della serie $k$: tale indice agisce infatti solo sugli estremi di integrazione. Ci si rende allora conto facilmente che, al variare di $k$ tra $-\infty$ e $+\infty$ gli intervalli di integrazione $(-T_0/2-kT_0, T_0/2-kT_0)$ della stessa funzione integranda ricoprono tutto l'asse reale senza sovrapposizioni. Quindi:}
+Y_n & = \frac{1}{T_0}\int_{-\infty}^{+\infty}x(\alpha)\e^{-\j2\pi nf_0\alpha}\ud\alpha =
+        \frac{1}{T_0}X\biggl(\frac{n}{T_0}\biggr).  \qedhere
+\end{align*}
+\end{proof}
+
+I coefficienti della serie di Fourier del segnale periodico $y(t)$ sono dunque, a meno del fattore $1/T_0$, i valori della trasformata continua del segnale base $x(t)$ in corrispondenza delle frequenze armoniche $n/T_0=nf_0$, ossia un campionamento della $X(f)$ pesato con un fattore $1/T_0$. Per questo motivo la relazione trovata viene detta di \emph{campionamento in frequenza}.
+
+\begin{figure}
+\centering
+\subfloat{\framebox{\begin{pspicture*}(-5.7,-0.8)(5.9,2)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-5.5,-0.6)(5.6,1.8)
+  \uput[d](5.5,0){$t$}
+  \uput[l](0,1.6){$y(t)$}
+  \psline(-1,0)(0,1.2)
+  \psline(0,1.2)(1,0)
+  \psline[linewidth=0.5pt](-1,-0.05)(-1,0.05)
+  \psline[linewidth=0.5pt](1,-0.05)(1,0.05)
+  \uput[d](-1,0){$\scriptstyle{-B}$}
+  \uput[d](1,0){$\scriptstyle{B}$}
+  \psline(2.5,0)(3.5,1.2)
+  \psline(3.5,1.2)(4.5,0)
+  \psline[linewidth=0.5pt](3.5,-0.05)(3.5,0.05)
+  \uput[d](3.5,0){$\scriptstyle{T_0}$}
+  \psline(-2.5,0)(-3.5,1.2)
+  \psline(-3.5,1.2)(-4.5,0)
+  \psline[linewidth=0.5pt](-3.5,-0.05)(-3.5,0.05)
+  \uput[d](-3.5,0){$\scriptstyle{-T_0}$}
+\end{pspicture*}}} \\
+\subfloat{\framebox{\begin{pspicture*}(-5.7,-0.8)(5.9,2)
+  \psaxes[linewidth=0.5pt,labels=none,ticks=none]{->}(0,0)(-5.5,-0.6)(5.6,1.8)
+  \uput[u](5.25,0){$n/T_0$}
+  \uput[d](5.5,0){$f$}
+  \uput[l](0,1.6){$Y_n$}
+  \uput[r](0,1.6){$X(f)$}
+  \infixtoRPN{0.7*(sin(72*x)^2)/(x^2)}
+  \psplot[linewidth=1pt,plotstyle=curve]{-5.2}{-1}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve,plotpoints=50]{-1}{1}{\RPN}
+  \psplot[linewidth=1pt,plotstyle=curve]{1}{5.2}{\RPN}
+  \psline[linewidth=0.5pt](-5,-0.05)(-5,0.05)
+  \psline[linewidth=0.5pt](-2.5,-0.05)(-2.5,0.05)
+  \psline[linewidth=0.5pt](2.5,-0.05)(2.5,0.05)
+  \psline[linewidth=0.5pt](5,-0.05)(5,0.05)
+  \pscircle(0,1.1){1pt}
+  \pscircle(0.6,0.9){1pt}
+  \pscircle(-0.6,0.9){1pt}
+  \psline[linewidth=0.5pt](0.6,-0.05)(0.6,0.9)
+  \psline[linewidth=0.5pt](-0.6,-0.05)(-0.6,0.9)
+  \uput[d](-0.6,0){$\scriptstyle{-1}$}
+  \uput[d](0.6,0){$\scriptstyle{1}$}
+  \pscircle(1.2,0.48){1pt}
+  \pscircle(-1.2,0.48){1pt}
+  \psline[linewidth=0.5pt](1.2,-0.05)(1.2,0.48)
+  \psline[linewidth=0.5pt](-1.2,-0.05)(-1.2,0.48)
+  \uput[d](-1.2,0){$\scriptstyle{-2}$}
+  \uput[d](1.2,0){$\scriptstyle{2}$}
+  \pscircle(-1.8,0.12){1pt}
+  \pscircle(1.8,0.12){1pt}
+  \psline[linewidth=0.5pt](1.8,-0.05)(1.8,0.12)
+  \psline[linewidth=0.5pt](-1.8,-0.05)(-1.8,0.12)
+  \uput[d](-1.8,0){$\scriptstyle{-3}$}
+  \uput[d](1.8,0){$\scriptstyle{3}$}
+  \uput[d](-2.5,0){$\scriptstyle{-1/B}$}
+  \uput[d](2.5,0){$\scriptstyle{1/B}$}
+\end{pspicture*}}}
+\caption{Relazione in frequenza tra un segnale aperiodico e il segnale ottenuto per periodicizzazione con determinato periodo di ripetizione.}
+\end{figure}
+
+\subsection{Formule di Poisson}
+
+Dimostriamo ora le cosiddette formule di Poisson. La prima coinvolge il tempo, mentre nella seconda compare la frequenza: si tratta in effetti di due formule duali.
+
+\begin{teorema}[prima formula di Poisson]
+\[\sum_{k=-\infty}^{+\infty}x(t-kT_0) =
+   \frac{1}{T_0}\sum_{k=-\infty}^{+\infty}X\biggl(\frac{k}{T_0}\biggr)\e^{\,\j2\pi kt/T_0}\]
+\end{teorema}
+\begin{proof}
+Si usa la relazione~\eqref{eq:relazione-trasformata-serie-continua} sostituendola nell'espressione della trasformata serie del segnale periodicizzato:
+\begin{align*}
+y(t) & = \sum_{k=-\infty}^{+\infty}x(t-kT_0)=\sum_{k=-\infty}^{+\infty}Y_k\e^{\,\j2\pi kt/T_0}\\
+     & = \frac{1}{T_0}\sum_{k=-\infty}^{+\infty}X\biggl(\frac{k}{T_0}\biggr)\e^{\,\j2\pi kt/T_0}.  \qedhere
+\end{align*}
+\end{proof}
+
+\begin{teorema}[seconda formula di Poisson] Applicando il teorema della dualità alla prima formula di Poisson di ottiene:
+\begin{equation}\label{eq:seconda-di-poisson}
+\sum_{k=-\infty}^{+\infty}x(kT_0)\e^{-\j2\pi fkT_0}=\frac{1}{T_0}\sum_{k=-\infty}^{+\infty}X\biggl(f-\frac{k}{T_0}\biggr).
+\end{equation}
+\end{teorema}
+\begin{proof}
+\begin{align*}
+\sum_{k=-\infty}^{+\infty}X(t-kT_0) &= \sum_{k=-\infty}^{+\infty}\frac{1}{T_0}x\biggl(-\frac{k}{T_0}\biggr)\e^{\,\j2\pi kt/T_0}\\
+ &= \sum_{k=-\infty}^{+\infty}\frac{1}{T_0}x\biggl(\frac{k}{T_0}\biggr)\e^{-\j2\pi kt/T_0}
+\end{align*}
+da cui, cambiando segno all'indice della sommatoria e ponendo $T=1/T_0$:
+\begin{align*}
+\sum_{k=-\infty}^{+\infty}X\biggl(t-\frac{n}{T}\biggr) = T \sum_{k=-\infty}^{+\infty}x(kT)\e^{-\j2\pi ktT}.
+\end{align*}
+Si giunge poi alla tesi cambiando, dal punto di vista puramente formale, il nome alla variabile corrente da $t$ a $f$.
+\end{proof}
+
+Considerando che $x(t)$ sia una delta di Dirac, si scrivono la \emph{prima formula di Poisson applicata alla delta}:
+\begin{equation}\label{eq:prima-di-poisson-applicata-alla-delta}
+\sum_{k=-\infty}^{+\infty} \delta(t-kT_0) = \frac{1}{T_0}\sum_{k=-\infty}^{+\infty}\e^{\,\j2\pi kt/T_0}
+\end{equation}
+e la \emph{seconda formula di Poisson applicata alla delta}:
+\begin{equation}\label{eq:seconda-di-poisson-applicata-alla-delta}
+\sum_{k=-\infty}^{+\infty}\e^{-\j2\pi fkT_0}=\frac{1}{T_0}\sum_{k=-\infty}^{+\infty}\delta\biggl(f-\frac{k}{T_0}\biggr).
+\end{equation}
+
+Il segnale periodicizzato
+%
+\[\sum_{k=-\infty}^{+\infty} \delta(t-kT_0)\]
+%
+è detto \emph{treno di delta di Dirac}. Si dimostra il seguente.
+
+\begin{teorema}
+La \ac{TCF} di un treno di delta di Dirac è:
+\[x(t) = \sum_{k=-\infty}^{+\infty} \delta(t-kT_0) \quad\xLeftrightarrow{\TCF}\quad X(f) = \frac{1}{T_0}\sum_{k=-\infty}^{+\infty}\delta\biggl(f-\frac{k}{T_0}\biggr).\]
+\end{teorema}
+\begin{proof}
+Si applicano in sequenza la proprietà campionatrice e la seconda formula di Poisson:
+\begin{align*}
+X(f) &= \int_{-\infty}^{+\infty}\sum_{k=-\infty}^{+\infty}\delta(t-kT_0)\e^{-\j2\pi ft}\ud t\\
+     &= \sum_{k=-\infty}^{+\infty} \int_{-\infty}^{+\infty}\delta(t-kT_0)\e^{-\j2\pi ft}\ud t\\
+     &= \sum_{k=-\infty}^{+\infty}\e^{-\j2\pi fkT_0} = \frac{1}{T_0}\sum_{k=-\infty}^{+\infty}\delta\biggl(f-\frac{k}{T_0}\biggr).   \qedhere
+\end{align*}
+\end{proof}
+
+Si poteva anche semplicemente notare che la relazione~\eqref{eq:seconda-di-poisson-applicata-alla-delta} si può ottenere esattamente come trasformata membro a membro della~\eqref{eq:prima-di-poisson-applicata-alla-delta}.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.65\textwidth]{treno-di-delta}
+\caption{Rappresentazione grafica di un treno di delta di Dirac e della sua trasformata.}
+\end{figure}
+
+\begin{teorema}\label{th:tcf-di-segnali-periodici}
+Se $y(t)$ è ottenuto per periodicizzazione dal segnale $x(t)$, allora:
+\[y(t)=\sum_{k=-\infty}^{+\infty}x(t-kT_0)
+   \quad\xLeftrightarrow{\TCF}\quad
+  Y(f)=\frac{1}{T_0}\sum_{k=-\infty}^{+\infty}X\biggl(\frac{k}{T_0}\biggr)\delta\biggl(f-\frac{k}{T_0}\biggr).\]
+\end{teorema}
+\begin{proof}
+\begin{align*}
+Y(f) &= \int_{-\infty}^{+\infty}\sum_{k=-\infty}^{+\infty}x(t-kT_0)\e^{-\j2\pi ft}\ud t\\
+     &= \sum_{k=-\infty}^{+\infty}\biggl[\int_{-\infty}^{+\infty}x(\alpha)\e^{-\j2\pi f\alpha}\ud\alpha\biggr]\e^{-\j2\pi fkT_0}\\
+     &= X(f)\sum_{k=-\infty}^{+\infty}\e^{-\j2\pi fkT_0}
+\intertext{avendo posto $\alpha=t-kT_0$. Applicando ora la~\eqref{eq:seconda-di-poisson-applicata-alla-delta}, ottiamo:}
+Y(f) &= X(f)\frac{1}{T_0}\sum_{k=-\infty}^{+\infty}\delta\biggl(f-\frac{k}{T_0}\biggr)\\
+     &= \frac{1}{T_0}\sum_{k=-\infty}^{+\infty}X(f)\bigr|_{f=k/T_0}\delta\biggl(f-\frac{k}{T_0}\biggr)\\
+     &= \frac{1}{T_0}\sum_{k=-\infty}^{+\infty}X\biggl(\frac{k}{T_0}\biggr)\delta\biggl(f-\frac{k}{T_0}\biggr) =
+        \sum_{k=-\infty}^{+\infty}Y_k\delta\biggl(f-\frac{k}{T_0}\biggr)
+\end{align*}
+si ottiene cioè in frequenza un treno di delta di Dirac pesate con dei fattori $Y_k$.
+\end{proof}
+
+\begin{figure}
+\centering
+\includegraphics{tcf-di-segnali-periodocizzati}
+\caption{}
+\end{figure}
+
+
+\subsection{Teorema di Parseval per segnali periodici}
+
+\begin{teorema}[di Parseval per segnali periodici con \ac{TSF}]
+\[\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\,y^*(t)\ud t = \sum_{k=-\infty}^{+\infty}X_kY_k^*\]
+\end{teorema}
+\begin{proof}
+\begin{align*}
+& \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\,y^*(t)\ud t =
+        \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\sum_{k=-\infty}^{+\infty}X_k\e^{\,\j2\pi kf_0t}\,y^*(t)\ud t\\
+&\quad = \sum_{k=-\infty}^{+\infty}X_k\cdot\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}y^*(t)\e^{\,\j2\pi kf_0t}\ud t\\
+&\quad = \sum_{k=-\infty}^{+\infty}X_k\biggl[\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}y(t)\e^{-\j2\pi kf_0t}\ud t\biggr]^* = \sum_{k=-\infty}^{+\infty}X_kY_k^*  \qedhere
+\end{align*}
+\end{proof}
+
+Se indichiamo $x_0(t)$ e $y_0(t)$ i segnali aperiodici dai quali, per periodicizzazione, si ottengono $x(t)$ e $y(t)$:
+%
+\begin{align*}
+x_0(t) &= x(t)\vrect(t/T_0)\\
+y_0(t) &= y(t)\vrect(t/T_0)
+\end{align*}
+%
+possiamo riscrivere il teorema di Parseval per segnali periodici utilizzando la \ac{TCF}.
+
+\begin{teorema}[di Parseval per segnali periodici con \ac{TCF}]
+\[\frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}x(t)\,y^*(t)\ud t = \frac{1}{T_0^2}\sum_{k=-\infty}^{+\infty}X_0\biggl(\frac{k}{T_0}\biggr)Y_0^*\biggl(\frac{k}{T_0}\biggr)\]
+\end{teorema}
+\begin{proof}
+La dimostrazione si ottiene applicando la relazione~\eqref{eq:relazione-trasformata-serie-continua} alla formulazione del teorema di Parseval con \ac{TSF}.
+\end{proof}
+
+Utilizzando queste due formulazioni del teorema di Parseval, si può scrivere la potenza media $P_x$ di un segnale periodico come:
+\begin{equation}
+P_x = \frac{1}{T_0}\int_{-\frac{T_0}{2}}^{+\frac{T_0}{2}}\abs{x(t)}^2\ud t = \sum_{k=-\infty}^{+\infty}\abs{X_k}^2
+    = \frac{1}{T_0^2}\sum_{k=-\infty}^{+\infty}\abs{X_0\biggl(\frac{k}{T_0}\biggr)}^2.
+\end{equation}
+
+Definiamo, per il segnale periodico $x(t)$, la \emph{densità spettrale di potenza}:
+%
+\[S_x(f) = \sum_{k=-\infty}^{+\infty} \frac{1}{T_0^2}\abs{X_0\biggl(\frac{k}{T_0}\biggr)}^2\delta\biggl(f-\frac{k}{T_0}\biggr).\]
+
+\begin{teorema}
+La potenza media di un segnale periodico eguaglia l'area sottesa dalla densità spettrale di potenza:
+\[P_x = \int_{-\infty}^{+\infty} S_x(f)\ud f.\]
+\end{teorema}
+\begin{proof}
+\begin{align*}
+P_x &= \int_{-\infty}^{+\infty} \sum_{k=-\infty}^{+\infty} \frac{1}{T_0^2}
+       \abs{X_0\biggl(\frac{k}{T_0}\biggr)}^2\delta\biggl(f-\frac{k}{T_0}\biggr)\ud f\\
+    &= \underbrace{\sum_{k=-\infty}^{+\infty} \frac{1}{T_0^2} \abs{X_0\biggl(\frac{k}{T_0}\biggr)}^2}_{P_x}
+       \underbrace{\int_{-\infty}^{+\infty} \delta\biggl(f-\frac{k}{T_0}\biggr)\ud f}_{1} = P_x.  \qedhere
+\end{align*}
+\end{proof}
+
+
+\section{Analisi energetica dei segnali aperiodici}
+\label{sec:analisi-energetica-segnali-aperiodici}
+
+La \emph{densità spettrale di energia} di un segnale aperiodico $x(t)$ è definita come il modulo quadro della sua trasformata:
+%
+\[S_x(f) = \abs{X(f)}^2.\]
+%
+Si verifica facilmente, perciò, che l'energia media di un segnale periodico può essere calcolata come l'integrale della densità spettrale di energia. La \emph{densità spettrale di potenza} per segnali aperiodici viene definita come:
+%
+\[S_x(f) = \lim_{T\to\infty}\frac{\abs{X_T(f)}^2}{T}\]
+%
+dove $X_T(f)$ è la trasformata continua del segnale
+%
+\[x_T(t) = x(t)\vrect(t/T).\]
+%
+La potenza media è quindi l'area sottesa dalla densità spettrale di potenza.
+
+
+\paragraph{Correlazione e autocorrelazione}
+Dati $x(t)$ e $y(t)$ due segnali aperiodici, si definiscono la \emph{funzione di correlazione} tra i due
+%
+\begin{equation}
+C_{xy}(\tau) \triangleq \int_{-\infty}^{+\infty} x(t)\,y^*(t-\tau)\ud t
+\end{equation}
+%
+e la \emph{funzione di autocorrelazione} per ciascuno di essi:
+\begin{equation}
+C_x(\tau) \triangleq \int_{-\infty}^{+\infty}x(t)\,x^*(t-\tau)\ud t.
+\end{equation}
+%
+(si noti che la variabile di integrazione è $t$ mentre la variabile che caratterizza la funzione di (auto)correlazione è $\tau$). Fisicamente $\tau$ è un ritardo: per segnali reali, la funzione di autocorrelazione è l'integrale del prodotto del segnale con se stesso ritardato di un certo $\tau$.
+
+La%
+\margincomment{Questi due capoversi sono estratti dal libro~\citep[pag.~191]{b:luise} (il professore non ne ha parlato), considerando segnali reali.}
+funzione di autocorrelazione fornisce informazioni utili sulla rapidità di variazione del segnale $x(t)$. Dati due differenti segnali reali $x(t)$ e $y(t)$ aventi stessa energia ma due diverse ``velocità di variazione'', il segnale più ``veloce'', supponiamo $x(t)$, presenta un valore della funzione di autocorrelazione minore di quello relativo all'altro segnale, $y(t)$, \emph{a parità di ritardo} $\tau$. Il nome di ``autocorrelazione'' suggerisce infatti che questa funzione è un indice di ``somiglianza'' del segnale con se stesso, o meglio, con una sua replica ritardata.
+
+Se inoltre supponiamo che il segnale $x(t)$ sia a durata rigorosamente limitata, si riesce a visualizzare immediatamente che quando la variabile $\tau$ assume valori crescenti si riduce l'ampiezza dell'intervallo in cui sia $x(t)$ che $x(t-\tau)$ assumono valori non nulli e, di conseguenza, tende a diminuire il valore di $R_x(\tau)$. Ancora, come è facilmente intuibile, il segnale $x(t)$ è massimamente correlato con se stesso per $\tau=0$, e pertanto $\abs{R_x(\tau)}\leq R_x(0)$. Infine, si ha $R_x(\tau)=R_x(-\tau)$.
+
+
+\begin{proprieta}[correlazione e convoluzione]
+La funzione di correlazione tra due segnali può essere scritta come la convoluzione tra il primo segnale e il complesso coniugato del secondo con l'asse delle ascisse invertito:
+\begin{equation}
+C_{xy}(\tau)=x(\tau)\otimes y^*(-\tau).
+\end{equation}
+\end{proprieta}
+\begin{proof}
+Infatti, dalla definizione di prodotto di convoluzione:
+\begin{align*}
+ x(\tau)\otimes y^*(-\tau) &= \int_{-\infty}^{+\infty}x(t)\,y^*(-(\tau-t))\ud t\\
+                           &= \int_{-\infty}^{+\infty}x(t)\,y^*(t-\tau)\ud t=C_{xy}(\tau).  \qedhere
+\end{align*}
+\end{proof}
+
+\begin{proprieta}[autocorrelazione e convoluzione]
+La funzione di autocorrelazione di un segnale può essere scritta come la convoluzione del segnale stesso e il suo complesso coniugato con l'asse delle ascisse invertito:
+\begin{equation}\label{eq:autocorrelazione-e-convoluzione}
+C_x(\tau)=x(\tau)\otimes x^*(-\tau).
+\end{equation}
+\end{proprieta}
+
+\begin{proprieta}
+La funzione di autocorrelazione gode della proprietà di simmetria Hermitiana:
+\[C_x(\tau) = C_x^*(-\tau).\]
+\end{proprieta}
+\begin{proof}
+\begin{align*}
+C_x(-\tau) & = \int_{-\infty}^{+\infty}x(t)\,x^*\bigl(t-(-\tau)\bigr)\ud t\\
+           & = \int_{-\infty}^{+\infty}x(t)\,x^*(t+\tau)\ud t\\
+           & = \int_{-\infty}^{+\infty}x(t'-\tau)\,x^*(t')\ud t' = C_x^*(\tau)
+\end{align*}
+dove è stata effettuata la sostituzione $t'=t+\tau$.
+\end{proof}
+
+\begin{lemma}
+Sia dato un segnale aperiodico $x(t)$. Allora:
+\begin{equation}\label{eq:trasformata-coniugato-invertito}
+x^*(-t) \quad\xLeftrightarrow{\TCF}\quad X^*(f).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Per la dimostrazione, basta applicare la definizione di trasformata:
+\begin{align*}
+ \TCF[x^*(-t)] &= \int_{-\infty}^{+\infty}x^*(-t)\e^{-\j2\pi ft}\ud t\\
+               &= \int_{-\infty}^{+\infty}x^*(t')\e^{\,\j2\pi ft'}\ud t'\\
+               &= \left[\int_{-\infty}^{+\infty}x(t')\e^{-\j2\pi ft'}\ud t'\right]^*=X^*(f).  \qedhere
+\end{align*}
+\end{proof}
+
+\begin{proposizione}
+La trasformata continua della funzione di autocorrelazione è la densità spettrale di energia:
+\[C_x(\tau) \quad\xLeftrightarrow{\TCF}\quad \abs{X(f)}^2=S_x(f).\]
+\end{proposizione}
+\begin{proof}
+La dimostrazione può esser fatta molto semplicemente trasformando secondo Fourier la formula~\eqref{eq:autocorrelazione-e-convoluzione} tenendo conto della relazione~\eqref{eq:trasformata-coniugato-invertito}.
+Volendo procedere tramite integrali di convoluzione:
+\begin{align*}
+\TCF[C_x(\tau)]
+ &= \int_{-\infty}^{+\infty}C_x(\tau)\e^{-\j2\pi f\tau}\ud \tau\\
+ &= \int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}x(t)\,x^*(t-\tau)\ud t \cdot\e^{-\j2\pi f\tau}\ud \tau\\
+ &= \int_{-\infty}^{+\infty}x(t)\int_{-\infty}^{+\infty}x^*(t-\tau)\e^{-\j2\pi f\tau}\ud \tau \ud t\\
+ &= \int_{-\infty}^{+\infty}x(t)\int_{-\infty}^{+\infty}x^*(\alpha)\e^{-\j2\pi f(t-\alpha)}\ud \alpha \ud t\\
+ &= \int_{-\infty}^{+\infty}x(t)\e^{-\j2\pi ft}\ud t\cdot \int_{-\infty}^{+\infty}x^*(\alpha)\e^{\,\j2\pi f\alpha}\ud \alpha\\
+ &= X(f)\left[\int_{-\infty}^{+\infty}x(\alpha)\e^{-\j2\pi f\alpha}\ud \alpha\right]^*=X(f)X^*(f)=\abs{X(f)}^2
+\end{align*}
+dove si è fatto il cambio di variabile $\alpha=t-\tau$.
+\end{proof}
+
+È immediato notare che la funzione di autocorrelazione calcolata in $\tau=0$ fornisce l'energia del segnale:
+%
+\[C_x(0) = \int_{-\infty}^{+\infty} \abs{x(t)}^2\ud t = E_x.\]
+%
+Si dimostra infine il seguente teorema, di fondamentale importanza.
+
+\begin{teorema}[di Parseval]
+\[\int_{-\infty}^{+\infty}x(t)\,y^*(t)\ud t=\int_{-\infty}^{+\infty}X(f)\,Y^*(f)\ud f\]
+\end{teorema}
+\begin{proof}
+\begin{align*}
+ & \int_{-\infty}^{+\infty}x(t)\,y^*(t)\ud t=
+   \int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}X(f)\e^{\,\j2\pi ft}\ud f \cdot y^*(t)\ud t\\
+ &\quad = \int_{-\infty}^{+\infty}X(f)\int_{-\infty}^{+\infty}y^*(t)\e^{\,\j2\pi ft}\ud t\ud f=
+          \int_{-\infty}^{+\infty}X(f)\,Y^*(f)\ud f   \qedhere
+\end{align*}
+\end{proof}
+
+\begin{esempio}
+Calcolare l'energia del segnale:
+\[x(t)=A\sinc(Bt).\]
+In generale, si può calcolare l'energia di un segnale in due modi: a partire dall'espressione del segnale stesso o a partire dalla sua trasformata. Nel primo caso, avremmo:
+\[E_x = \int_{-\infty}^{+\infty}|x(t)|^2\ud t=A^2\int_{-\infty}^{+\infty}\sinc^2(Bt)\ud t\]
+che, però non è di facile risoluzione. È conveniente invece procedere considerando la trasformata continua
+\[X(f) = \frac{A}{B}\rect{f}{B}\]
+ottenendo:
+\[E_x = \int_{-\infty}^{+\infty}|X(f)|^2\ud f=\frac{A^2}{B^2}\int_{-\infty}^{+\infty}\rect{f}{B}\ud f=\frac{A^2}{B}.\]
+\end{esempio}
+
