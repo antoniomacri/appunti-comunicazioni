@@ -1,7 +1,7 @@
 
 @echo Compilazione...
-latex --src appunti.tex -output-directory="%temp%" -aux-directory="%temp%"
-dvips -o "appunti-pics.ps" "%temp%\appunti.dvi"
+latex --src appunti.tex
+dvips -o "appunti-pics.ps" "appunti.dvi"
 ps2pdf "appunti-pics.ps"
 
 @echo.

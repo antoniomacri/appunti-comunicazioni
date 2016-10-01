@@ -1,12 +1,12 @@
 
 @echo Cancellazione file vecchi...
-del %temp%\*.aux
-del %temp%\*.toc
-del %temp%\*.out
-del %temp%\*.dvi
-del %temp%\*.log
-del %temp%\*.bbl
-del %temp%\*.blg
-del %temp%\*.brf
-del %temp%\*.tdo
+del *.aux
+del *.toc
+del *.out
+del *.dvi
+del *.log
+del *.bbl
+del *.blg
+del *.brf
+del *.tdo
 

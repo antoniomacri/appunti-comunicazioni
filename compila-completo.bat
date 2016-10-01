@@ -1,11 +1,10 @@
 @echo off
 
-del %temp%\*.aux
-del %temp%\*.toc
-del %temp%\*.out
-del %temp%\*.dvi
-del %temp%\*.log
 del *.aux
+del *.toc
+del *.out
+del *.dvi
+del *.log
 
 
 echo.
@@ -16,7 +15,7 @@ echo *
 echo.
 pause
 
-pdflatex appunti.tex -aux-directory=%temp%
+pdflatex appunti.tex
 
 
 echo.
@@ -27,9 +26,8 @@ echo *
 echo.
 pause
 
-copy %temp%\appunti.aux .
-latex --src appunti.tex -output-directory="%temp%" -aux-directory="%temp%"
-dvips -o "appunti-pics.ps" "%temp%\appunti.dvi"
+latex --src appunti.tex
+dvips -o "appunti-pics.ps" "appunti.dvi"
 ps2pdf "appunti-pics.ps"
 del appunti-pics.ps
 
@@ -42,7 +40,7 @@ echo *
 echo.
 pause
 
-bibtex %temp%\appunti -include-directory=%temp%
+bibtex appunti
 del appunti.aux
 
 echo.
@@ -53,9 +51,9 @@ echo *
 echo.
 pause
 
-pdflatex appunti.tex -aux-directory=%temp%
-pdflatex appunti.tex -aux-directory=%temp%
-pdflatex appunti.tex -aux-directory=%temp%
+pdflatex appunti.tex
+pdflatex appunti.tex
+pdflatex appunti.tex
 
 
 echo.
@@ -66,12 +64,11 @@ echo *
 echo.
 pause
 
-del %temp%\*.aux
-del %temp%\*.toc
-del %temp%\*.out
-del %temp%\*.dvi
-del %temp%\*.log
 del *.aux
+del *.toc
+del *.out
+del *.dvi
+del *.log
 
 
 echo.
